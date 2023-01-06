@@ -1,187 +1,901 @@
-<?php $this->start('css') ?>
-<link rel="stylesheet" href="/assets/css/index.css">
-<?php $this->end('css') ?>
-
 <main>
-	<div class="content-images">
-		<div class="content-images__items"><img src="/assets/images/top/mv_01.jpg?v=499021c717d84c4514ddee01de0d4545" alt="" width="1500" height="952" loading="lazy" decoding="async">
-		</div>
-		<div class="content-images__items"><img src="/assets/images/top/mv_02.jpg?v=5f15174a3073ada2c0c59080d178761b" alt="" width="1500" height="952" loading="lazy" decoding="async">
-		</div>
-		<div class="content-images__items"><img src="/assets/images/top/mv_01.jpg?v=499021c717d84c4514ddee01de0d4545" alt="" width="1500" height="952" loading="lazy" decoding="async">
-		</div>
-	</div>
-	<div class="content">
-		<div class="content-bg"></div>
-		<div class="create js-scroll row">
-			<div class="create-wrap"><span class="create-wrap__logo"><img src="/assets/images/top/text_logo.png?v=54aedd4b59beab5b6748bb80fd121a1d" alt="ATOM ENGINEERING Co.L+d" width="386" height="18" loading="lazy" decoding="async"></span><span class="create-wrap__text">CREATE</span><br><span class="create-wrap__text">THE</span><br class="show_sp"><span class="create-wrap__stroke">FUTURE</span></div>
-			<div class="create-scroll"><a class="create-scroll__link" href="#business">SCROLL</a></div>
-		</div>
-		<div class="business js-scroll row" id="business">
-			<div class="business-txt">
-				<h2 class="ttl"><span class="ttl-en">BUSINESS</span><span class="ttl-ja">事業紹介</span></h2>
-				<p>アトムエンジニアリングでは、<br>システムを通してお客様が抱える<br>「課題」や「悩み」を解決します。</p><a class="c-btn c-btn--more c-btn--white" href="/business/"><span>VIEW MORE</span></a>
-			</div>
-			<div class="business-group">
-				<div class="business-group__items business-group__items--01"><span>物流に特化した</span>
-					<p>システムの企画・開発</p>
-				</div>
-				<div class="business-group__items business-group__items--02"><span>物流関連企業への</span>
-					<p>コンサルティング</p>
-				</div>
-				<div class="business-group__items business-group__items--03"><span>パートナー企業との</span>
-					<p>連携</p>
-				</div>
-			</div>
-		</div>
-		<div class="products js-scroll row">
-			<h2 class="ttl ttl--center"><span class="ttl-en">PRODUCTS</span><span class="ttl-ja">製品情報</span></h2>
-			<div class="c-product"> <a class="c-product-item link__zoom" href="https://www.zaikokanri.com/" target="_blank">
-					<figure><img class="img_01" src="/assets/images/common/img_product_01.png?v=a247ebe4a119472bd9506179d22e9b4a" alt="" width="210" height="113" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">クラウド在庫管理<br class="show_sp">システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/barcorrect/">
-					<figure><img class="img_02" src="/assets/images/common/img_product_02.png?v=e177d7025800163b3a8c754568fca156" alt="" width="226" height="63" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">クラウド検品<br class="show_sp">システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/rental/">
-					<figure><img class="img_03" src="/assets/images/common/img_product_03.png?v=1892fa2cbbff1303854f697e61fb7989" alt="" width="218" height="102" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">レンタル品管理<br class="show_sp">システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/passsort/">
-					<figure><img class="img_04" src="/assets/images/common/img_product_04.png?v=c8c0c30864f48c51d35a49fed706c542" alt="" width="223" height="30" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">仕分検品システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/shiwakedou/">
-					<figure><img class="img_05" src="/assets/images/common/img_product_05.png?v=38d8f3eccbbc6948c8a1c33cfcfb987e" alt="" width="199" height="65" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">デジタルアソート<br class="show_sp">システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/digipica/">
-					<figure><img class="img_06" src="/assets/images/common/img_product_06.png?v=c770405c1ce944273b0ab848a8c62a23" alt="" width="190" height="55" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">デジタルピッキング<br class="show_sp">システム</h3>
-				</a><a class="c-product-item link__zoom" href="/pro/tremas/">
-					<figure><img class="img_07" src="/assets/images/common/img_product_07.png?v=7c124284d48a78fba1c55939ddc7ed7b" alt="" width="247" height="44" loading="lazy" decoding="async">
-					</figure>
-					<h3 class="c-product-ttl">マルチピッキング<br class="show_sp">カート</h3>
-				</a>
-			</div>
-		</div>
-	</div>
-
-	<div class="casestudy js-slide">
-		<div class="row">
-			<h2 class="ttl ttl--black"><span class="ttl-en">CASE STUDY</span><span class="ttl-ja">導入事例</span></h2>
-		</div>
-		<div class="swiper">
-			<div class="swiper-wrapper">
-
-				<?php foreach (${CASESTUDY}->toArray() as $info) : ?>
-					<div class="swiper-slide">
-						<a class="c-case link__zoom" href="<?= __('/pro/interview/{0}', $info->id) ?>">
-							<figure class="c-case-thumb">
-								<img class="fit" src="<?= $info->attaches['image'][0] ?>" alt="" width="480" height="287" loading="lazy" decoding="async">
-								<img class="logo logo_01" src="<?= $info->category->attaches['image'][0] ?>" alt="" width="240" height="130" loading="lazy" decoding="async">
-							</figure>
-							<div class="c-case__content">
-								<span class="tag"><?= h(__('{0}{1}', strip_tags($info->category->name), $info->category->identifier)) ?></span>
-								<h3 class="c-case-title"><?= h($info->title) ?></h3>
-								<p class="sub"><?= h(@$info->info_append_items[1]['value_text']) ?></p>
+	<!-- Trending Area Start -->
+	<div class="trending-area fix pt-25 gray-bg">
+		<div class="container">
+			<div class="trending-main">
+				<div class="row">
+					<div class="col-lg-8">
+						<!-- Trending Top -->
+						<div class="slider-active">
+							<!-- Single -->
+							<div class="single-slider">
+								<div class="trending-top mb-30">
+									<div class="trend-top-img">
+										<img src="assets/img/trending/trending_top2.jpg" alt="">
+										<div class="trend-top-cap">
+											<span class="bgr" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">Business</span>
+											<h2><a href="latest_news.html" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">Anna Lora Stuns In White At Her Australian Premiere</a></h2>
+											<p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">by Alice cloe - Jun 19, 2020</p>
+										</div>
+									</div>
+								</div>
 							</div>
-						</a>
-					</div>
-
-				<?php endforeach ?>
-
-			</div>
-			<div class="swiper-button-prev"></div>
-			<div class="swiper-button-next"></div>
-		</div>
-		<div class="swiper-pagination"></div>
-		<div class="btn-center"><a class="c-btn c-btn--more" href="/pro/interview/"><span>VIEW MORE</span></a></div>
-	</div>
-	<div class="client">
-		<div class="row">
-			<h2 class="ttl ttl--center ttl--black"><span class="ttl-en">CLIENT</span><span class="ttl-ja">導入企業一覧</span></h2>
-			<div class="client-logo">
-				<picture>
-					<source media="(min-width: 769px)" srcset="/assets/images/top/clientlogo.png" width="1094" height="346">
-					<source media="(max-width: 768px)" srcset="/assets/images/top/clientlogo_sp.png?v=c20f12ddcb5c3c0c13e5e79adc8f85cb" width="698" height="655"><img src="/assets/images/top/clientlogo_sp.png?v=c20f12ddcb5c3c0c13e5e79adc8f85cb" srcset="/assets/images/top/clientlogo_sp.png?v=c20f12ddcb5c3c0c13e5e79adc8f85cb" alt="">
-				</picture>
-			</div>
-			<div class="client-note">※五十音順</div>
-		</div>
-	</div>
-	<div class="news">
-		<div class="news-row row">
-			<div class="news-lf">
-				<h2 class="ttl"><span class="ttl-en">NEWS</span><span class="ttl-ja">お知らせ</span></h2><a class="c-btn c-btn--more c-btn--white" href="/topics/"><span>VIEW MORE</span></a>
-			</div>
-			<div class="news-list">
-
-				<?php foreach (${TOPICS}->toArray() as $info) : ?>
-
-					<a class="news-items link__alpha" href="<?= __('/topics/{0}', $info->id) ?>">
-						<span class="news-items__time"><?= (new DateTime($info->start_datetime ? $info->start_datetime : 'now'))->format('Y.m.d') ?></span>
-						<p class="news-items__des"><?= h($info->title) ?></p>
-					</a>
-
-				<?php endforeach ?>
-
-			</div>
-		</div>
-	</div>
-	<div class="column js-slide">
-		<div class="row">
-			<h2 class="ttl ttl--black ttl--center"><span class="ttl-en">COLUMN</span><span class="ttl-ja">コラム</span></h2>
-		</div>
-		<div class="swiper">
-			<div class="swiper-wrapper">
-
-				<?php foreach (${COLUMN}->toArray() as $info) : ?>
-
-					<div class="swiper-slide">
-						<a class="c-case link__zoom" href="<?= __('/column/{0}', $info->id) ?>">
-							<figure class="c-case-thumb">
-								<img class="fit" src="<?= $info->attaches['image'][0] ?>" alt="" width="480" height="287" loading="lazy" decoding="async">
-							</figure>
-							<div class="c-case__content">
-								<h3 class="c-case-title"><?= h($info->title) ?></h3>
-								<p class="sub"></p>
+							<!-- Single -->
+							<div class="single-slider">
+								<div class="trending-top mb-30">
+									<div class="trend-top-img">
+										<img src="assets/img/trending/trending_top02.jpg" alt="">
+										<div class="trend-top-cap">
+											<span class="bgr" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">Business</span>
+											<h2><a href="latest_news.html" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">Anna Lora Stuns In White At Her Australian Premiere</a></h2>
+											<p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">by Alice cloe - Jun 19, 2020</p>
+										</div>
+									</div>
+								</div>
 							</div>
-						</a>
+							<!-- Single -->
+							<div class="single-slider">
+								<div class="trending-top mb-30">
+									<div class="trend-top-img">
+										<img src="assets/img/trending/trending_top03.jpg" alt="">
+										<div class="trend-top-cap">
+											<span class="bgr" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">Business</span>
+											<h2><a href="latest_news.html" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">Anna Lora Stuns In White At Her Australian Premiere</a></h2>
+											<p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">by Alice cloe - Jun 19, 2020</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
+					<!-- Right content -->
+					<div class="col-lg-4">
+						<!-- Trending Top -->
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6">
+								<div class="trending-top mb-30">
+									<div class="trend-top-img">
+										<img src="assets/img/trending/trending_top3.jpg" alt="">
+										<div class="trend-top-cap trend-top-cap2">
+											<span class="bgb">FASHION</span>
+											<h2><a href="latest_news.html">Secretart for Economic Air
+													plane that looks like</a></h2>
+											<p>by Alice cloe - Jun 19, 2020</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-6 col-sm-6">
+								<div class="trending-top mb-30">
+									<div class="trend-top-img">
+										<img src="assets/img/trending/trending_top4.jpg" alt="">
+										<div class="trend-top-cap trend-top-cap2">
+											<span class="bgg">TECH </span>
+											<h2><a href="latest_news.html">Secretart for Economic Air plane that looks like</a></h2>
+											<p>by Alice cloe - Jun 19, 2020</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Trending Area End -->
+	<!-- Whats New Start -->
+	<section class="whats-news-area pt-50 pb-20 gray-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="whats-news-wrapper">
+						<!-- Heading & Nav Button -->
+						<div class="row justify-content-between align-items-end mb-15">
+							<div class="col-xl-4">
+								<div class="section-tittle mb-30">
+									<h3>Whats New</h3>
+								</div>
+							</div>
+							<div class="col-xl-8 col-md-9">
+								<div class="properties__button">
+									<!--Nav Button  -->
+									<nav>
+										<div class="nav nav-tabs" id="nav-tab" role="tablist">
+											<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lifestyle</a>
+											<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Travel</a>
+											<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Fashion</a>
+											<a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Sports</a>
+											<a class="nav-item nav-link" id="nav-Sports" data-toggle="tab" href="#nav-nav-Sport" role="tab" aria-controls="nav-contact" aria-selected="false">Technology</a>
+										</div>
+									</nav>
+									<!--End Nav Button  -->
+								</div>
+							</div>
+						</div>
+						<!-- Tab content -->
+						<div class="row">
+							<div class="col-12">
+								<!-- Nav Card -->
+								<div class="tab-content" id="nav-tabContent">
+									<!-- card one -->
+									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+										<div class="row">
+											<!-- Left Details Caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="whats-news-single mb-40 mb-40">
+													<div class="whates-img">
+														<img src="assets/img/gallery/whats_news_details1.png" alt="">
+													</div>
+													<div class="whates-caption">
+														<h4><a href="latest_news.html">Secretart for Economic Air plane that looks like</a></h4>
+														<span>by Alice cloe - Jun 19, 2020</span>
+														<p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+													</div>
+												</div>
+											</div>
+											<!-- Right single caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="row">
+													<!-- single -->
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img1.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img2.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img3.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorg">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img4.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorr">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Card two -->
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+										<div class="row">
+											<!-- Left Details Caption -->
+											<div class="col-xl-6">
+												<div class="whats-news-single mb-40">
+													<div class="whates-img">
+														<img src="assets/img/gallery/whats_right_img2.png" alt="">
+													</div>
+													<div class="whates-caption">
+														<h4><a href="#">Secretart for Economic Air
+																plane that looks like</a></h4>
+														<span>by Alice cloe - Jun 19, 2020</span>
+														<p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+													</div>
+												</div>
+											</div>
+											<!-- Right single caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="row">
+													<!-- single -->
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img1.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img2.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img3.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorg">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img4.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorr">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Card three -->
+									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+										<div class="row">
+											<!-- Left Details Caption -->
+											<div class="col-xl-6">
+												<div class="whats-news-single mb-40">
+													<div class="whates-img">
+														<img src="assets/img/gallery/whats_right_img4.png" alt="">
+													</div>
+													<div class="whates-caption">
+														<h4><a href="#">Secretart for Economic Air
+																plane that looks like</a></h4>
+														<span>by Alice cloe - Jun 19, 2020</span>
+														<p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+													</div>
+												</div>
+											</div>
+											<!-- Right single caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="row">
+													<!-- single -->
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img1.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img2.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img3.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorg">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img4.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorr">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- card fure -->
+									<div class="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
+										<div class="row">
+											<!-- Left Details Caption -->
+											<div class="col-xl-6">
+												<div class="whats-news-single mb-40">
+													<div class="whates-img">
+														<img src="assets/img/gallery/whats_right_img2.png" alt="">
+													</div>
+													<div class="whates-caption">
+														<h4><a href="#">Secretart for Economic Air
+																plane that looks like</a></h4>
+														<span>by Alice cloe - Jun 19, 2020</span>
+														<p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+													</div>
+												</div>
+											</div>
+											<!-- Right single caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="row">
+													<!-- single -->
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img1.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img2.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img3.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorg">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img4.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorr">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- card Five -->
+									<div class="tab-pane fade" id="nav-nav-Sport" role="tabpanel" aria-labelledby="nav-Sports">
+										<div class="row">
+											<!-- Left Details Caption -->
+											<div class="col-xl-6">
+												<div class="whats-news-single mb-40">
+													<div class="whates-img">
+														<img src="assets/img/gallery/whats_news_details1.png" alt="">
+													</div>
+													<div class="whates-caption">
+														<h4><a href="#">Secretart for Economic Air
+																plane that looks like</a></h4>
+														<span>by Alice cloe - Jun 19, 2020</span>
+														<p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+													</div>
+												</div>
+											</div>
+											<!-- Right single caption -->
+											<div class="col-xl-6 col-lg-12">
+												<div class="row">
+													<!-- single -->
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img1.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img2.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorb">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img3.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorg">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+														<div class="whats-right-single mb-20">
+															<div class="whats-right-img">
+																<img src="assets/img/gallery/whats_right_img4.png" alt="">
+															</div>
+															<div class="whats-right-cap">
+																<span class="colorr">FASHION</span>
+																<h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+																<p>Jun 19, 2020</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- End Nav Card -->
+							</div>
+						</div>
+					</div>
+					<!-- Banner -->
+					<div class="banner-one mt-20 mb-30">
+						<img src="assets/img/gallery/body_card1.png" alt="">
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<!-- Flow Socail -->
+					<div class="single-follow mb-45">
+						<div class="single-box">
+							<div class="follow-us d-flex align-items-center">
+								<div class="follow-social">
+									<a href="#"><img src="assets/img/news/icon-fb.png" alt=""></a>
+								</div>
+								<div class="follow-count">
+									<span>8,045</span>
+									<p>Fans</p>
+								</div>
+							</div>
+							<div class="follow-us d-flex align-items-center">
+								<div class="follow-social">
+									<a href="#"><img src="assets/img/news/icon-tw.png" alt=""></a>
+								</div>
+								<div class="follow-count">
+									<span>8,045</span>
+									<p>Fans</p>
+								</div>
+							</div>
+							<div class="follow-us d-flex align-items-center">
+								<div class="follow-social">
+									<a href="#"><img src="assets/img/news/icon-ins.png" alt=""></a>
+								</div>
+								<div class="follow-count">
+									<span>8,045</span>
+									<p>Fans</p>
+								</div>
+							</div>
+							<div class="follow-us d-flex align-items-center">
+								<div class="follow-social">
+									<a href="#"><img src="assets/img/news/icon-yo.png" alt=""></a>
+								</div>
+								<div class="follow-count">
+									<span>8,045</span>
+									<p>Fans</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Most Recent Area -->
+					<div class="most-recent-area">
+						<!-- Section Tittle -->
+						<div class="small-tittle mb-20">
+							<h4>Most Recent</h4>
+						</div>
+						<!-- Details -->
+						<div class="most-recent mb-40">
+							<div class="most-recent-img">
+								<img src="assets/img/gallery/most_recent.png" alt="">
+								<div class="most-recent-cap">
+									<span class="bgbeg">Vogue</span>
+									<h4><a href="latest_news.html">What to Wear: 9+ Cute Work <br>
+											Outfits to Wear This.</a></h4>
+									<p>Jhon | 2 hours ago</p>
+								</div>
+							</div>
+						</div>
+						<!-- Single -->
+						<div class="most-recent-single">
+							<div class="most-recent-images">
+								<img src="assets/img/gallery/most_recent1.png" alt="">
+							</div>
+							<div class="most-recent-capt">
+								<h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a></h4>
+								<p>Jhon | 2 hours ago</p>
+							</div>
+						</div>
+						<!-- Single -->
+						<div class="most-recent-single">
+							<div class="most-recent-images">
+								<img src="assets/img/gallery/most_recent2.png" alt="">
+							</div>
+							<div class="most-recent-capt">
+								<h4><a href="latest_news.html">Most Beautiful Things to Do in Sidney with Your BF</a></h4>
+								<p>Jhon | 3 hours ago</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Whats New End -->
+	<!--   Weekly2-News start -->
+	<div class="weekly2-news-area pt-50 pb-30 gray-bg">
+		<div class="container">
+			<div class="weekly2-wrapper">
+				<div class="row">
+					<!-- Banner -->
+					<div class="col-lg-3">
+						<div class="home-banner2 d-none d-lg-block">
+							<img src="assets/img/gallery/body_card2.png" alt="">
+						</div>
+					</div>
+					<div class="col-lg-9">
+						<div class="slider-wrapper">
+							<!-- section Tittle -->
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="small-tittle mb-30">
+										<h4>Most Popular</h4>
+									</div>
+								</div>
+							</div>
+							<!-- Slider -->
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="weekly2-news-active d-flex">
+										<!-- Single -->
+										<div class="weekly2-single">
+											<div class="weekly2-img">
+												<img src="assets/img/gallery/weeklyNews1.png" alt="">
+											</div>
+											<div class="weekly2-caption">
+												<h4><a href="#">Scarlett’s disappointment at latest accolade</a></h4>
+												<p>Jhon | 2 hours ago</p>
+											</div>
+										</div>
+										<!-- Single -->
+										<div class="weekly2-single">
+											<div class="weekly2-img">
+												<img src="assets/img/gallery/weeklyNews2.png" alt="">
+											</div>
+											<div class="weekly2-caption">
+												<h4><a href="#">Scarlett’s disappointment at latest accolade</a></h4>
+												<p>Jhon | 2 hours ago</p>
+											</div>
+										</div>
+										<!-- Single -->
+										<div class="weekly2-single">
+											<div class="weekly2-img">
+												<img src="assets/img/gallery/weeklyNews3.png" alt="">
+											</div>
+											<div class="weekly2-caption">
+												<h4><a href="#">Scarlett’s disappointment at latest accolade</a></h4>
+												<p>Jhon | 2 hours ago</p>
+											</div>
+										</div>
+										<!-- Single -->
+										<div class="weekly2-single">
+											<div class="weekly2-img">
+												<img src="assets/img/gallery/weeklyNews2.png" alt="">
+											</div>
+											<div class="weekly2-caption">
+												<h4><a href="#">Scarlett’s disappointment at latest accolade</a></h4>
+												<p>Jhon | 2 hours ago</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Weekly-News -->
+	<!--  Recent Articles start -->
+	<div class="recent-articles pt-80 pb-80">
+		<div class="container">
+			<div class="recent-wrapper">
+				<!-- section Tittle -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="section-tittle mb-30">
+							<h3>Trending News</h3>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="recent-active dot-style d-flex dot-style">
+							<!-- Single -->
+							<div class="single-recent">
+								<div class="what-img">
+									<img src="assets/img/gallery/tranding1.png" alt="">
+								</div>
+								<div class="what-cap">
+									<h4><a href="#">
+											<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+										</a></h4>
+									<P>Jun 19, 2020</P>
+									<a class="popup-video btn-icon" href="https://www.youtube.com/watch?v=1aP-TXUpNoU"><span class="flaticon-play-button"></span></a>
 
-				<?php endforeach ?>
-
+								</div>
+							</div>
+							<!-- Single -->
+							<div class="single-recent">
+								<div class="what-img">
+									<img src="assets/img/gallery/tranding2.png" alt="">
+								</div>
+								<div class="what-cap">
+									<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+									<P>Jun 19, 2020</P>
+									<a class="popup-video" href="https://www.youtube.com/watch?v=1aP-TXUpNoU"><span class="flaticon-play-button"></span></a>
+								</div>
+							</div>
+							<!-- Single -->
+							<div class="single-recent">
+								<div class="what-img">
+									<img src="assets/img/gallery/tranding1.png" alt="">
+								</div>
+								<div class="what-cap">
+									<h4><a href="latest_news.html">
+											<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+										</a></h4>
+									<P>Jun 19, 2020</P>
+									<a class="popup-video" href="https://www.youtube.com/watch?v=1aP-TXUpNoU"><span class="flaticon-play-button"></span></a>
+								</div>
+							</div>
+							<!-- Single -->
+							<div class="single-recent">
+								<div class="what-img">
+									<img src="assets/img/gallery/tranding2.png" alt="">
+								</div>
+								<div class="what-cap">
+									<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+									<P>Jun 19, 2020</P>
+									<a class="popup-video" href="https://www.youtube.com/watch?v=1aP-TXUpNoU"><span class="flaticon-play-button"></span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="swiper-button-prev"></div>
-			<div class="swiper-button-next"></div>
 		</div>
-		<div class="swiper-pagination"></div>
-		<div class="btn-center"><a class="c-btn c-btn--more" href="/column/"><span>VIEW MORE</span></a></div>
 	</div>
-	<div class="about">
-		<div class="about-block">
-			<div class="about-block__img"><img src="/assets/images/top/company.jpg?v=da4afc721d946ef813432e0d4b95dd6d" alt="" width="691" height="457" loading="lazy" decoding="async">
+	<!--Recent Articles End -->
+	<!-- Start Video Area -->
+	<div class="youtube-area video-padding d-none d-sm-block">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="video-items-active">
+						<div class="video-items text-center">
+							<video controls>
+								<source src="assets/video/news2.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+						<div class="video-items text-center">
+							<video controls>
+								<source src="assets/video/news1.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+						<div class="video-items text-center">
+							<video controls>
+								<source src="assets/video/news3.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+						<div class="video-items text-center">
+							<video controls>
+								<source src="assets/video/news1.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+						<div class="video-items text-center">
+							<video controls>
+								<source src="assets/video/news3.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="about-block__info">
-				<h2 class="ttl ttl--black"><span class="ttl-en">COMPANY</span><span class="ttl-ja">企業情報</span></h2>
-				<p>アトムエンジニアリングについてご紹介いたします。</p><a class="c-btn c-btn--more" href="/company/"><span>VIEW MORE</span></a>
-			</div>
-		</div>
-		<div class="about-block">
-			<div class="about-block__img"><img src="/assets/images/top/recruit.jpg?v=f18b7262057da37103ccb111b6398c04" alt="" width="691" height="457" loading="lazy" decoding="async">
-			</div>
-			<div class="about-block__info">
-				<h2 class="ttl ttl--black"><span class="ttl-en">RECRUIT</span><span class="ttl-ja">採用情報</span></h2>
-				<p>一緒に働く仲間を募集しています。</p><a class="c-btn c-btn--more" href="/recruit/"><span>VIEW MORE</span></a>
+			<div class="video-info">
+				<div class="row">
+					<div class="col-12">
+						<div class="testmonial-nav text-center">
+							<div class="single-video">
+								<video controls>
+									<source src="assets/video/news2.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+								<div class="video-intro">
+									<h4>Old Spondon News - 2020 </h4>
+								</div>
+							</div>
+							<div class="single-video">
+								<video controls>
+									<source src="assets/video/news1.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+								<div class="video-intro">
+									<h4>Banglades News Video </h4>
+								</div>
+							</div>
+							<div class="single-video">
+								<video controls>
+									<source src="assets/video/news3.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+								<div class="video-intro">
+									<h4>Latest Video - 2020 </h4>
+								</div>
+							</div>
+							<div class="single-video">
+								<video controls>
+									<source src="assets/video/news1.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+								<div class="video-intro">
+									<h4>Spondon News -2019 </h4>
+								</div>
+							</div>
+							<div class="single-video">
+								<video controls>
+									<source src="assets/video/news3.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+								<div class="video-intro">
+									<h4>Latest Video - 2020</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="contact">
-		<div class="row">
-			<p class="contact-ttl">資料請求や弊社サービスなど<br class="show_sp">お問い合わせフォームより<br class="show_sp">お問い合わせください。</p><a class="c-btn c-btn--default c-btn--white" href="/contact/" target="_blank"><span>資料請求・お問い合わせ</span></a>
+	<!-- End Start Video area-->
+	<!--   Weekly3-News start -->
+	<div class="weekly3-news-area pt-80 pb-130">
+		<div class="container">
+			<div class="weekly3-wrapper">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="slider-wrapper">
+							<!-- Slider -->
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="weekly3-news-active dot-style d-flex">
+										<div class="weekly3-single">
+											<div class="weekly3-img">
+												<img src="assets/img/gallery/weekly2News1.png" alt="">
+											</div>
+											<div class="weekly3-caption">
+												<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+												<p>19 Jan 2020</p>
+											</div>
+										</div>
+										<div class="weekly3-single">
+											<div class="weekly3-img">
+												<img src="assets/img/gallery/weekly2News2.png" alt="">
+											</div>
+											<div class="weekly3-caption">
+												<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+												<p>19 Jan 2020</p>
+											</div>
+										</div>
+										<div class="weekly3-single">
+											<div class="weekly3-img">
+												<img src="assets/img/gallery/weekly2News3.png" alt="">
+											</div>
+											<div class="weekly3-caption">
+												<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+												<p>19 Jan 2020</p>
+											</div>
+										</div>
+										<div class="weekly3-single">
+											<div class="weekly3-img">
+												<img src="assets/img/gallery/weekly2News4.png" alt="">
+											</div>
+											<div class="weekly3-caption">
+												<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+												<p>19 Jan 2020</p>
+											</div>
+										</div>
+										<div class="weekly3-single">
+											<div class="weekly3-img">
+												<img src="assets/img/gallery/weekly2News2.png" alt="">
+											</div>
+											<div class="weekly3-caption">
+												<h4><a href="latest_news.html">What to Expect From the 2020 Oscar Nomin ations</a></h4>
+												<p>19 Jan 2020</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<!-- End Weekly-News -->
+	<!-- banner-last Start -->
+	<div class="banner-area gray-bg pt-90 pb-90">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-10 col-md-10">
+					<div class="banner-one">
+						<img src="assets/img/gallery/body_card3.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- banner-last End -->
 </main>

@@ -67,6 +67,7 @@ class AppController extends Controller
 
         $this->set('__description__', $this->head_description);
         $this->set('body_class', '');
+        $this->setList('category');
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
@@ -75,7 +76,24 @@ class AppController extends Controller
         //$this->loadComponent('Csrf');
     }
 
+    protected function getCategory()
+    {
+        $list = [];
 
+        $list['category'] = $this->loadModel('Categories')
+            ->find('all')
+            ->where([
+                'Categories.status' => 'publish',
+                'PageConfigs.slug' => 'news'
+            ])
+            ->contain('PageConfigs')
+            ->order('Categories.position ASC')
+            ->toArray();
+
+
+        if (!empty($list)) $this->set(array_keys($list), $list);
+        return $list;
+    }
     /**
      * Before render callback.
      *

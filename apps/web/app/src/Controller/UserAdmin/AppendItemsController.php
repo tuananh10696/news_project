@@ -77,6 +77,7 @@ class AppendItemsController extends AppController
         $this->setList();
 
         if (!empty($query['page_id'])) {
+            
             $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $query['page_id']])->first();
         } elseif (!empty($query['page_slug'])) {
             $page_config = $this->PageConfigs->find()->where(['PageConfigs.slug' => $query['page_slug']])->first();
@@ -180,8 +181,8 @@ class AppendItemsController extends AppController
         $list = array(
             'value_type_list' => AppendItem::$value_type_list
         );
-
-        $list['target_list'] = $this->getTargetList();
+        
+        // $list['target_list'] = $this->getTargetList();
 
         if (!empty($list)) {
             $this->set(array_keys($list),$list);

@@ -25,11 +25,7 @@ if (isset($case_info))
 	<?= $this->element('InfoContents/edit-menu-list_' . $page_config->slug); ?>
 <?php else : ?>
 	<li class="breadcrumb-item">
-		<?php if ($page_config->slug == CLIENT) : ?>
-			<a href="<?= $this->Url->build('/user_admin/infos/?sch_page_id=2'); ?>">導入事例</a>
-		<?php else : ?>
-			<a href="<?= $this->Url->build(['action' => 'index', '?' => isset($_query) ? $_query : $query]); ?>"><?= h($page_title) ?></a>
-		<?php endif; ?>
+		<a href="<?= $this->Url->build(['action' => 'index', '?' => isset($_query) ? $_query : $query]); ?>"><?= h($page_title) ?></a>
 	</li>
 	<li class="breadcrumb-item active"><span><?= ($data['id'] > 0) ? '編集' : '新規登録'; ?></span></li>
 <?php endif; ?>
@@ -87,33 +83,29 @@ if (isset($case_info))
 		<?= $this->Form->input('end_date', array('type' => 'text', 'class' => 'datepicker', 'style' => 'width: 120px;')); ?>
 		<span>※開始日のみ必須。終了日を省略した場合は下書きにするまで掲載されます。</span>
 		<?= $this->element('edit_form/item-end'); ?>
-
-	<?php elseif (!in_array($page_config->slug, [DISCUSSION_MEMBER, CLIENT], true)) : ?>
-
-		<!-- only start -->
-		<?= $this->element('edit_form/item-start', ['title' => '掲載日時', 'required' => true]); ?>
-
-		<div class="input-group">
-
-			<div class="input-group-prepend">
-				<?= $this->Form->input('start_datetime', ['type' => 'text', 'class' => 'datetimepicker form-control', 'default' => (new DateTime())->format('Y/m/d'), 'style' => 'width: 100px;', 'readonly']); ?>
-			</div>
-		</div>
-
-		<?= $this->element('edit_form/item-end'); ?>
 	<?php endif; ?>
+
+	<!-- only start -->
+	<?= $this->element('edit_form/item-start', ['title' => '掲載日時', 'required' => true]); ?>
+
+	<div class="input-group">
+
+		<div class="input-group-prepend">
+			<?= $this->Form->input('start_datetime', ['type' => 'text', 'class' => 'datetimepicker form-control', 'default' => (new DateTime())->format('Y/m/d'), 'style' => 'width: 100px;', 'readonly']); ?>
+		</div>
+	</div>
+
+	<?= $this->element('edit_form/item-end'); ?>
 
 	<!-- 記事表示 -->
-	<?php if ($page_config->slug != CLIENT) : ?>
-		<?= $this->element('edit_form/item-start', ['title' => '記事表示']); ?>
-		<?= $this->element('edit_form/item-status', ['enable_text' => '掲載する', 'disable_text' => '下書き']); ?>
-		<?= $this->element('edit_form/item-end'); ?>
-	<?php endif; ?>
+	<?= $this->element('edit_form/item-start', ['title' => '記事表示']); ?>
+	<?= $this->element('edit_form/item-status', ['enable_text' => '掲載する', 'disable_text' => '下書き']); ?>
+	<?= $this->element('edit_form/item-end'); ?>
 
 	<!--checkbox-->
-	<?php if ($page_config->slug == COLUMN) : ?>
-		<?= $this->element('edit_form/item-start', ['title' => 'よく読まれているコラム']); ?>
-		<?= $this->Form->checkbox('popular', array('type' => 'checkbox', 'class' => 'form-control', 'style' => 'width: 30px;margin-top: 10px;')); ?>
+	<?php if ($page_config->slug == 'news') : ?>
+		<?= $this->element('edit_form/item-start', ['title' => 'TOPスライド表示']); ?>
+		<?= $this->Form->checkbox('top_slide_display', array('type' => 'checkbox', 'class' => 'form-control', 'style' => 'width: 30px;margin-top: 10px;')); ?>
 		<?= $this->element('edit_form/item-end'); ?>
 	<?php endif; ?>
 
@@ -136,15 +128,15 @@ if (isset($case_info))
 		<?php foreach ($radio_data as $k => $rd) : ?>
 
 			<?= $this->Form->control('value_text', [
-				'type' => 'radio',
-				'options' => [$k => $rd],
-				'hiddenField' => false,
-				'label' => false,
-				'default' => 'dark',
-				'templates' => [
-					'radioWrapper' => '<div class="radio icheck-' . $k . ' d-inline mr-2">{{label}}</div>',
-				],
-			]); ?>
+						'type' => 'radio',
+						'options' => [$k => $rd],
+						'hiddenField' => false,
+						'label' => false,
+						'default' => 'dark',
+						'templates' => [
+							'radioWrapper' => '<div class="radio icheck-' . $k . ' d-inline mr-2">{{label}}</div>',
+						],
+					]); ?>
 
 		<?php endforeach ?>
 		<?= $this->element('edit_form/item-end'); ?>
@@ -157,11 +149,11 @@ if (isset($case_info))
 		<?php if ($this->Common->isCategoryEnabled($page_config) && !$this->Common->isCategoryEnabled($page_config, 'category_multiple')) : ?>
 			<!-- 単カテゴリ -->
 			<?php
-			//タグ無しのリスト
-			$non_category_list = array_map(function ($v) {
-				return trim(strip_tags($v));
-			}, $category_list);
-			?>
+					//タグ無しのリスト
+					$non_category_list = array_map(function ($v) {
+						return trim(strip_tags($v));
+					}, $category_list);
+					?>
 			<?= $this->element('edit_form/item-start', ['title' => $_title, 'sub_title' => $_sub_tilte, 'required' => true]); ?>
 			<?= $this->Form->input('category_id', ['type' => 'select', 'options' => $non_category_list, 'empty' => ['0' => '選択してください'], 'class' => 'form-control']); ?>
 			<?= $this->element('edit_form/item-end'); ?>
@@ -172,15 +164,15 @@ if (isset($case_info))
 				<?php foreach ($category_list as $cat_id => $cat_name) : ?>
 					<label class="list-group-item">
 						<?= $this->Form->input(
-							"info_categories.{$cat_id}",
-							[
-								'type' => 'checkbox',
-								'value' => $cat_id,
-								'checked' => in_array((int) $cat_id, $info_category_ids, false),
-								'class' => 'form-check-input me-1',
-								'hiddenField' => false
-							]
-						); ?>
+										"info_categories.{$cat_id}",
+										[
+											'type' => 'checkbox',
+											'value' => $cat_id,
+											'checked' => in_array((int) $cat_id, $info_category_ids, false),
+											'class' => 'form-check-input me-1',
+											'hiddenField' => false
+										]
+									); ?>
 						<?= $cat_name; ?>
 					</label>
 				<?php endforeach; ?>
@@ -217,11 +209,6 @@ if (isset($case_info))
 					<div class="attention">※jpeg , jpg , gif , png ファイルのみ</div>
 					<div class="attention"><?= $this->Form->getRecommendSize('Infos', 'image', ['before' => '※', 'after' => '']); ?></div>
 					<div class="attention">※ファイルサイズ5MB以内</div>
-					<?php if ($page_config->slug == STAFF) : ?>
-						<div class="attention">※推奨画像サイズ　628px×374px</div>
-					<?php else: ?>
-						<div class="attention">※推奨画像サイズ　960px×574px</div>
-					<?php endif; ?>
 					<?= $this->Form->error("_image") ?>
 				</li>
 			</ul>
@@ -271,13 +258,13 @@ if (isset($case_info))
 		<?= $this->element('edit_form/item-start', ['title' => $_title, 'sub_title' => $_sub_tilte]); ?>
 		<div>
 			<?= $this->Form->input('add_tag', [
-				'type' => 'text',
-				'style' => 'width: 200px;',
-				'maxlength' => '40',
-				'id' => 'idAddTag',
-				'placeholder' => 'タグを入力',
-				'class' => 'form-control'
-			]); ?>
+					'type' => 'text',
+					'style' => 'width: 200px;',
+					'maxlength' => '40',
+					'id' => 'idAddTag',
+					'placeholder' => 'タグを入力',
+					'class' => 'form-control'
+				]); ?>
 			<span class="btn_area" style="display: inline;">
 				<a href="#" class="btn_confirm small_menu_btn btn_orange" id="btnAddTag">追加</a>
 				<a href="#" class="btn_confirm small_menu_btn" id="btnListTag">タグリスト</a>
@@ -305,11 +292,11 @@ if (isset($case_info))
 	<?php if (!empty($append_list)) : ?>
 		<?php foreach ($append_list as $n => $ap) : ?>
 			<?php
-			$ap_list = [];
-			if (!empty($ap['mst_list_slug']) && isset($append_item_list[$ap['mst_list_slug']])) {
-				$ap_list = $append_item_list[$ap['mst_list_slug']];
-			}
-			?>
+					$ap_list = [];
+					if (!empty($ap['mst_list_slug']) && isset($append_item_list[$ap['mst_list_slug']])) {
+						$ap_list = $append_item_list[$ap['mst_list_slug']];
+					}
+					?>
 			<?php if ($ap['value_type'] == AppendItem::TYPE_CUSTOM) : ?>
 				<?= $this->element("UserInfos/append_items/custom_{$ap['slug']}", ['num' => $n, 'append' => $ap, 'list' => $ap_list, 'slug' => $page_config->slug, 'placeholder_list' => $placeholder_list, 'notes_list' => $notes_list]) ?>
 			<?php else : ?>

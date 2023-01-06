@@ -2,8 +2,14 @@
 
 namespace App\Controller\UserAdmin;
 
+use Cake\Core\Configure;
+use Cake\Network\Exception\ForbiddenException;
+use Cake\Network\Exception\NotFoundException;
 use Cake\Utility\Inflector;
+use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
+use Cake\Filesystem\Folder;
 use Cake\Utility\Hash;
 
 use App\Model\Entity\Info;
@@ -11,7 +17,6 @@ use App\Model\Entity\PageConfig;
 use App\Model\Entity\PageConfigItem;
 use App\Model\Entity\AppendItem;
 use App\Model\Entity\PageConfigExtension;
-use Cake\ORM\TableRegistry;
 
 /**
  * Static content controller
@@ -22,11 +27,8 @@ use Cake\ORM\TableRegistry;
  */
 class BaseInfosController extends AppController
 {
-
-
     private $list = [];
     private $GQuery = [];
-
 
     public function initialize()
     {
@@ -48,7 +50,6 @@ class BaseInfosController extends AppController
         $this->InfoCategories = $this->getTableLocator()->get('InfoCategories');
         $this->InfoTops = $this->getTableLocator()->get('InfoTops');
         $this->Services = $this->getTableLocator()->get('Services');
-        $this->MemberChat = $this->getTableLocator()->get('MemberChat');
 
         $this->loadComponent('OutputHtml');
 
@@ -56,14 +57,14 @@ class BaseInfosController extends AppController
         $this->set('ModelName', $this->modelName);
     }
 
-
     public function beforeFilter(Event $event)
     {
+        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
+
         $this->setCommon();
         $this->getEventManager()->off($this->Csrf);
     }
-
 
     public function index()
     {
@@ -80,6 +81,12 @@ class BaseInfosController extends AppController
         // slug
         $page_config_id = $query['sch_page_id'];
 
+        // if (!$this->isOwnPageByUser($page_config_id)) {
+        //     $this->Flash->set('不正なアクセスです');
+        //     $this->redirect('/user_admin/');
+        //     return;
+        // }
+
         $page_config = $this->PageConfigs->find()
             ->where(['PageConfigs.id' => $page_config_id])
             ->contain([
@@ -91,7 +98,6 @@ class BaseInfosController extends AppController
                 }
             ])
             ->first();
-
         $preview_slug_dir = '';
         $page_title = '';
         if (!empty($page_config)) {
@@ -188,6 +194,7 @@ class BaseInfosController extends AppController
         $this->set(compact('list_buttons', 'page_buttons'));
         $this->set(compact('preview_slug_dir', 'page_title', 'query', 'page_config', 'category_list', 'is_data'));
 
+        $cond = array();
         $cond = $this->_getConditions($query, $page_config);
 
         $contain = [
@@ -211,8 +218,6 @@ class BaseInfosController extends AppController
         if ($page_config->parent_config_id) {
             $parent_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $page_config->parent_config_id])->first();
             $parent_info = $this->Infos->find()->where(['Infos.id' => $query['parent_id']])->first();
-
-            if ($page_config->slug == DISCUSSION_MEMBER && !$parent_info) return $this->redirect('/user_admin');
         }
         $this->set(compact('parent_config', 'parent_info'));
 
@@ -225,7 +230,6 @@ class BaseInfosController extends AppController
         if (method_exists(get_class($this), 'prependListsHook' . $page_slug)) {
             $options = $this->{'prependListsHook' . $page_slug}($query, $options);
         }
-
         parent::_lists($cond, $options);
 
         if (method_exists(get_class($this), 'readedIndexHook' . $page_slug)) {
@@ -233,12 +237,10 @@ class BaseInfosController extends AppController
         }
     }
 
-
     protected function _getQueryIndex()
     {
         return $this->_getQuery();
     }
-
 
     protected function _getQuery()
     {
@@ -287,7 +289,6 @@ class BaseInfosController extends AppController
         return $query;
     }
 
-
     private function _getConditions($query, $page_config = null)
     {
         $cond = [];
@@ -299,12 +300,13 @@ class BaseInfosController extends AppController
             if (!empty($page_config->is_category_multiple) && $page_config->is_category_multiple == 1) {
                 $info_categories = $this->InfoCategories->find()->where(['InfoCategories.category_id' => $query['sch_category_id']])->extract('info_id');
                 $info_ids = [0];
-                if (!$info_categories->isEmpty())
+                if (!$info_categories->isEmpty()) {
                     $info_ids = $info_categories->toArray();
-
+                }
                 $cond[$cnt++]['Infos.id in'] = $info_ids;
-            } else
+            } else {
                 $cond[$cnt++]['Infos.category_id'] = $query['sch_category_id'];
+            }
         }
 
         if ($query['sch_status']) {
@@ -319,15 +321,12 @@ class BaseInfosController extends AppController
             $cond[$cnt++]['Infos.status'] = $query['sch_status'];
         }
 
-
         if ($query['sch_words']) {
             $query['sch_words'] = str_replace('　', ' ', trim($query['sch_words']));
             $words = explode(' ', $query['sch_words']);
-
             if (!empty($words)) {
-                $info_total_ids = [];
-
                 foreach ($words as $w) {
+                    $info_ids = [0];
                     // 追加項目
                     $append_cond = [
                         ['AppendItems.page_config_id' => $page_config->id],
@@ -337,8 +336,14 @@ class BaseInfosController extends AppController
                         ]]
                     ];
                     $appends = $this->InfoAppendItems->find()->where([$append_cond])->contain(['AppendItems'])->extract('info_id');
-                    if ($appends->count())
-                        array_push($info_total_ids, ...($appends->toArray()));
+                    if ($appends->count()) {
+                        $info_ids = $appends->toArray();
+                    }
+
+                    // if (empty($info_total_ids)) {
+                    //     $info_total_ids = $info_ids;
+                    // }
+                    // $info_total_ids = array_intersect($info_total_ids, $info_ids);
 
                     // コンテンツ
                     $sub_cond = [
@@ -348,37 +353,41 @@ class BaseInfosController extends AppController
                             ['InfoContents.content like' => "%{$w}%"]
                         ]]
                     ];
+                    $sub_contents = $this->InfoContents->find()->where($sub_cond)->contain(['Infos'])->all();
+                    if (!$sub_contents->isEmpty()) {
+                        $info_ids += $sub_contents->extract('info_id')->toArray();
+                    }
 
-                    $sub_contents = $this->InfoContents->find()->where($sub_cond)->contain(['Infos']);
-                    if (!$sub_contents->isEmpty())
-                        array_push($info_total_ids, ...($sub_contents->extract('info_id')->toArray()));
-
-                    $info = $this->Infos->find()->where(['Infos.title like' => "%{$w}%"]);
-                    if (!$info->isEmpty())
-                        array_push($info_total_ids, ...($info->extract('id')->toArray()));
+                    if (empty($info_total_ids)) {
+                        $info_total_ids = $info_ids;
+                    }
+                    $info_total_ids = array_intersect($info_total_ids, $info_ids);
                 }
 
-                if (!empty($info_total_ids)) $cond[$cnt++]['Infos.id in'] = array_unique($info_total_ids);
+                if (empty($info_total_ids)) {
+                    $info_total_ids = [0];
+                }
+                $cond[$cnt++]['Infos.id in'] = array_unique($info_total_ids);
             }
         }
 
-        if ($query['parent_id'])
+        if ($query['parent_id']) {
             $cond[$cnt++]['Infos.parent_info_id'] = $query['parent_id'];
+        }
+
 
         return $cond;
     }
 
-
     public function edit($id = 0)
     {
-        // dd($this->request->getQueryParam('page_slug'));
         $this->checkLogin();
         $this->viewBuilder()->setLayout("edit");
         $this->viewBuilder()->setClassName("Useradmin");
 
-        // if ($this->request->getData('postMode') == 'preview') {
-        //     return $this->preview($id);
-        // }
+        if ($this->request->getData('postMode') == 'preview') {
+            return $this->preview($id);
+        }
 
         $validate = 'default';
 
@@ -397,7 +406,7 @@ class BaseInfosController extends AppController
             // 'saveAll' => ['associated' => ['InfoContents']], // save時使用
             'contain' => [
                 'InfoContents' => function ($q) {
-                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences', 'MemberChat']);
+                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences']);
                 },
                 'InfoTags' => function ($q) {
                     return $q->contain(['Tags'])->order(['Tags.position' => 'ASC']);
@@ -406,46 +415,46 @@ class BaseInfosController extends AppController
                     return $q->contain(['AppendItems'])->order(['AppendItems.position' => 'ASC']);
                 },
                 'InfoCategories',
-                'ChildInfos' => function ($q) {
-                    return $q->where(['status' => 'publish']);
-                }
                 // 'Services'
             ] // find時使用
         ];
 
         $page_title = 'コンテンツ';
-
-        $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $sch_page_id])->first();
-
-        if ($page_config->slug == CLIENT) {
-            $client_data = $this->Infos->find()
-                ->where(['Infos.page_config_id' => $page_config->id, 'Infos.parent_info_id' => $query['parent_id']])
-                ->first();
-
-            $id = $client_data ? $client_data->id : $id;
+        $page_config = null;
+        if ($sch_page_id) {
+            $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $sch_page_id])->first();
+            if (!empty($page_config)) {
+                $page_title = $page_config->page_title;
+            }
         }
-        $page_title = $page_config->page_title;
 
         $parent_config = null;
         $parent_info = null;
-
         if ($page_config->parent_config_id) {
             $parent_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $page_config->parent_config_id])->first();
-            if (!empty($parent_config))
+            if (!empty($parent_config)) {
                 $parent_info = $this->Infos->find()->where(['Infos.id' => $query['parent_id']])->first();
+            }
         }
-
         $this->set(compact('parent_info', 'parent_config'));
 
         // カテゴリリスト
-        $category_list = $this->Categories->find('list', ['keyField' => 'id', 'valueField' => 'name'])
-            ->where(['Categories.page_config_id' => $sch_page_id])
-            ->order(['Categories.position' => 'ASC'])
-            ->toArray();
+        $category_list = [];
+        if ($sch_page_id) {
+            $category_list = $this->Categories->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+                ->where(['Categories.page_config_id' => $sch_page_id])
+                ->order(['Categories.position' => 'ASC'])
+                ->toArray();
+        }
 
         // 追加入力項目
-        $append_list = $this->AppendItems->find()->where(['page_config_id' => $sch_page_id])->order('position asc')->all();
+        $append_list = [];
+        if ($sch_page_id) {
+            $append_list = $this->AppendItems->find()->where(['page_config_id' => $sch_page_id])->order('position asc')->all();
+        }
+
         $append_item_list = $this->getAppendList($sch_page_id);
+
 
         $this->set(compact('page_title', 'query', 'page_config', 'category_list', 'append_list', 'append_item_list'));
 
@@ -459,12 +468,14 @@ class BaseInfosController extends AppController
             $this->request->data['page_config_id'] = $sch_page_id;
             $info_category_ids = $this->request->getData('info_categories');
 
-            // createの場合
-            if ($this->request->is(['post'])) $validate = 'Create';
-
+            // カテゴリ　バリデーション
+            if ($this->isCategoryEnabled($page_config)) {
+                $validate = 'isCategory';
+            }
             // 並び順
             if (array_key_exists('info_contents', $this->request->getData())) {
                 $position = 0;
+
                 foreach ($this->request->getData('info_contents') as $k => $v) {
                     $this->request->data['info_contents'][$k]['position'] = ++$position;
                 }
@@ -477,6 +488,16 @@ class BaseInfosController extends AppController
 
             // 掲載日
             $now = new \DateTime();
+            $start_date = $this->request->getData('_start_date');
+            if (empty($this->request->getData('_start_date'))) {
+                $start_date = $now->format('Y-m-d');
+            }
+            if (empty($this->request->getData('_start_time'))) {
+                $start_date .= ' ' . $now->format('H:i:00');
+            } else {
+                $start_date .= ' ' . $this->request->getData('_start_time.hour') . ':' . $this->request->getData('_start_time.minute');
+            }
+            $this->request->data['start_date'] = $start_date;
 
             // メタキーワード
             $meta_keywords = $this->request->getData('keywords');
@@ -510,24 +531,15 @@ class BaseInfosController extends AppController
                 }
             }
 
-            $options['callback'] = function ($id, $_entity) use ($delete_ids, $tags, $page_config, $info_category_ids) {
+            // $contents = $this->request->getData('info_contents');
+            // foreach ($contents as $k => $v) {
+            //     if (array_key_exists('_serialize_values', $v) && !empty($v['_serialize_values'])) {
+            //         $this->request->data["info_contents"][$k]['content'] = serialize($v['_serialize_values']);
+            //     }
+            // }
 
-                // process chat 導入事例
-                if ($_entity->page_config_slug == CASESTUDY && $_entity->info_contents) {
-                    $this->MemberChat->deleteAll(['info_id' => $id]);
-                    foreach ($_entity->info_contents as $ic) {
-                        if (!$ic->member_chat || empty($ic->member_chat)) continue;
-                        $ici = $ic->id;
-                        $mbc = array_map(function ($e) use ($id, $ici) {
-                            $e['info_id'] = $id;
-                            $e['info_content_id'] = $ici;
-                            return $e;
-                        }, $ic->member_chat);
 
-                        $this->MemberChat->saveMany($this->MemberChat->newEntities($mbc));
-                    }
-                }
-
+            $options['callback'] = function ($id) use ($delete_ids, $tags, $page_config, $info_category_ids) {
                 $r = true;
                 // コンテンツ削除
                 if ($id && $delete_ids) {
@@ -608,8 +620,10 @@ class BaseInfosController extends AppController
                     $r = $this->{'savedHook' . $page_slug}($id, $this->request->getData());
                 }
 
+
                 return $r;
                 // HTML更新
+                // $this->_htmlUpdate($id);
             };
 
             // page_configs.before_save_callback
@@ -639,6 +653,8 @@ class BaseInfosController extends AppController
             $info_category_ids = $this->getCategoryIds($id);
         }
 
+
+
         $this->set(compact('info_category_ids'));
 
         $options['append_validate'] = function ($isValid, $entity) use ($page_config) {
@@ -652,9 +668,8 @@ class BaseInfosController extends AppController
             }
             return $isValid;
         };
-
-        $options['associated'] = in_array($page_config->slug, [DISCUSSION_MEMBER], true) ? ['InfoAppendItems', 'InfoContents.MemberChat'] : ['InfoAppendItems', 'InfoContents'];
-        $options['redirect'] = ['action' => $page_config->slug == CLIENT ? 'edit' : 'index', '?' => $query];
+        $options['associated'] = ['InfoAppendItems', 'InfoContents'];
+        $options['redirect'] = ['action' => 'index', '?' => $query];
         $options['validate'] = $validate;
 
         $page_slug = Inflector::camelize($page_config->slug);
@@ -673,7 +688,6 @@ class BaseInfosController extends AppController
         }
         $this->set(compact('editor_old'));
     }
-
 
     public function delete($id, $type, $columns = null)
     {
@@ -734,8 +748,9 @@ class BaseInfosController extends AppController
         }
 
         parent::_delete($id, $type, $columns, $options);
-    }
 
+        // $this->_htmlDelete($id, $data);
+    }
 
     public function position($id, $pos)
     {
@@ -763,30 +778,6 @@ class BaseInfosController extends AppController
         $options['redirect'] = ['action' => 'index', '?' => $query];
 
         return parent::_position($id, $pos, $options);
-    }
-
-
-    public function resetPosition()
-    {
-        $this->_getQuery();
-
-        $model = $this->Infos;
-        $position = 1;
-
-        $conditions = ['page_config_id' => $this->GQuery['sch_page_id']];
-
-        $data = $model->find()
-            ->where($conditions)
-            ->order(['id DESC'])
-            ->toArray();
-
-        foreach ($data as $value) {
-            $conditions['id'] = $value['id'];
-            $model->updateAll(['position' => $position], $conditions);
-            ++$position;
-        }
-
-        $this->redirect(['action' => 'index', '?' => $this->GQuery]);
     }
 
     public function enable($id)
@@ -836,7 +827,6 @@ class BaseInfosController extends AppController
             $this->{'changedStatusHook' . $page_slug}($data);
         }
     }
-
 
     public function setList()
     {
@@ -900,7 +890,6 @@ class BaseInfosController extends AppController
         return $list;
     }
 
-
     public function addRow()
     {
         $this->viewBuilder()->setLayout("plain");
@@ -908,8 +897,6 @@ class BaseInfosController extends AppController
         $this->setList();
 
         $rownum = $this->request->getData('rownum');
-        $slug = $this->request->getData('slug');
-        $info_id = $this->request->getData('info_id');
         $data['block_type'] = $this->request->getData('block_type');
 
         $entity = $this->InfoContents->newEntity($data);
@@ -922,8 +909,6 @@ class BaseInfosController extends AppController
         $entity->option_value3 = "";
         $entity->image_pos = "";
         $entity->title = "";
-        $entity->slug = $slug;
-        $entity->info_id = $info_id;
 
         if ($this->request->getData('section_no')) {
             $entity->section_sequence_id = $this->request->getData('section_no');
@@ -945,7 +930,6 @@ class BaseInfosController extends AppController
         $this->set(compact('rownum', 'datas'));
     }
 
-
     public function addTag()
     {
         $this->viewBuilder()->setLayout("plain");
@@ -961,12 +945,10 @@ class BaseInfosController extends AppController
         $this->set(compact('tag', 'num'));
     }
 
-
     private function content_delete($id, $del_id)
     {
         $q = $this->InfoContents->find()->where(['InfoContents.id' => $del_id, 'InfoContents.info_id' => $id]);
         $e = $q->first();
-        if (!$e) return [];
 
         $sub_delete_ids = [];
 
@@ -986,8 +968,6 @@ class BaseInfosController extends AppController
         $file_index = array_keys($this->InfoContents->attaches['files']);
 
         foreach ($image_index as $idx) {
-            if (!isset($e->attaches[$idx])) continue;
-
             foreach ($e->attaches[$idx] as $_) {
                 $_file = WWW_ROOT . $_;
                 if (is_file($_file)) {
@@ -997,8 +977,6 @@ class BaseInfosController extends AppController
         }
 
         foreach ($file_index as $idx) {
-            if (!isset($e->attaches[$idx][0])) continue;
-
             $_file = WWW_ROOT . $e->attaches[$idx][0];
             if (is_file($_file)) {
                 @unlink($_file);
@@ -1009,14 +987,11 @@ class BaseInfosController extends AppController
         return $sub_delete_ids;
     }
 
-
     public function htmlUpdateAll($page_config_id, $category_id = 0)
     { }
 
-
     public function _htmlDelete($info_id, $entity)
     { }
-
 
     public function _htmlUpdate($info_id)
     { }
@@ -1027,7 +1002,6 @@ class BaseInfosController extends AppController
 
         return [];
     }
-
 
     private function setContents($content, $parentBlockType = 0)
     {
@@ -1123,7 +1097,6 @@ class BaseInfosController extends AppController
         return $data;
     }
 
-
     private function byte_format($size)
     {
         $b = 1024;    // バイト
@@ -1159,7 +1132,6 @@ class BaseInfosController extends AppController
         return parent::toHierarchization($id, $entity, $options);
     }
 
-
     private function saveTags($page_config_id, $tags)
     {
         $ids = [];
@@ -1180,7 +1152,6 @@ class BaseInfosController extends AppController
         }
         return $ids;
     }
-
 
     public function popTaglist()
     {
@@ -1208,7 +1179,6 @@ class BaseInfosController extends AppController
         ]);
     }
 
-
     public function distAttachmentCopy($id)
     {
 
@@ -1233,7 +1203,6 @@ class BaseInfosController extends AppController
 
         return;
     }
-
 
     public function deletePreviewSource($page_id)
     {
@@ -1262,13 +1231,11 @@ class BaseInfosController extends AppController
         }
     }
 
-
     private function deletePreviewAttachment()
     {
         $this->_deletePreviewImage();
         $this->_deletePreviewFile();
     }
-
 
     /**
      * プレビュー用の画像削除
@@ -1312,7 +1279,6 @@ class BaseInfosController extends AppController
         }
     }
 
-
     /**
      * プレビュー用のファイルを削除
      * @return [type] [description]
@@ -1355,7 +1321,6 @@ class BaseInfosController extends AppController
         }
     }
 
-
     protected function getAppendList($config_id = 0, $list_bool = false)
     {
         $list = [];
@@ -1393,7 +1358,6 @@ class BaseInfosController extends AppController
 
         return $list;
     }
-
 
     /**
      * Undocumented function
@@ -1449,7 +1413,7 @@ class BaseInfosController extends AppController
             $r_slug_list[$ap['slug']][] = $ap['id'];
         }
 
-        $is_valid = true;
+
         foreach ($data['info_append_items'] as $n => $item) {
             $r = true;
             if (in_array($item['append_item_id'], array_keys($r_list))) {
@@ -1460,16 +1424,16 @@ class BaseInfosController extends AppController
                     $r = $this->additionalValidate($data, $item, $append_for_additional_list, $page_config->slug);
                 }
             }
-            if (!$r) //項目チェックがfalseならその時点でfalseを返す
-                $is_valid = false;
+            if (!$r) { //項目チェックがfalseならその時点でfalseを返す
+                return $valid;
+            }
         }
 
-        if ($is_valid)
+        if ($r) {
             $valid = true;
-
+        }
         return $valid;
     }
-
 
     /**
      * Undocumented function
@@ -1493,7 +1457,7 @@ class BaseInfosController extends AppController
         }
         // テキスト型
         if ($append['value_type'] == AppendItem::TYPE_TEXT) {
-            if (!isset($data['value_text']) || trim($data['value_text']) == '' || mb_ereg_match("^(\s|　)+$", $data['value_text'])) {
+            if (empty($data['value_text'])) {
                 $valid = false;
             }
         }
@@ -1541,11 +1505,10 @@ class BaseInfosController extends AppController
         }
         // 画像
         if ($append['value_type'] == AppendItem::TYPE_IMAGE) {
-            if (($entity->id && $data['image'] == '' && isset($data['_image']) && $data['_image']['error'] != 0) || ($entity->id == 0 && isset($data['_image']) && $data['_image']['error'] != 0)) {
+            if (empty($data['image'])) {
                 $valid = false;
             }
         }
-
         // エラーメッセージセット
         if (!$valid) {
             if (in_array($append['value_type'], [AppendItem::TYPE_TEXTAREA, AppendItem::TYPE_TEXT,])) {
@@ -1569,7 +1532,6 @@ class BaseInfosController extends AppController
         return $valid;
     }
 
-
     /**
      * emptyチェック以外のバリデーション(append項目)
      * @param [type] $entity formの元データ
@@ -1578,7 +1540,6 @@ class BaseInfosController extends AppController
      * @param [type] $slug page_config->slug
      * @return bool
      */
-
 
     protected function additionalValidate($entity, $data, $list, $slug)
     {
@@ -1600,39 +1561,6 @@ class BaseInfosController extends AppController
                 }
             }
         }
-
-        // if($append_slug == 'ticket_link'){
-        //     if(!empty($data['value_text'])){
-        //         if(!$this->InfoAppendItems->checkUrl($data['value_text'])){
-        //             $valid = false;
-        //             $entity->setErrors([
-        //                 "{$slug}.{$append_slug}" => [
-        //                     'checkurl' => '正しいURLを入力してください']]);
-        //         }
-        //     }
-        // }
-
-        // if($append_slug == 'news_link'){
-        //     if(!empty($data['value_text'])){
-        //         if(!$this->InfoAppendItems->checkUrl($data['value_text'])){
-        //             $valid = false;
-        //             $entity->setErrors([
-        //                 "{$slug}.{$append_slug}" => [
-        //                     'checkurl' => '正しいURLを入力してください']]);
-        //         }
-        //     }
-        // }
-
-        // if($append_slug == 'special_link'){
-        //     if(!empty($data['value_text'])){
-        //         if(!$this->InfoAppendItems->checkUrl($data['value_text'])){
-        //             $valid = false;
-        //             $entity->setErrors([
-        //                 "{$slug}.{$append_slug}" => [
-        //                     'checkurl' => '正しいURLを入力してください']]);
-        //         }
-        //     }
-        // }
 
         return $valid;
     }
@@ -1668,7 +1596,6 @@ class BaseInfosController extends AppController
 
         return $this->InfoAppendItems->delete($e);
     }
-
 
     private function getCategoryIds($id = 0)
     {

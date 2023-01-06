@@ -6,6 +6,7 @@
 <?php if (!isset($disable_class)) {$disable_class = 'danger';} ?>
 <?php if (!isset($column)){$column = 'status';} ?>
 <?= $this->Form->hidden($column, ['value' => 0]); ?>
+
 <?= $this->Form->control($column, ['type' => 'radio','options' => [$enable_value => $enable_text],'hiddenField' => false,
     'label' => false,
     'templates' => [

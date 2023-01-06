@@ -1,97 +1,49 @@
 function setWysiwyg(elm, slug) {
 
-	if (slug == 'case') {
-		ClassicEditor
-			.create(document.querySelector(elm), {
-				'alignment': {
-					options: [
-						{ name: 'left', className: 'text-left' },
-						{ name: 'right', className: 'text-right' },
-						{ name: 'center', className: 'text-center' }
-					]
-				},
+	ClassicEditor
+		.create(document.querySelector(elm), {
+			'alignment': {
+				options: [
+					{ name: 'left', className: 'text-left' },
+					{ name: 'right', className: 'text-right' },
+					{ name: 'center', className: 'text-center' }
+				]
+			},
 
-				// removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
-				toolbar: {
-					items: [
-						'fontColor', 'fontBackgroundColor',
-						'|',
-						'bold', 'italic', 'underline', 'strikethrough',
-						'|',
-						'bulletedList', 'alignment',
-						'|',
-						'link'
-					],
-				},
+			// removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
+			toolbar: {
+				items: [
+					'fontColor', 'fontBackgroundColor',
+					'|',
+					'bold', 'italic', 'underline', 'strikethrough',
+					'|',
+					'bulletedList', 'alignment',
+					'|',
+					'link', 'insertTable', 'sourceEditing', 'MediaEmbed'
+				],
+			},
+			mediaEmbed: {
+				previewsInData: true
+			},
+			table: {
+				contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+			},
+			language: "jp",
 
-				mediaEmbed: {
-					previewsInData: true,
-				},
-				language: "jp",
+			list: {
+				properties: { styles: false, startIndex: false, reversed: false }
+			},
 
-				list: {
-					properties: { styles: false, startIndex: false, reversed: false }
-				},
+			// a タグの設定
+			link: {
+				// attr target＝＿blank
+				addTargetToExternalLinks: true,
 
-				// a タグの設定
-				link: {
-					// attr target＝＿blank
-					addTargetToExternalLinks: true,
-				},
+			},
 
-			}).catch((error) => {
-				console.error(error);
-			});
-
-	} else {
-		ClassicEditor
-			.create(document.querySelector(elm), {
-				'alignment': {
-					options: [
-						{ name: 'left', className: 'text-left' },
-						{ name: 'right', className: 'text-right' },
-						{ name: 'center', className: 'text-center' }
-					]
-				},
-
-				// removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
-				toolbar: {
-					items: [
-						'fontColor', 'fontBackgroundColor',
-						'|',
-						'bold', 'italic', 'underline', 'strikethrough',
-						'|',
-						'bulletedList', 'alignment',
-						'|',
-						'link', 'insertTable', 'sourceEditing'
-					],
-				},
-				table: {
-					contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-				},
-
-				mediaEmbed: {
-					previewsInData: true,
-				},
-				language: "jp",
-
-				list: {
-					properties: { styles: false, startIndex: false, reversed: false }
-				},
-
-				// a タグの設定
-				link: {
-					// attr target＝＿blank
-					addTargetToExternalLinks: true,
-
-				},
-
-			}).catch((error) => {
-				console.error(error);
-			});
-
-	}
-
+		}).catch((error) => {
+			console.error(error);
+		});
 	return;
 }
 

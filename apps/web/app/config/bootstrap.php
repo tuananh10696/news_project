@@ -47,13 +47,13 @@ define('TEMP_USER_EXPIRE', '24hour');
 define('NO_IMAGE_PC', '/common/images/pc_no_image.png');
 define('NO_IMAGE_SP', '/common/images/sp_no_image.png');
 
-define('STAFF', 'staff');
-define('CASESTUDY', 'case');
-define('DISCUSSION_MEMBER', 'discussion_member');
-define('TOPICS', 'topics');
-define('COLUMN', 'column');
-define('COMPANY', 'company');
-define('CLIENT', 'client');
+// define('STAFF', 'staff');
+// define('CASESTUDY', 'case');
+// define('DISCUSSION_MEMBER', 'discussion_member');
+// define('TOPICS', 'topics');
+// define('COLUMN', 'column');
+// define('COMPANY', 'company');
+// define('CLIENT', 'client');
 
 /*
  * Bootstrap CakePHP.

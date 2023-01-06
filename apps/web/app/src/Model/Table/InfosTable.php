@@ -14,7 +14,7 @@ class InfosTable extends AppTable
     public $defaultValues = [
         "id" => null,
         "position" => 0,
-        'status' => 'draft',
+        'status' => 'publish',
     ];
 
 

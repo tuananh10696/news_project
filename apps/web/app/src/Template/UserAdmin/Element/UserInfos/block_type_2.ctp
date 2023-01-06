@@ -13,18 +13,6 @@
 		<div class="block_title">
 
 		</div>
-
-		<?php if (@$content['slug'] == STAFF || @$page_config->slug == STAFF) : ?>
-			<div class="block_content">
-				<div class="<?= h($content['option_value']); ?> font_target <?= h($content['option_value2']); ?>">
-					<?= $this->Form->input("info_contents.{$rownum}.content", [
-							'type' => 'textarea',
-							'maxlength' => 500,
-							'class' => 'form-control'
-						]); ?>
-				</div>
-			</div>
-		<?php else : ?>
 			<div class="block_content">
 				<div class="<?= h($content['option_value']); ?> font_target <?= h($content['option_value2']); ?>">
 					<?= $this->Form->input("info_contents.{$rownum}.content", [
@@ -33,7 +21,6 @@
 						]); ?>
 				</div>
 			</div>
-		<?php endif; ?>
 	</div>
 
 	<div class="table__column table__column-sub">
