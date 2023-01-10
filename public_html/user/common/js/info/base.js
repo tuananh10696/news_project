@@ -19,7 +19,7 @@ function setWysiwyg(elm, slug) {
 					'|',
 					'bulletedList', 'alignment',
 					'|',
-					'link', 'insertTable', 'sourceEditing', 'MediaEmbed'
+					'link', 'insertTable', 'MediaEmbed'
 				],
 			},
 			mediaEmbed: {

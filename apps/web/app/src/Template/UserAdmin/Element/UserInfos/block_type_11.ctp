@@ -59,7 +59,7 @@
 
 						<dt style="margin-top: 10px;">３．本文</dt>
 						<dd>
-							<?= $this->Form->input("info_contents.{$rownum}.content", ['type' => 'textarea', 'maxlength' => 500, 'class' => 'form-control']); ?>
+							<?= $this->Form->input("info_contents.{$rownum}.content", ['type' => 'textarea', 'maxlength' => 1000, 'class' => 'form-control']); ?>
 						</dd>
 					</dl>
 				</div>

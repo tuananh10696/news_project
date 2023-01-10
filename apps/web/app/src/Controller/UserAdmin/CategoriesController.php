@@ -23,7 +23,6 @@ class CategoriesController extends AppController
 {
     private $list = [];
 
-
     public function initialize()
     {
         parent::initialize();
@@ -36,7 +35,6 @@ class CategoriesController extends AppController
         //        $this->loadComponent('OutputHtml');
 
     }
-
 
     public function beforeFilter(Event $event)
     {
@@ -53,7 +51,6 @@ class CategoriesController extends AppController
         $this->set('ModelName', $this->modelName);
     }
 
-
     protected function _getQuery()
     {
         $query = [];
@@ -68,7 +65,6 @@ class CategoriesController extends AppController
         return $query;
     }
 
-
     protected function _getConditions($query)
     {
         $cond = [];
@@ -76,7 +72,6 @@ class CategoriesController extends AppController
 
         return $cond;
     }
-
 
     public function index()
     {
@@ -126,7 +121,6 @@ class CategoriesController extends AppController
         ]);
     }
 
-
     public function edit($id = 0)
     {
         $this->checkLogin();
@@ -135,8 +129,6 @@ class CategoriesController extends AppController
         $query = $this->_getQuery();
         $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $query['sch_page_id']])->first();
         $this->set(compact('query', 'page_config'));
-
-        $validate = in_array($page_config->slug, [CASESTUDY], true) ? 'CaseStudy' : 'default';
 
         if ($id && !$this->isOwnCategoryByUser($id)) {
             $this->Flash->set('不正なアクセスです');
@@ -149,10 +141,6 @@ class CategoriesController extends AppController
         $redirect = ['action' => 'index', '?' => $query];
 
         if ($this->request->is(['post', 'put'])) {
-
-            // createの場合
-            if ($this->request->is(['post']) && in_array($page_config->slug, [CASESTUDY], true)) $validate = 'CaseStudyCreate';
-
             if ($this->request->getQuery('redirect') == 'infos') {
                 $redirect = [
                     'controller' => 'infos',
@@ -186,11 +174,9 @@ class CategoriesController extends AppController
 
         $options['redirect'] = $redirect;
         $options['callback'] = $callback;
-        $options['validate'] = $validate;
 
         parent::_edit($id, $options);
     }
-
 
     public function position($id, $pos)
     {
@@ -215,7 +201,6 @@ class CategoriesController extends AppController
         return parent::_position($id, $pos, $options);
     }
 
-
     public function enable($id)
     {
         $this->checkLogin();
@@ -238,7 +223,6 @@ class CategoriesController extends AppController
 
         parent::_enable($id, $options);
     }
-
 
     public function delete($id, $type, $columns = null)
     {

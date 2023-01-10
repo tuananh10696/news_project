@@ -206,3 +206,8 @@ function human_filesize($bytes, $decimals = 2)
     $s = @$sz[$factor];
     return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ($s != 'B' ? $s . 'B' : $s);
 }
+
+function charlimit($string, $limit)
+{
+    return substr($string, 0, $limit) . (strlen($string) > $limit ? "..." : '');
+}

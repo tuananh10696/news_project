@@ -57,8 +57,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/admin', ['controller' => 'Admin', 'action' => 'index', 'prefix' => 'admin']);
     $routes->connect('/admin/logout', ['controller' => 'Admin', 'action' => 'logout', 'prefix' => 'admin']);
 
-    $routes->connect('/pro/interview/:id', ['controller' => 'Pro', 'action' => 'detail'])->setPass(['id']);
-
     $routes->connect('/:controller/:id', ['action' => 'detail'])
         ->setPatterns(['id' => '[1-9]?[0-9]+'])
         ->setPass(['id']);

@@ -67,7 +67,7 @@ class AppController extends Controller
 
         $this->set('__description__', $this->head_description);
         $this->set('body_class', '');
-        $this->setList('category');
+        $this->getCategory();
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
@@ -172,8 +172,7 @@ class AppController extends Controller
 
 
     private function _prepare()
-    {
-    }
+    { }
 
 
     /**
@@ -714,10 +713,8 @@ class AppController extends Controller
 
         try {
             if ($this->paginate['limit'] === null) {
-                unset(
-                    $options['limit'],
-                    $options['paramType']
-                );
+                unset($options['limit'],
+                $options['paramType']);
                 if (!empty($options['rand'])) {
                     $options['limit'] = $options['rand'];
                     $options['order'] = 'rand()';

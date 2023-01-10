@@ -1,8 +1,8 @@
 <?php if ($this->Paginator->hasPrev() || $this->Paginator->hasNext()) : ?>
 
-	<ul class="paging">
+	<ul class="pagination justify-content-start">
 		<?= $this->Paginator->prev('') ?>
-		<?= $this->Paginator->numbers(['modulus' => 2, 'first' => false, 'last' => 1]); ?>
+		<?= $this->Paginator->numbers(); ?>
 		<?= $this->Paginator->next('') ?>
 	</ul>
 

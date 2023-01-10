@@ -8,22 +8,24 @@
     <meta name="description" content="<?= $__description__ ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    
     <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/ticker-style.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/slick.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/ticker-style.css">
+    <link rel="stylesheet" href="/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/assets/css/slicknav.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/slick.css">
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <?= $this->fetch('css') ?>
 
 </head>
@@ -51,12 +53,12 @@
                             <!-- Logo -->
                             <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
                                 <div class="logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                    <a href=""><img src="/assets/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-9">
                                 <div class="header-banner f-right ">
-                                    <img src="assets/img/gallery/header_card.png" alt="">
+                                    <img src="/assets/img/gallery/header_card.png" alt="">
                                 </div>
                             </div>
                         </div>
@@ -68,18 +70,19 @@
                             <div class="col-xl-8 col-lg-8 col-md-12 header-flex">
                                 <!-- sticky -->
                                 <div class="sticky-logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                    <a href=""><img src="/assets/img/logo/logo.png" alt=""></a>
                                 </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-md-block">
+
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="index.html">Home</a></li>
+                                            <li><a href="">Home</a></li>
                                             <li><a href="about.html">about</a></li>
                                             <li><a href="/category">Category</a>
                                                 <ul class="submenu">
                                                     <?php foreach ($category as $news_category) : ?>
-                                                        <li><a href="/category"><?= h($news_category->name) ?></a></li>
+                                                        <li><a href="/category?category_id=<?= $news_category->id ?>"><?= h($news_category->name) ?></a></li>
                                                     <?php endforeach; ?>
                                                 </ul>
                                             </li>
@@ -137,7 +140,7 @@
                                 <div class="single-footer-caption mb-30">
                                     <!-- logo -->
                                     <div class="footer-logo">
-                                        <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                        <a href=""><img src="/assets/img/logo/logo2_footer.png" alt=""></a>
                                     </div>
                                     <div class="footer-tittle">
                                         <div class="footer-pera">
@@ -157,7 +160,7 @@
                                 <!-- Popular post -->
                                 <div class="whats-right-single mb-20">
                                     <div class="whats-right-img">
-                                        <img src="assets/img/gallery/footer_post1.png" alt="">
+                                        <img src="/assets/img/gallery/footer_post1.png" alt="">
                                     </div>
                                     <div class="whats-right-cap">
                                         <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a></h4>
@@ -167,7 +170,7 @@
                                 <!-- Popular post -->
                                 <div class="whats-right-single mb-20">
                                     <div class="whats-right-img">
-                                        <img src="assets/img/gallery/footer_post2.png" alt="">
+                                        <img src="/assets/img/gallery/footer_post2.png" alt="">
                                     </div>
                                     <div class="whats-right-cap">
                                         <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a></h4>
@@ -177,7 +180,7 @@
                                 <!-- Popular post -->
                                 <div class="whats-right-single mb-20">
                                     <div class="whats-right-img">
-                                        <img src="assets/img/gallery/footer_post3.png" alt="">
+                                        <img src="/assets/img/gallery/footer_post3.png" alt="">
                                     </div>
                                     <div class="whats-right-cap">
                                         <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a></h4>
@@ -189,7 +192,7 @@
                         <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
                             <div class="single-footer-caption mb-50">
                                 <div class="banner">
-                                    <img src="assets/img/gallery/body_card4.png" alt="">
+                                    <img src="/assets/img/gallery/body_card4.png" alt="">
                                 </div>
                             </div>
                         </div>
@@ -232,39 +235,39 @@
 
     <!-- JS here -->
 
-    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->
-    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
     <!-- Jquery Mobile Menu -->
-    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
 
     <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="./assets/js/owl.carousel.min.js"></script>
-    <script src="./assets/js/slick.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/slick.min.js"></script>
     <!-- Date Picker -->
-    <script src="./assets/js/gijgo.min.js"></script>
+    <script src="/assets/js/gijgo.min.js"></script>
     <!-- One Page, Animated-HeadLin -->
-    <script src="./assets/js/wow.min.js"></script>
-    <script src="./assets/js/animated.headline.js"></script>
-    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/animated.headline.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.js"></script>
 
     <!-- Scrollup, nice-select, sticky -->
-    <script src="./assets/js/jquery.scrollUp.min.js"></script>
-    <script src="./assets/js/jquery.nice-select.min.js"></script>
-    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="/assets/js/jquery.scrollUp.min.js"></script>
+    <script src="/assets/js/jquery.nice-select.min.js"></script>
+    <script src="/assets/js/jquery.sticky.js"></script>
 
     <!-- contact js -->
-    <script src="./assets/js/contact.js"></script>
-    <script src="./assets/js/jquery.form.js"></script>
-    <script src="./assets/js/jquery.validate.min.js"></script>
-    <script src="./assets/js/mail-script.js"></script>
-    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/assets/js/contact.js"></script>
+    <script src="/assets/js/jquery.form.js"></script>
+    <script src="/assets/js/jquery.validate.min.js"></script>
+    <script src="/assets/js/mail-script.js"></script>
+    <script src="/assets/js/jquery.ajaxchimp.min.js"></script>
 
     <!-- Jquery Plugins, main Jquery -->
-    <script src="./assets/js/plugins.js"></script>
-    <script src="./assets/js/main.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/main.js"></script>
 
     <?= $this->fetch('script') ?>
 

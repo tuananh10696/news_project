@@ -1,19 +1,14 @@
 <?php $this->assign('content_title', "「{$page_config->page_title}」のカテゴリ"); ?>
-
-<!-- breadcrumb -->
 <?php $this->start('menu_list'); ?>
-<li class="breadcrumb-item">
-	<a href="<?=  '/user_admin/infos/?sch_page_id='.$page_config->id ; ?>"><?= $page_config->page_title; ?></a>
+<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'page-configs']); ?>">コンテンツ設定</a></li>
+<li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'page-configs', 'action' => 'edit', $page_config->id]); ?>"><?= $page_config->page_title; ?></a>
 </li>
-<li class="breadcrumb-item active">
-	<span>カテゴリ</span>
-</li>
+<li class="breadcrumb-item active"><span>カテゴリ</span></li>
 <?php $this->end(); ?>
 
 <?php
 $this->assign('data_count', $data_query->count()); // データ件数
-if (!in_array($page_config->slug, [CASESTUDY], true))
-	$this->assign('create_url', $this->Url->build(array('action' => 'edit', '?' => $query))); // 新規登録URL
+$this->assign('create_url', $this->Url->build(array('action' => 'edit', '?' => $query))); // 新規登録URL
 ?>
 
 <div class="table_list_area">
@@ -44,8 +39,8 @@ if (!in_array($page_config->slug, [CASESTUDY], true))
 			<?php if ($page_config->is_category == 'Y' && $page_config->is_category_multilevel == 1) : ?>
 				<col style="width: 170px;">
 			<?php endif; ?>
-
 			<col style="width: 150px;">
+
 		</colgroup>
 
 		<thead class="bg-gray">
@@ -53,11 +48,9 @@ if (!in_array($page_config->slug, [CASESTUDY], true))
 				<th>掲載</th>
 				<th>表示番号</th>
 				<th style="text-align:left;">カテゴリ名</th>
-
 				<?php if ($page_config->is_category == 'Y' && $page_config->is_category_multilevel == 1) : ?>
 					<th>操作</th>
 				<?php endif; ?>
-
 				<th>並び順</th>
 			</tr>
 		</thead>
@@ -68,20 +61,20 @@ if (!in_array($page_config->slug, [CASESTUDY], true))
 				$no = sprintf("%02d", $data->id);
 				$id = $data->id;
 				$status = ($data->status === 'publish' ? true : false);
-			?>
+
+				?>
 				<tr class="<?= $status ? "visible" : "unvisible" ?>" id="content-<?= $data->id ?>">
 					<td>
 						<a name="m_<?= $id ?>"></a>
 						<?= $this->element('status_button', ['id' => $id, 'status' => $status]); ?>
 					</td>
 
-					<td>
+					<td title="">
 						<?= $data->position ?>
 					</td>
 
 					<td>
-						<?php $name = (!in_array($page_config->slug, [CASESTUDY], true)) ? h($data->name) : __('{0}「{1}」', $data->name, $data->identifier) ?>
-						<?= $this->Html->link(strip_tags($name), ['action' => 'edit', $data->id, '?' => $query], ['class' => 'btn btn-light w-100 text-left']) ?>
+						<?= $this->Html->link($data->name, ['action' => 'edit', $data->id, '?' => $query], ['class' => 'btn btn-light w-100 text-left']) ?>
 					</td>
 
 					<?php if ($page_config->is_category == 'Y' && $page_config->is_category_multilevel == 1) : ?>
@@ -93,10 +86,14 @@ if (!in_array($page_config->slug, [CASESTUDY], true))
 					<td>
 						<?= $this->element('position', ['key' => $key, 'data' => $data, 'data_query' => $data_query]); ?>
 					</td>
+
 				</tr>
+
 			<?php endforeach; ?>
 		</tbody>
+
 	</table>
+
 </div>
 
 <?php $this->start('beforeBodyClose'); ?>
@@ -104,6 +101,12 @@ if (!in_array($page_config->slug, [CASESTUDY], true))
 <script>
 	function change_category() {
 		$("#fm_search").submit();
+
 	}
+
+	$(function() {
+
+
+	})
 </script>
 <?php $this->end(); ?>

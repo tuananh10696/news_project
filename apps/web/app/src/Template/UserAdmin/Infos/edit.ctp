@@ -120,28 +120,6 @@ if (isset($case_info))
 		<?= $this->element('edit_form/item-end'); ?>
 	<?php endif; ?>
 
-	<!-- radio -->
-	<?php if ($this->Common->enabledInfoItem($page_config->id, PageConfigItem::TYPE_MAIN, 'radio')) : ?>
-		<?php $radio_data = $page_config->slug == DISCUSSION_MEMBER ? ['dark' => '黒', 'red' => '赤', 'blue' => '青', 'green' => '緑'] : [] ?>
-		<?php $_title = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'radio'); ?>
-		<?= $this->element('edit_form/item-start', ['title' => $_title]); ?>
-		<?php foreach ($radio_data as $k => $rd) : ?>
-
-			<?= $this->Form->control('value_text', [
-						'type' => 'radio',
-						'options' => [$k => $rd],
-						'hiddenField' => false,
-						'label' => false,
-						'default' => 'dark',
-						'templates' => [
-							'radioWrapper' => '<div class="radio icheck-' . $k . ' d-inline mr-2">{{label}}</div>',
-						],
-					]); ?>
-
-		<?php endforeach ?>
-		<?= $this->element('edit_form/item-end'); ?>
-	<?php endif; ?>
-
 	<!--カテゴリ-->
 	<?php if ($this->Common->enabledInfoItem($page_config->id, PageConfigItem::TYPE_MAIN, 'category')) : ?>
 		<?php $_title = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'category', 'title', 'カテゴリ'); ?>
@@ -225,29 +203,8 @@ if (isset($case_info))
 		<?php $_title = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'notes', 'title', $page_config->slug == 'staff' ? '見出し' : '一覧概要'); ?>
 		<?php $_sub_tilte = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'notes', 'sub_title', '<div>(一覧と詳細に表示)</div>'); ?>
 		<?= $this->element('edit_form/item-start', ['title' => $_title, 'sub_title' => $_sub_tilte, 'required' => true]); ?>
-		<?= $this->Form->input('notes', ['type' => 'textarea', 'maxlength' => 200, 'class' => 'form-control']); ?>
-		<div class="attention">※200文字以内で入力してください</div>
-		<?= $this->element('edit_form/item-end'); ?>
-	<?php endif; ?>
-
-
-	<!--画像の注釈-->
-	<?php if ($this->Common->enabledInfoItem($page_config->id, PageConfigItem::TYPE_MAIN, 'image_title')) : ?>
-		<?php $_title = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'image_title', 'title', '画像の注釈'); ?>
-		<?php $_sub_tilte = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'image_title', 'sub_title', ''); ?>
-		<?= $this->element('edit_form/item-start', ['title' => $_title, 'sub_title' => $_sub_tilte]); ?>
-		<?= $this->Form->input('image_title', ['type' => 'textarea', 'maxlength' => '200', 'class' => 'form-control']); ?>
-		<span>※200文字以内で入力してください</span>
-		<span>※改行は反映されません</span>
-		<?= $this->element('edit_form/item-end'); ?>
-	<?php endif; ?>
-
-	<!--TOP表示-->
-	<?php if ($this->Common->enabledInfoItem($page_config->id, PageConfigItem::TYPE_MAIN, 'index_type')) : ?>
-		<?php $_title = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'index_type', 'title', 'TOP表示'); ?>
-		<?php $_sub_tilte = $this->Common->infoItemTitle($page_config->id, PageConfigItem::TYPE_MAIN, 'index_type', 'sub_title', ''); ?>
-		<?= $this->element('edit_form/item-start', ['title' => $_title, 'sub_title' => $_sub_tilte]); ?>
-		<?= $this->Form->input('index_type', ['type' => 'radio', 'options' => ['0' => '設定しない', '1' => '設定する']]); ?>
+		<?= $this->Form->input('notes', ['type' => 'textarea', 'maxlength' => 500, 'class' => 'form-control']); ?>
+		<div class="attention">※500文字以内で入力してください</div>
 		<?= $this->element('edit_form/item-end'); ?>
 	<?php endif; ?>
 
@@ -305,16 +262,6 @@ if (isset($case_info))
 		<?php endforeach; ?>
 	<?php endif; ?>
 
-	<!--metaタグ-->
-	<?php if ($this->Common->enabledInfoItem($page_config->id, PageConfigItem::TYPE_MAIN, 'meta')) : ?>
-		<div class="form-group row">
-			<div class="w-100 btn-light text-center">
-				<button class="btn w-100 btn-light" type="button" data-toggle="collapse" data-target="#optionMetaItem" aria-expanded="false">
-					<span>metaタグ</span> <i class="fas fa-angle-down"></i>
-				</button>
-			</div>
-		</div>
-	<?php endif; ?>
 
 	<div id="optionMetaItem" class="collapse">
 

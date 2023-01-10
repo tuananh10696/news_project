@@ -1,3 +1,1 @@
-<div class="wysiwyg">
-    <?= $c['content']; ?>
-</div>
+<p><?= $c['content']; ?></p>
