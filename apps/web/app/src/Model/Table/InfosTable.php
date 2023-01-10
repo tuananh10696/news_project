@@ -131,7 +131,7 @@ class InfosTable extends AppTable
                 ],
             )
             ->notEmpty('notes', '入力してください')
-            ->maxLength('notes', 200, '200字以内で入力してください')
+            ->maxLength('notes', 500, '500字以内で入力してください')
             ->add(
                 'notes',
                 [

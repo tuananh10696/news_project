@@ -385,10 +385,6 @@ print {
         }
     }
 
-    main {
-        padding-bottom: 120px
-    }
-
     .link__alpha {
         cursor: pointer;
         -webkit-transition: opacity .3s ease;

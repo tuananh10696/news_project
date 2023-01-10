@@ -6,11 +6,33 @@
         border-bottom: 1px solid #00a040;
         color: #00a040 !important;
     }
-    .table>table>thead>tr>th{
+
+    .table>table>thead>tr>th {
         background-color: #cce2d5;
     }
-    .table>table>thead>tr>th>span{
+
+    .table>table>thead>tr>th>span {
         color: #ff2143 !important;
+    }
+
+    h3 {
+        font-size: 22px;
+        display: block;
+        color: #051441;
+        font-weight: 700
+    }
+
+    .customer-gallery {
+        display: -webkit-box;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 32px -15px 0
+    }
+
+    .customer-gallery img {
+        height: 229px;
+        margin: 15px;
+        width: 360px
     }
 </style>
 <?php $this->end() ?>
@@ -29,6 +51,7 @@
                             <?php endif ?>
                         <?php endforeach; ?>
                     </div>
+
                     <!-- From -->
                     <div class="row">
                         <div class="col-lg-8">
@@ -46,8 +69,11 @@
                             </form>
                         </div>
                     </div>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="button button-contactForm boxed-btn boxed-btn2">Send</button>
+                    </div>
                 </div>
-                
+
                 <div class="col-lg-4">
                     <!-- Flow Socail -->
                     <div class="single-follow mb-45">

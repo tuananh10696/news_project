@@ -205,10 +205,6 @@ print {
         margin-top: 30px
     }
 
-    .wysiwyg img+img {
-        margin-top: 30px
-    }
-
     .wysiwyg .text-center {
         text-align: center
     }
@@ -639,9 +635,9 @@ print {
         will-change: border
     }
 
-    .wysiwyg>a:not(a[target=_blank]):hover {
+    /* .wysiwyg>a:not(a[target=_blank]):hover {
         border-color: transparent
-    }
+    } */
 
     .wysiwyg u {
         text-underline-offset: calc(var(--vw)*.65886)
@@ -966,11 +962,6 @@ print {
         -o-transition: border .3s ease;
         transition: border .3s ease;
         will-change: border
-    }
-
-    .wysiwyg table td a:hover,
-    .wysiwyg table th a:hover {
-        border-color: transparent
     }
 
     .wysiwyg table thead th {

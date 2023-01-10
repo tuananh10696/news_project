@@ -18,7 +18,7 @@
 
 			<td colspan="2">
 				<div class="sub-unit__wrap">
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
+					<?php for ($i = 1; $i <= 2; $i++) : ?>
 
 						<?php $image_column = $i == 1 ? 'image' : __('image_{0}', $i); ?>
 

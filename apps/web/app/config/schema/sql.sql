@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: localhost:8889
--- 生成日時: 2023 年 1 月 10 日 08:52
+-- 生成日時: 2023 年 1 月 10 日 09:56
 -- サーバのバージョン： 5.7.34
 -- PHP のバージョン: 7.4.21
 
@@ -133,7 +133,7 @@ INSERT INTO `infos` (`id`, `created`, `modified`, `page_config_id`, `position`, 
 (2, '2023-01-10 01:45:14', '2023-01-10 01:45:26', 1, 4, 'publish', 'test news', 'day la test', '2023-01-10 00:00:00', '2023-01-10', '0', '1900-01-01', '0', 'img_2_8276037c-0f0e-49d7-9c08-27101540dae3.jpeg', '', '', 1, 2, '0', 0, 0, NULL, NULL, NULL),
 (3, '2023-01-10 02:31:34', '2023-01-10 05:54:28', 1, 3, 'publish', 'test doi song news', '一覧概要\r\n一覧概要一覧概要一覧概要一覧概要\r\n一覧概要一覧概要一覧概要一覧概要一覧概要一覧概要一覧概要\r\n一覧概要\r\n一覧概要', '2023-01-10 00:00:00', '2023-01-10', '0', '1900-01-01', '0', 'img_3_b125cbfb-5400-488c-931f-efea22dc0d63.jpeg', '', '', 1, 1, '0', 0, 0, NULL, NULL, NULL),
 (4, '2023-01-10 06:06:03', '2023-01-10 06:06:03', 1, 2, 'publish', 'sap den tet roi', 'hallo', '2023-01-10 00:00:00', '2023-01-10', '0', '1900-01-01', '0', 'img_4_1051d15f-82a0-420d-b6e9-0cb46df31e9d.jpeg', '', '', 1, 3, '0', 0, 0, NULL, NULL, NULL),
-(5, '2023-01-10 08:35:04', '2023-01-10 08:51:45', 1, 1, 'publish', 'Nên ăn bao nhiêu quả trứng một tuần?', 'Có thể bạn đã quá quen thuộc về quan niệm 1 tuần không ăn quá 3 quả trứng. Đã từng có 1 thời mà trứng bị coi là nguồn thực phẩm không lành mạnh gây ra các vấn đề về cholesterol và nguy cơ mắc bệnh tim', '2023-01-11 00:00:00', '2023-01-10', '0', '1900-01-01', '0', '', '', '', 1, 4, '0', 0, 0, NULL, NULL, NULL);
+(5, '2023-01-10 08:35:04', '2023-01-10 09:38:37', 1, 1, 'publish', 'Lộ thông tin đặt trước Galaxy S23 series sẽ được tặng Galaxy Buds2 Pro?', 'Sau sự cố “xác nhận” ngày ra mắt Galaxy S23 series là vào ngày 01/02/2023, website bán lẻ của châu Âu Euronics lại “vô tình đăng tải” thông tin nhận đặt trước dòng sản phẩm này với các ưu đãi kèm theo. Theo đó, hình ảnh được chụp lại (đã bị xóa) từ web bán lẻ cho thấy khi người dùng đặt mua trước series Galaxy S23 thì sẽ được tặng kèm Galaxy Buds2 Pro. Tất nhiên, không ngoại trừ khả năng các ưu đãi tương tự sẽ được áp dụng ở các quốc gia khác theo thông lệ hàng năm của Samsung.', '2023-01-09 00:00:00', '2023-01-10', '0', '1900-01-01', '0', 'img_5_7fc58b63-b3d2-42f4-8d99-04c2720c4478.jpeg', '', '', 1, 4, '0', 0, 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -222,7 +222,16 @@ INSERT INTO `info_contents` (`id`, `created`, `modified`, `info_id`, `block_type
 (9, '2023-01-10 05:04:16', '2023-01-10 05:54:26', 3, '2', 2, '', '<p>My hero when I was a kid was my mom.</p><p>&nbsp;Same for everyone I knew. Moms are untouchable. They’re elegant, smart, beautiful, kind…everything we want to be. At 29 years old, my favorite compliment is being told that I look like my mom. Seeing myself in her image, like this daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come from.the refractor telescope uses a convex lens to focus the light on the eyepiece.</p><p>The reflector telescope has a concave lens which means it telescope sits on. The mount is the actual tripod and the wedge is the device that lets you attach the telescope to the mount.</p><p>Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>', '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL),
 (10, '2023-01-10 05:05:12', '2023-01-10 05:54:26', 3, '11', 3, '', 'Cách chấm điểm cuộc thi ảnh \"Nét đẹp lao động Tết\": 04 hạng mục Giải Chung cuộc (01 Giải Nhất; 02 giải nhì; 03 giải ba; 05 giải khuyến khích) được chấm chọn dựa trên số lượt tương tác từ độc giả trên bài đăng tác phẩm dự thi tại trang chính thức của cuộc thi trên chuyên trang Xây Tết của Báo Điện tử Dân trí (50% số điểm) và điểm số từ Ban giám khảo (50% số điểm).\r\nCách chấm điểm cuộc thi ảnh \"Nét đẹp lao động Tết\": 04 hạng mục Giải Chung cuộc (01 Giải Nhất; 02 giải nhì; 03 giải ba; 05 giải khuyến khích) được chấm chọn dựa trên số lượt tương tác từ độc giả trên bài đăng tác phẩm dự thi tại trang chính thức của cuộc thi trên chuyên trang Xây Tết của Báo Điện tử Dân trí (50% số điểm) và điểm số từ Ban giám khảo (50% số điểm).\r\n', 'img_10_58b7c0c5-d58e-46d6-83f6-8a7510f6283e.jpeg', NULL, NULL, 'left', '', 0, '', '', 0, '', '', '', NULL, NULL),
 (11, '2023-01-10 05:05:13', '2023-01-10 05:54:26', 3, '11', 4, '', 'My hero when I was a kid was my mom.\r\n\r\n Same for everyone I knew. Moms are untouchable. They’re elegant, smart, beautiful, kind…everything we want to be. At 29 years old, my favorite compliment is being told that I look like my mom. Seeing myself in her image, like this daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come from.the refractor telescope uses a convex lens to focus the light on the eyepiece.\r\n\r\nThe reflector telescope has a concave lens which means ', 'img_11_24ecd3b3-fdae-4b8b-9a90-33d92e7f3c26.jpeg', NULL, NULL, 'right', '', 0, '', '', 0, '', '', '', NULL, NULL),
-(12, '2023-01-10 05:53:25', '2023-01-10 05:54:26', 3, '2', 5, '', '<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"http://backlog.caters.jp:8969/backlog/dashboard?from_globalbar\">tai day</a></p>', '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL);
+(12, '2023-01-10 05:53:25', '2023-01-10 05:54:26', 3, '2', 5, '', '<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"http://backlog.caters.jp:8969/backlog/dashboard?from_globalbar\">tai day</a></p>', '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL),
+(13, '2023-01-10 09:01:30', '2023-01-10 09:38:37', 5, '1', 1, 'Lộ thông tin đặt trước Galaxy S23 series h2', NULL, '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL),
+(14, '2023-01-10 09:01:30', '2023-01-10 09:38:37', 5, '5', 2, 'Lộ thông tin đặt trước Galaxy S23 series h3', NULL, '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL),
+(15, '2023-01-10 09:01:30', '2023-01-10 09:38:37', 5, '25', 8, '', NULL, 'img_15_b681071c-3998-41e7-9e98-024870be731c.jpeg', 'img_15_cadc1d73-eb2b-4033-9288-c9757ff40422.jpeg', 'img_15_d245fb9b-4214-4add-9f0c-38b50d4f3190.jpeg', '', '', 0, '', '', 0, '', '', '', NULL, NULL),
+(16, '2023-01-10 09:01:31', '2023-01-10 09:38:37', 5, '2', 3, '', '<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"http://news.local/\">test link</a></p>', '', NULL, NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL),
+(17, '2023-01-10 09:01:31', '2023-01-10 09:38:37', 5, '3', 4, '', '', 'img_17_44c445db-f41f-4ebd-8fdd-dc9f05dab694.jpeg', NULL, NULL, '', '', 0, '', '', 0, '_self', '', '', NULL, NULL),
+(18, '2023-01-10 09:01:32', '2023-01-10 09:38:37', 5, '4', 5, '', NULL, '', NULL, NULL, '', 'e_f_18_5ae8e4fb-b078-4fde-8c55-c450ac40440b.xlsx', 5425, 'file_example_XLSX_10', 'xlsx', 0, '', '', '', NULL, NULL),
+(19, '2023-01-10 09:01:32', '2023-01-10 09:38:37', 5, '4', 6, '', NULL, '', NULL, NULL, '', 'e_f_19_905e39a9-8de7-466c-be22-a754bed1c7d0.pdf', 655620, '18_01能力試験Ｎ１リスト', 'pdf', 0, '', '', '', NULL, NULL),
+(20, '2023-01-10 09:01:32', '2023-01-10 09:38:37', 5, '4', 7, '', NULL, '', NULL, NULL, '', 'e_f_20_f31a32de-a67d-4731-9bd4-361fe500095c.doc', 100352, 'file-sample_100kB', 'doc', 0, '', '', '', NULL, NULL),
+(22, '2023-01-10 09:38:20', '2023-01-10 09:38:37', 5, '25', 9, '', NULL, 'img_22_2801beb4-4ea5-4f3e-a137-6e292d10b353.jpeg', 'img_22_1dcad925-3097-4146-971a-ad0c45966b66.jpeg', NULL, '', '', 0, '', '', 0, '', '', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -810,7 +819,7 @@ ALTER TABLE `info_categories`
 -- テーブルの AUTO_INCREMENT `info_contents`
 --
 ALTER TABLE `info_contents`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- テーブルの AUTO_INCREMENT `info_stock_tables`
