@@ -71,7 +71,6 @@ print {
 
     .c-detail__head .time {
         font-size: 1.6rem;
-        letter-spacing: 1px
     }
 
     .c-detail__head h1 {
@@ -80,7 +79,6 @@ print {
         border-bottom: 1px solid #e4e4e4;
         font-size: 2.6rem;
         font-weight: 500;
-        letter-spacing: 3px;
         line-height: 38px;
         margin: 16px 0 0;
         padding-bottom: 24px
@@ -99,7 +97,6 @@ print {
         font-feature-settings: "palt" 1;
         font-size: 2rem;
         font-weight: 700;
-        letter-spacing: 1px;
         line-height: 38px
     }
 
@@ -128,7 +125,6 @@ print {
         color: #00a040;
         font-size: 2.4rem;
         font-weight: 700;
-        letter-spacing: 2.8px;
         line-height: 38px;
         margin-bottom: 20px;
         padding-left: 12px
@@ -161,7 +157,6 @@ print {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
         font-size: 1.8rem;
-        letter-spacing: 1.5px;
         line-height: 34px
     }
 
@@ -312,7 +307,6 @@ print {
     }
 
     .wysiwyg .file a:before {
-        background: url(/assets/images/common/arr_right.png) no-repeat 100%;
         background-size: contain;
         content: "";
         height: 11px;
@@ -328,7 +322,6 @@ print {
         font-size: 1.6rem;
         font-style: normal;
         height: 25px;
-        letter-spacing: 1px;
         line-height: 25px;
         padding-right: 26px;
         position: absolute;
@@ -462,7 +455,6 @@ print {
     .wysiwyg table tbody td {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
-        letter-spacing: 1px;
         padding: 16px 20px 18px
     }
 
@@ -477,7 +469,6 @@ print {
         color: #00a040;
         font-size: 2.4rem;
         font-weight: 700;
-        letter-spacing: 2.8px;
         line-height: 38px;
         margin-bottom: 34px;
         padding-left: 12px
@@ -593,7 +584,6 @@ print {
 
     .c-detail__head .time {
         font-size: calc(var(--vw)*1.1713);
-        letter-spacing: 1px
     }
 
     .c-detail__head h1 {
@@ -602,7 +592,6 @@ print {
         border-bottom: 1px solid #e4e4e4;
         font-size: calc(var(--vw)*1.90337);
         font-weight: 500;
-        letter-spacing: calc(var(--vw)*.21962);
         line-height: calc(var(--vw)*2.78184);
         margin: calc(var(--vw)*1.1713) 0 0;
         padding-bottom: calc(var(--vw)*1.75695)
@@ -621,7 +610,6 @@ print {
         font-feature-settings: "palt" 1;
         font-size: calc(var(--vw)*1.46413);
         font-weight: 700;
-        letter-spacing: 1px;
         line-height: calc(var(--vw)*2.78184)
     }
 
@@ -650,7 +638,6 @@ print {
         color: #00a040;
         font-size: calc(var(--vw)*1.75695);
         font-weight: 700;
-        letter-spacing: calc(var(--vw)*.20498);
         line-height: calc(var(--vw)*2.78184);
         margin-bottom: calc(var(--vw)*1.46413);
         padding-left: calc(var(--vw)*.87848)
@@ -683,7 +670,6 @@ print {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
         font-size: calc(var(--vw)*1.31772);
-        letter-spacing: calc(var(--vw)*.10981);
         line-height: calc(var(--vw)*2.48902)
     }
 
@@ -838,7 +824,6 @@ print {
     }
 
     .wysiwyg .file a:before {
-        background: url(/assets/images/common/arr_right.png) no-repeat 100%;
         background-size: contain;
         content: "";
         height: calc(var(--vw)*.80527);
@@ -854,7 +839,6 @@ print {
         font-size: calc(var(--vw)*1.1713);
         font-style: normal;
         height: calc(var(--vw)*1.83016);
-        letter-spacing: 1px;
         line-height: calc(var(--vw)*1.83016);
         padding-right: calc(var(--vw)*1.90337);
         position: absolute;
@@ -983,7 +967,6 @@ print {
     .wysiwyg table tbody td {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
-        letter-spacing: 1px;
         padding: calc(var(--vw)*1.1713) calc(var(--vw)*1.46413) calc(var(--vw)*1.31772)
     }
 
@@ -998,7 +981,6 @@ print {
         color: #00a040;
         font-size: calc(var(--vw)*1.75695);
         font-weight: 700;
-        letter-spacing: calc(var(--vw)*.20498);
         line-height: calc(var(--vw)*2.78184);
         margin-bottom: calc(var(--vw)*2.48902);
         padding-left: calc(var(--vw)*.87848)
@@ -1108,7 +1090,6 @@ print {
 
     .c-detail__head .time {
         font-size: 3.3854166666666665vw;
-        letter-spacing: .26041666666666663vw;
         margin-left: 1.0416666666666665vw
     }
 
@@ -1118,7 +1099,6 @@ print {
         border-bottom: .26041666666666663vw solid #e4e4e4;
         font-size: 5.208333333333334vw;
         font-weight: 500;
-        letter-spacing: .5208333333333333vw;
         line-height: 7.161458333333333vw;
         margin: 1.8229166666666667vw 0 5.598958333333334vw;
         padding-bottom: 5.46875vw
@@ -1129,7 +1109,6 @@ print {
         font-feature-settings: "palt" 1;
         font-size: 3.90625vw;
         font-weight: 700;
-        letter-spacing: .390625vw;
         line-height: 7.161458333333333vw
     }
 
@@ -1150,7 +1129,6 @@ print {
         color: #00a040;
         font-size: 4.6875vw;
         font-weight: 700;
-        letter-spacing: .3645833333333333vw;
         line-height: 7.161458333333333vw;
         margin-bottom: 4.427083333333334vw;
         padding-left: 1.5625vw
@@ -1187,7 +1165,6 @@ print {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
         font-size: 3.6458333333333335vw;
-        letter-spacing: .26041666666666663vw;
         line-height: 6.119791666666666vw
     }
 
@@ -1309,7 +1286,6 @@ print {
         display: flex;
         font-size: 3.125vw;
         font-style: normal;
-        letter-spacing: .26041666666666663vw;
         line-height: 1;
         margin-top: .9114583333333334vw
     }
@@ -1353,7 +1329,6 @@ print {
         display: inline-block;
         font-size: 3.6458333333333335vw;
         font-weight: 400;
-        letter-spacing: .13020833333333331vw;
         line-height: 7.421875vw;
         padding-right: 5.729166666666666vw;
         position: relative;
@@ -1434,7 +1409,6 @@ print {
     .wysiwyg table tbody td {
         -webkit-font-feature-settings: "palt" 1;
         font-feature-settings: "palt" 1;
-        letter-spacing: .13020833333333331vw;
         padding: 1.8229166666666667vw 3.90625vw 3.3854166666666665vw
     }
 
@@ -1449,7 +1423,6 @@ print {
         color: #00a040;
         font-size: 4.6875vw;
         font-weight: 700;
-        letter-spacing: .3645833333333333vw;
         line-height: 7.161458333333333vw;
         margin-bottom: 7.8125vw;
         padding-left: 1.5625vw

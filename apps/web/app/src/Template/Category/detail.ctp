@@ -26,13 +26,13 @@
         display: -webkit-box;
         display: flex;
         flex-wrap: wrap;
-        margin: 32px -15px 0
+        margin: 3px -15px 0
     }
 
     .customer-gallery img {
         height: 229px;
-        margin: 15px;
-        width: 360px
+        margin: 15px 1px 3px 1px;
+        width: 398px
     }
 </style>
 <?php $this->end() ?>
@@ -40,7 +40,7 @@
     <!-- About US Start -->
     <div class="about-area2 gray-bg pt-60 pb-60">
         <div class="container">
-            <div class="row">
+            <div class="row contents" style=" background-color: #fff; border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;border-top-right-radius: 10px;border-top-left-radius: 10px;">
                 <div class="wysiwyg col-lg-8">
                     <!-- Trending Tittle -->
                     <div class="about-right mb-90">
@@ -51,7 +51,9 @@
                             <?php endif ?>
                         <?php endforeach; ?>
                     </div>
-
+                    <div class="form-group mt-3">
+                        <button type="submit" class="button button-contactForm boxed-btn">Send</button>
+                    </div>
                     <!-- From -->
                     <div class="row">
                         <div class="col-lg-8">

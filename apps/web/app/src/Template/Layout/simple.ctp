@@ -9,10 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700&amp;display=swap" rel="stylesheet">
     
     <!-- CSS here -->
+    <link rel="stylesheet" data-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" data-optimized-fonts="true">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="/assets/css/ticker-style.css">
@@ -77,7 +76,7 @@
 
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="">Home</a></li>
+                                            <li><a href="/">Home</a></li>
                                             <li><a href="about.html">about</a></li>
                                             <li><a href="/category">Category</a>
                                                 <ul class="submenu">

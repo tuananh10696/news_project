@@ -38,11 +38,11 @@
 }
 
 .gray-bg {
-    background: #f4f4f4
+    background: #f2f2f280
 }
 
 .gray-bg {
-    background: #f4f4f4
+    background: #f2f2f280
 }
 
 .white-bg {
@@ -82,7 +82,7 @@
     color: #ff2143 !important;
     display: inline-block;
     padding: 18px 44px;
-    font-family: "Barlow", sans-serif;
+    font-family: "Roboto", Arial;
     font-size: 14px;
     font-weight: 400;
     border: 0;
@@ -161,7 +161,7 @@
 }
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto", Arial;
     font-weight: normal;
     font-style: normal
 }
@@ -172,7 +172,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Barlow", sans-serif;
+    font-family: "Roboto", Arial;
     color: #051441;
     margin-top: 0px;
     font-style: normal;
@@ -181,8 +181,8 @@ h6 {
 }
 
 p {
-    font-family: "Roboto", sans-serif;
-    color: #506172;
+    font-family: "Roboto", Arial;
+    color: #101111;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 15px;
@@ -364,6 +364,7 @@ hr {
 }
 
 .mb-90 {
+    margin-top: 20px;
     margin-bottom: 90px
 }
 
@@ -900,7 +901,8 @@ hr {
 }
 
 .mb-45 {
-    margin-bottom: 45px
+    margin-bottom: 45px;
+    margin-top: 20px
 }
 
 .mb-50 {
@@ -1556,7 +1558,8 @@ hr {
 }
 
 .pb-60 {
-    padding-bottom: 60px
+    padding-bottom: 60px;
+    padding-top: 30px
 }
 
 .pb-65 {
@@ -2748,7 +2751,7 @@ hr {
 }
 
 .gray-bg {
-    background: #f4f4f4
+    background: #fff
 }
 
 .gray-bg {
@@ -2884,7 +2887,8 @@ hr {
 
 .header-area .header-mid {
     padding: 9px 0px;
-    position: relative
+    position: relative;
+    background-color: #fff !important;
 }
 
 .header-area .header-mid .header-banner img {
@@ -2893,7 +2897,7 @@ hr {
 
 .header-area .header-bottom {
     box-shadow: 0px 0px 36px 0px rgba(0, 0, 0, 0.1);
-    background: #817c7dc7
+    background: #070b11cc
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
@@ -3640,7 +3644,8 @@ hr {
 .about-area2 .single-follow,
 .contact-section .single-follow {
     background: #fff;
-    padding: 30px 20px 30px 20px;
+    padding: 20px;
+    border: 1px solid #9f202035;
     border-radius: 7px
 }
 
