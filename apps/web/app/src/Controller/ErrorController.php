@@ -46,6 +46,13 @@ class ErrorController extends AppController
         // $this->redirect('/');
     }
 
+    public function index()
+    {
+
+        $this->viewBuilder()->setLayout(false);
+
+        $this->viewBuilder()->setTemplatePath('Error');
+    }
     /**
      * beforeRender callback.
      *
@@ -67,6 +74,5 @@ class ErrorController extends AppController
      * @return \Cake\Http\Response|null|void
      */
     public function afterFilter(Event $event)
-    {
-    }
+    { }
 }

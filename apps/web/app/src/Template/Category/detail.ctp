@@ -30,9 +30,9 @@
     }
 
     .customer-gallery img {
-        height: 229px;
+        height: 250px;
         margin: 15px 1px 3px 1px;
-        width: 398px
+        width: 431px
     }
 </style>
 <?php $this->end() ?>
@@ -52,7 +52,7 @@
                         <?php endforeach; ?>
                     </div>
                     <div class="form-group mt-3">
-                        <button type="submit" class="button button-contactForm boxed-btn">Send</button>
+                        <button type="submit" class="button button-contactForm boxed-btn boxed-btn22">← Trở Lại</button>
                     </div>
                     <!-- From -->
                     <div class="row">
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mt-3">
-                                    <button type="submit" class="button button-contactForm boxed-btn boxed-btn2">Send</button>
+                                    <button type="submit" class="button button-contactForm boxed-btn boxed-btn2">← Trở Lại</button>
                                 </div>
                             </form>
                         </div>

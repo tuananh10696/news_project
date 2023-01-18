@@ -27,7 +27,7 @@ class CategoryController extends AppController
         $this->set('category_id', $category_id ?? 0);
 
         $options = [
-            'limit' => 10,
+            'limit' => 1,
             'paginate' => true,
             'contain' => [
                 'PageConfigs',

@@ -7,9 +7,12 @@ use App\Model\Entity\AppendItem;
 <?php
 $this->start('beforeHeadClose');
 echo '<link rel="stylesheet" type="text/css" href="/user/common/js/datetimepicker-master/jquery.datetimepicker.css"/>';
-$this->end();
-?>
 
+?>
+<style>
+
+</style>
+<?php $this->end(); ?>
 <?php
 $page_config_title = h($page_config->page_title);
 if (isset($case_info))
@@ -426,6 +429,27 @@ if (isset($case_info))
 			$this.val('');
 			return false;
 		}
+	}
+
+	function getVideoYT(e) {
+		alert(1);
+		var inp_val = $(e).val();
+		
+		console.log(inp_val);
+		// if (inp_val != '') {
+		// 	$('.yt').removeClass('dpl_none');
+
+		// 	if (inp_val.match(/^\/movie\//)) {
+		// 		var video = `<video width="320" height="240" controls>
+		// 			<source src="${inp_val}" type="video/mp4">
+		// 		</video>`;
+		// 	} else {
+		// 		var id = matchYoutubeUrl(inp_val) ? matchYoutubeUrl(inp_val) : inp_val;
+		// 		var video = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+		// 	}
+
+		// 	$('.yt').html(video);
+		// } else $('.yt').addClass('dpl_none').html('');
 	}
 </script>
 <?= $this->Html->script('/user/common/js/info/base'); ?>

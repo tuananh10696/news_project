@@ -1,66 +1,130 @@
-$(function(){
+function setWysiwyg(elm, slug) {
 
-	// mouse over
-	$('.img_ovr').hover(function(){
-		$(this).attr('src', $(this).attr('src').replace(/_off/ig, '_on'));
-	}, function(){
-		$(this).attr('src', $(this).attr('src').replace(/_on/ig, '_off'));
-	});
+	if (slug == 'case') {
+		ClassicEditor
+			.create(document.querySelector(elm), {
+				'alignment': {
+					options: [
+						{ name: 'left', className: 'text-left' },
+						{ name: 'right', className: 'text-right' },
+						{ name: 'center', className: 'text-center' }
+					]
+				},
 
-	$('.alpha_ovr').hover(function(){
-		$(this).stop(false, true).animate({'opacity':0.7}, 500);
-	}, function(){
-		$(this).stop(false, true).animate({'opacity':1.0}, 500);
-	});
+				// removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
+				toolbar: {
+					items: [
+						'fontColor', 'fontBackgroundColor',
+						'|',
+						'bold', 'italic', 'underline', 'strikethrough',
+						'|',
+						'bulletedList', 'alignment',
+						'|',
+						'link'
+					],
+				},
 
-	// pagetop fadeInOut
-	$(window).scroll(function() {
-		var scrolly = $(this).scrollTop();
-		if (scrolly == 0) {
-			$('.pagetop').fadeOut('fast');
-		} else {
-			$('.pagetop').fadeIn();
+				mediaEmbed: {
+					previewsInData: true,
+				},
+				language: "jp",
+
+				list: {
+					properties: { styles: false, startIndex: false, reversed: false }
+				},
+
+				// a タグの設定
+				link: {
+					// attr target＝＿blank
+					addTargetToExternalLinks: true,
+				},
+
+			}).catch((error) => {
+				console.error(error);
+			});
+
+	} else {
+		ClassicEditor
+			.create(document.querySelector(elm), {
+				'alignment': {
+					options: [
+						{ name: 'left', className: 'text-left' },
+						{ name: 'right', className: 'text-right' },
+						{ name: 'center', className: 'text-center' }
+					]
+				},
+
+				// removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'],
+				toolbar: {
+					items: [
+						'fontColor', 'fontBackgroundColor',
+						'|',
+						'bold', 'italic', 'underline', 'strikethrough',
+						'|',
+						'bulletedList', 'alignment',
+						'|',
+						'link', 'insertTable', 'sourceEditing'
+					],
+				},
+				table: {
+					contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+				},
+
+				mediaEmbed: {
+					previewsInData: true,
+				},
+				language: "jp",
+
+				list: {
+					properties: { styles: false, startIndex: false, reversed: false }
+				},
+
+				// a タグの設定
+				link: {
+					// attr target＝＿blank
+					addTargetToExternalLinks: true,
+
+				},
+
+			}).catch((error) => {
+				console.error(error);
+			});
+
+	}
+
+	return;
+}
+
+
+function chooseFileUpload(e) {
+	var $this = $(e);
+	$this.parents('.td_parent').find('.error-message').remove();
+
+	var files = $this[0].files;
+	var types = $this.attr('data-type');
+	var types = types.split(",");
+
+	var is_file_type = false;
+
+
+	for (let i = 0; i < files.length; i++) {
+		const __type = files[i].type;
+		if ($.inArray(__type, types) === -1) {
+			is_file_type = true;
+			break;
 		}
-	});
-
-	// pagelink scroll
-	$('a[href^="#"]').click(function(){
-		var Hash = $(this.hash);
-		if ($(Hash).offset()) {
-			var HashOffset = $(Hash).offset().top;
-			$('html,body').animate({scrollTop: HashOffset}, 1000);
-		}
+	}
+	if (is_file_type) {
+		$this.parents('.td_parent').append(`<div class="error-message"><div class="error-message">指定されたファイルを選択してください</div></div>`);
+		$this.val('');
 		return false;
-	});
+	}
+}
 
-	// side menu
-	$('header .link_menu').on('click',function(){
-	  if($('header .link_menu').hasClass('off')){
-	    $('header .link_menu').removeClass('off');
-			$('header .link_menu').removeClass('icon-icn_menu');
-			$('header .link_menu').addClass('icon-icn_cross');
-	    $('#side').animate({'marginLeft':'246px'},200).addClass('on');
-			$('#content').animate({'paddingLeft':'246px'},200);
-
-			// $('#login .close').on('click',function(){
-			// 	$('#login').animate({'marginLeft':'0px'},200);
-			// 	$('.submenu .link_login').addClass('off');
-			// });
-
-	  }else{
-	    $('header .link_menu').addClass('off');
-			$('header .link_menu').removeClass('icon-icn_cross');
-			$('header .link_menu').addClass('icon-icn_menu');
-	    $('#side').animate({'marginLeft':'0px'},200);
-			$('#content').animate({'paddingLeft':'0px'},200);
-	  }
-	});
-
-	// side menu accordion
-	$('#side .parent_link').click(function(){
-			$(this).next('ul').slideToggle(500);
-			$(this).toggleClass('open');
-	});
+function matchYoutubeUrl(url) {
+	var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+	var matches = url.match(p);
+	return matches ? matches[1] : false;
+}
 
 
-});

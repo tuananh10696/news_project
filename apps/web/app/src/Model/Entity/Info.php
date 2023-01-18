@@ -31,14 +31,16 @@ class Info extends AppEntity
     const BLOCK_TYPE_DISCUSSION_CHAT = 24;
     const BLOCK_TYPE_MANY_IMG = 25;
     const BLOCK_TYPE_TEXT_IMG = 26;
+    const BLOCK_TYPE_YOUTUBE = 27;
 
     const BLOCK_TYPE_LIST = [
 
         self::BLOCK_TYPE_TITLE => '中見出し(H2)',
         self::BLOCK_TYPE_TITLE_H4 => '小見出し(H3)',
-        self::BLOCK_TYPE_TITLE_H5 => '小見出し(H5)',
+        self::BLOCK_TYPE_TITLE_H5 => '見出し（装飾のみ）',
         self::BLOCK_TYPE_TITLE_H6 => '小見出し(H6)',
         self::BLOCK_TYPE_MANY_IMG => '複数画像',
+        self::BLOCK_TYPE_YOUTUBE => 'YOUTUBE',
         self::BLOCK_TYPE_TEXT_IMG => '導入先お客様情報',
         self::BLOCK_TYPE_CONTENT => '本文',
         self::BLOCK_TYPE_IMAGE => '画像',
@@ -99,6 +101,7 @@ class Info extends AppEntity
         self::BLOCK_TYPE_DISCUSSION_MEMBER => 'DISCUSSION_MEMBER',
         self::BLOCK_TYPE_DISCUSSION_CHAT => 'DISCUSSION_CHAT',
         self::BLOCK_TYPE_MANY_IMG => 'MANY_IMG',
+        self::BLOCK_TYPE_YOUTUBE => 'YOUTUBE',
         self::BLOCK_TYPE_TEXT_IMG => 'client',
     ];
 
