@@ -36,7 +36,7 @@ class AppController extends Controller
     public $error_messages;
 
     public $head_description = '';
-
+    
     /**
      * Initialization hook method.
      *
@@ -49,13 +49,17 @@ class AppController extends Controller
     public function initialize(): void
     {
         parent::initialize();
+        $this->viewBuilder()->setHelpers([
+            'Paginator' => ['templates' => 'paginator-templates']
+        ]);
+
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-
+        $this->loadComponent('Paginator');
         $this->setHeadTitle();
         $this->Session = $this->request->getSession();
-        $this->viewBuilder()->setLayout(null);
+        $this->viewBuilder()->setLayout('simple');
 
         $this->is_preview = $this->isUserLogin() && $this->request->getQuery('preview') == 'on';
 
@@ -95,8 +99,7 @@ class AppController extends Controller
 
 
     private function _prepare()
-    {
-    }
+    { }
 
 
     protected function _setView($lists)

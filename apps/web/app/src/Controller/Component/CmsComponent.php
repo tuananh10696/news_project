@@ -26,7 +26,7 @@ class CmsComponent extends Component
     public function initialize(array $config): void
     {
 
-        $this->Controller = $this->_registry->getController();
+        $this->Controller = $this->getController();
         $this->Session = $this->Controller->getRequest()->getSession();
 
         $this->loadModel('Infos');
@@ -206,10 +206,11 @@ class CmsComponent extends Component
 
     public function findFirst($slug, $info_id, $options = [])
     {
-
-        if ($this->Controller->request->getQuery('preview') == 'on') {
+  
+        if ($this->Controller->getRequest('preview') == 'on') {
             $options['isPreview'] = true;
         }
+
 
         $entity = $this->_detail($slug, $info_id, $options);
         if (empty($entity)) {
@@ -320,7 +321,8 @@ class CmsComponent extends Component
 
     public function toHierarchization($id, $entity, $options = [])
     {
-        $data = $this->request->getData();
+        
+        // $data = $this->request->getData();
         $content_count = 0;
         $contents = [
             'contents' => []

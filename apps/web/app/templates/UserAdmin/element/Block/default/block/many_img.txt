@@ -1,0 +1,49 @@
+<tr>
+	<td>画像<span class="attent">※必須</span></td>
+	<td class="td_parent">
+		<div class="multiple-uploader" id="multiple-uploader" onclick="triggerInput(this, event)">
+
+			<!-- dispaly saved img -->
+			<?php $key = 0; ?>
+			<?php if ($entity->delete_ids) : ?>
+				<?php foreach ($entity->delete_ids as $delId) : ?>
+					<input name="delete_ids[]" type="checkbox" class="d-none" value="<?= $delId ?>" checked />
+				<?php endforeach; ?>
+			<?php endif; ?>
+
+			<?php if (isset($entity->info_contents)) foreach ($entity->info_contents as $img) : ?>
+
+				<?php if (@$img->attaches['image'][0] != '') : ?>
+
+					<input name="delete_ids[]" type="checkbox" id="deleteImg_<?= $img->id ?>" class="d-none" value="<?= $img->id ?>" />
+
+					<div class="image-container" data-pos="<?= $key ?>">
+						<label for="deleteImg_<?= $img->id ?>" onclick="deleteImgLabel(this)">x</label>
+
+						<?php $old = $img->_old_image ?? ($img->image ?? ''); ?>
+
+						<?= $this->Form->input("info_contents.{$key}._old_image", ['type' => 'hidden', 'value' => $old, 'class' => 'old_img']); ?>
+						<?= $this->Form->input("info_contents.{$key}.block_type", ['type' => 'hidden', 'value' => 41, 'class' => 'block_type']); ?>
+						<?= $this->Form->input("info_contents.{$key}.id", ['type' => 'hidden', 'value' => $img->id, 'class' => 'old_img_id']); ?>
+						<?= $this->Form->input("info_contents.{$key}.section_sequence_id", ['type' => 'hidden', 'value' => $img->section_sequence_id, 'class' => 'section_sequence_id']); ?>
+
+						<img src="<?= $img->attaches['image'][0] ?>" class="image-preview">
+					</div>
+					<?php $key++ ?>
+				<?php endif; ?>
+
+			<?php endforeach; ?>
+
+			<!-- render input img -->
+			<div class="mup-msg <?= $key != 0 ? "d-none" : '' ?>">
+				<span class="mup-main-msg">画像アップロードする。</span>
+				<span class="mup-msg" id="max-upload-number">※最大10ファイル・ファイルサイズ5MB以内</span>
+				<span class="mup-msg">※jpeg , jpg , gif , png ファイルのみ</span>
+			</div>
+
+			<?= $this->Form->input("_image_[]", ['multiple' => true, 'type' => 'file', 'class' => 'd-none attaches _image_', 'accept' => '.jpeg, .jpg, .gif, .png', 'onChange' => 'chooseFileUpload(this); previewImage(this); ', 'data-type' => 'image/jpeg,image/gif,image/png']); ?>
+			<?= $this->Form->input("__image__[]", ['multiple' => true, 'type' => 'file', 'class' => 'd-none __image__', 'accept' => '.jpeg, .jpg, .gif, .png']); ?>
+
+		</div>
+	</td>
+</tr>

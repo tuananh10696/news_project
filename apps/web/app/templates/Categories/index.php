@@ -37,21 +37,13 @@
               <a href="#">5</a>
               <a href="#" class="next">→</a> -->
 
-                <?php if (!$this->Paginator->hasPrev() && $key == 0) : ?>
-                  <li class="non">&nbsp;</li>
-                  <li class="non">&nbsp;</li>
-                <?php else : ?>
-                  <li class="cttop"><?= $this->Html->link('top', array('action' => 'position', $data->id, 'top', '?' => $query), ['class' => 'scroll_pos']) ?></li>
-                  <li class="ctup"><?= $this->Html->link('top', array('action' => 'position', $data->id, 'up', '?' => $query), ['class' => 'scroll_pos']) ?></li>
-                <?php endif; ?>
+              <?php if ($this->Paginator->hasPrev() || $this->Paginator->hasNext()) :?>
+                <?php if ($this->Paginator->hasPrev()) : ?><?= $this->Paginator->prev('') ?><?php endif; ?>
+                <?= $this->Paginator->numbers(); ?>
+                <?php if ($this->Paginator->hasNext()) : ?><?= $this->Paginator->next('') ?><?php endif; ?>
+              <?php endif; ?>
 
-                <?php if (!$this->Paginator->hasNext() && $key == count($datas) - 1) : ?>
-                  <li class="non">&nbsp;</li>
-                  <li class="non">&nbsp;</li>
-                <?php else : ?>
-                  <li class="ctdown"><?= $this->Html->link('top', array('action' => 'position', $data->id, 'down', '?' => $query), ['class' => 'scroll_pos']) ?></li>
-                  <li class="ctend"><?= $this->Html->link('bottom', array('action' => 'position', $data->id, 'bottom', '?' => $query), ['class' => 'scroll_pos']) ?></li>
-                <?php endif; ?>
+
 
             </div>
           </div>

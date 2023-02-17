@@ -1,23 +1,24 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.3
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 13, 2023 at 10:12 AM
--- Server version: 5.7.26
--- PHP Version: 7.4.2
+-- ホスト: localhost:8889
+-- 生成日時: 2023 年 2 月 17 日 09:53
+-- サーバのバージョン： 5.7.34
+-- PHP のバージョン: 7.4.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- Database: `shioya_iju`
+-- データベース: `news_project`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
+-- テーブルの構造 `admins`
 --
 
 CREATE TABLE `admins` (
@@ -31,7 +32,7 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admins`
+-- テーブルのデータのダンプ `admins`
 --
 
 INSERT INTO `admins` (`id`, `created`, `modified`, `name`, `username`, `password`, `role`) VALUES
@@ -40,7 +41,7 @@ INSERT INTO `admins` (`id`, `created`, `modified`, `name`, `username`, `password
 -- --------------------------------------------------------
 
 --
--- Table structure for table `append_items`
+-- テーブルの構造 `append_items`
 --
 
 CREATE TABLE `append_items` (
@@ -65,7 +66,7 @@ CREATE TABLE `append_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- テーブルの構造 `categories`
 --
 
 CREATE TABLE `categories` (
@@ -83,19 +84,18 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `categories`
+-- テーブルのデータのダンプ `categories`
 --
 
 INSERT INTO `categories` (`id`, `created`, `modified`, `page_config_id`, `parent_category_id`, `position`, `status`, `name`, `identifier`, `image`, `cate_color`) VALUES
-(1, '2023-02-06 05:28:28', '2023-02-06 05:28:28', 1, 0, 1, 'publish', 'お知らせ', '', NULL, NULL),
-(2, '2023-02-06 05:28:36', '2023-02-06 05:28:36', 1, 0, 2, 'publish', 'イベント', '', NULL, NULL),
-(3, '2023-02-10 06:09:00', '2023-02-10 06:09:00', 2, 0, 1, 'publish', 'test', NULL, NULL, NULL),
-(4, '2023-02-10 06:09:39', '2023-02-10 06:09:39', 2, 0, 2, 'publish', 'test', NULL, NULL, NULL);
+(1, '2023-02-15 16:34:34', '2023-02-15 17:34:23', 1, 0, 1, 'publish', '社会', NULL, NULL, NULL),
+(2, '2023-02-15 17:34:30', '2023-02-15 08:34:30', 1, 0, 2, 'publish', 'IT', NULL, NULL, NULL),
+(3, '2023-02-15 17:35:04', '2023-02-15 08:35:04', 1, 0, 3, 'publish', '旅行', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `infos`
+-- テーブルの構造 `infos`
 --
 
 CREATE TABLE `infos` (
@@ -131,17 +131,17 @@ CREATE TABLE `infos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `infos`
+-- テーブルのデータのダンプ `infos`
 --
 
 INSERT INTO `infos` (`id`, `created`, `modified`, `page_config_id`, `position`, `status`, `title`, `notes`, `start_datetime`, `date`, `start_date`, `start_time`, `end_date`, `end_time`, `image`, `file`, `file_name`, `file_size`, `file_extension`, `meta_description`, `meta_keywords`, `regist_user_id`, `category_id`, `index_type`, `multi_position`, `parent_info_id`, `value_text`, `popular`, `top_slide_display`) VALUES
-(1, '2023-02-13 16:47:52', '2023-02-13 10:05:57', 1, 2, 'publish', 'test', NULL, NULL, '2023-02-17', NULL, '0', NULL, '0', 'img_1_dbb0a209-fba8-4cf9-991e-5280ae94aaec.jpg', 'img_1_84b3a345-9778-4fcb-b9af-e0f63464a0ec.pdf', 'dummy (3)', 34839, 'pdf', NULL, '', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '2023-02-13 19:05:57', '2023-02-13 19:08:18', 1, 1, 'draft', 'aaaaa', NULL, NULL, '2023-02-13', NULL, '0', NULL, '0', 'img_2_5029a7df-3a58-4061-a5c6-24779caa01db.png', 'img_2_754af56f-39ec-4a19-9030-e26698eb41f2.pdf', '1234567890', 13264, 'pdf', NULL, '', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, '2023-02-15 16:32:38', '2023-02-17 18:21:57', 1, 2, 'publish', 'test', 'dddddddf', '2023-02-17 18:21:00', '2023-02-16', NULL, '0', NULL, '0', 'img_1_45474454-2304-4974-8654-ee333ecf075d.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '2023-02-15 17:35:38', '2023-02-15 17:36:11', 1, 1, 'publish', 'いtんれいね', 'dfdfdf', '2023-02-15 17:35:00', NULL, NULL, '0', NULL, '0', 'img_2_bfc5fbd1-1281-4514-bc85-8b269aa9714a.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_append_items`
+-- テーブルの構造 `info_append_items`
 --
 
 CREATE TABLE `info_append_items` (
@@ -167,7 +167,7 @@ CREATE TABLE `info_append_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_categories`
+-- テーブルの構造 `info_categories`
 --
 
 CREATE TABLE `info_categories` (
@@ -181,7 +181,7 @@ CREATE TABLE `info_categories` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_contents`
+-- テーブルの構造 `info_contents`
 --
 
 CREATE TABLE `info_contents` (
@@ -194,7 +194,11 @@ CREATE TABLE `info_contents` (
   `title` varchar(100) DEFAULT NULL,
   `h2` varchar(100) DEFAULT NULL,
   `content` text,
+  `content_2` text,
+  `content_3` text,
   `image` varchar(100) DEFAULT NULL,
+  `image_2` varchar(200) DEFAULT NULL,
+  `image_3` varchar(200) DEFAULT NULL,
   `img_alt` varchar(255) DEFAULT NULL,
   `image_pos` varchar(10) DEFAULT NULL,
   `file` varchar(100) DEFAULT NULL,
@@ -205,14 +209,25 @@ CREATE TABLE `info_contents` (
   `option_value` varchar(255) DEFAULT NULL,
   `option_value2` varchar(40) DEFAULT NULL,
   `option_value3` varchar(40) DEFAULT NULL,
-  `before_text` text,
-  `after_text` text
+  `title_content` text,
+  `title_content_2` varchar(200) DEFAULT NULL,
+  `title_content_3` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- テーブルのデータのダンプ `info_contents`
+--
+
+INSERT INTO `info_contents` (`id`, `created`, `modified`, `info_id`, `block_type`, `position`, `title`, `h2`, `content`, `content_2`, `content_3`, `image`, `image_2`, `image_3`, `img_alt`, `image_pos`, `file`, `file_size`, `file_name`, `file_extension`, `section_sequence_id`, `option_value`, `option_value2`, `option_value3`, `title_content`, `title_content_2`, `title_content_3`) VALUES
+(1, '2023-02-17 16:07:27', '2023-02-17 18:21:57', 1, '7', 1, NULL, '※横幅700以上を推奨。1200x1200以内に縮小されます。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '2023-02-17 16:07:27', '2023-02-17 18:21:57', 1, '3', 2, NULL, NULL, '', NULL, NULL, 'img_2_a3c74647-b03f-4270-83fe-1a3bd36f7d9c.jpeg', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL),
+(3, '2023-02-17 17:31:03', '2023-02-17 18:21:57', 1, '2', 3, NULL, NULL, '<p>&nbsp;refsd</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, '2023-02-17 18:21:57', '2023-02-17 18:21:57', 1, '18', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_stock_tables`
+-- テーブルの構造 `info_stock_tables`
 --
 
 CREATE TABLE `info_stock_tables` (
@@ -228,7 +243,7 @@ CREATE TABLE `info_stock_tables` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_tags`
+-- テーブルの構造 `info_tags`
 --
 
 CREATE TABLE `info_tags` (
@@ -242,7 +257,7 @@ CREATE TABLE `info_tags` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `info_tops`
+-- テーブルの構造 `info_tops`
 --
 
 CREATE TABLE `info_tops` (
@@ -259,7 +274,7 @@ CREATE TABLE `info_tops` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kvs`
+-- テーブルの構造 `kvs`
 --
 
 CREATE TABLE `kvs` (
@@ -274,7 +289,26 @@ CREATE TABLE `kvs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mst_lists`
+-- テーブルの構造 `many_images`
+--
+
+CREATE TABLE `many_images` (
+  `id` int(11) NOT NULL,
+  `info_id` int(11) NOT NULL,
+  `page_config_id` int(11) NOT NULL,
+  `info_content_id` int(11) NOT NULL,
+  `image_1` varchar(200) DEFAULT NULL,
+  `image_2` varchar(200) DEFAULT NULL,
+  `image_3` varchar(200) DEFAULT NULL,
+  `image_4` varchar(200) DEFAULT NULL,
+  `image_5` varchar(200) DEFAULT NULL,
+  `image_6` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `mst_lists`
 --
 
 CREATE TABLE `mst_lists` (
@@ -294,7 +328,7 @@ CREATE TABLE `mst_lists` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page_configs`
+-- テーブルの構造 `page_configs`
 --
 
 CREATE TABLE `page_configs` (
@@ -328,16 +362,16 @@ CREATE TABLE `page_configs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `page_configs`
+-- テーブルのデータのダンプ `page_configs`
 --
 
 INSERT INTO `page_configs` (`id`, `created`, `modified`, `site_config_id`, `position`, `page_title`, `slug`, `header`, `footer`, `is_public_date`, `is_public_time`, `page_template_id`, `description`, `keywords`, `is_category`, `is_category_sort`, `is_category_multiple`, `is_category_multilevel`, `modified_category_role`, `max_multilevel`, `disable_position_order`, `disable_preview`, `is_auto_menu`, `list_style`, `root_dir_type`, `link_color`, `parent_config_id`) VALUES
-(1, '2023-02-13 16:43:56', '2023-02-13 07:43:56', 1, 1, 'お知らせ', 'news', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 1, 0, '0', '0', '1', '1', '0', '#000000', 0);
+(1, '2023-02-13 16:43:56', '2023-02-17 17:46:54', 1, 1, 'お知らせ', 'categories', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 1, 0, '0', '0', '1', '1', '0', '#000000', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page_config_extensions`
+-- テーブルの構造 `page_config_extensions`
 --
 
 CREATE TABLE `page_config_extensions` (
@@ -356,7 +390,7 @@ CREATE TABLE `page_config_extensions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page_config_items`
+-- テーブルの構造 `page_config_items`
 --
 
 CREATE TABLE `page_config_items` (
@@ -379,35 +413,26 @@ CREATE TABLE `page_config_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `page_config_items`
+-- テーブルのデータのダンプ `page_config_items`
 --
 
 INSERT INTO `page_config_items` (`id`, `created`, `modified`, `page_config_id`, `position`, `parts_type`, `item_key`, `status`, `memo`, `title`, `sub_title`, `editable_role`, `viewable_role`, `item_type`, `is_required`, `max_length`) VALUES
-(1, '2023-02-13 16:49:22', '2023-02-13 08:02:52', 1, 3, 'main', 'title', 'Y', '', 'タイトル', '', 'staff', 'staff', 'text', 1, 200),
-(2, '2023-02-13 16:51:06', '2023-02-14 18:13:51', 1, 4, 'main', 'category_id', 'N', '', 'カテゴリ', '', 'staff', 'staff', 'select', 1, 0),
-(3, '2023-02-13 17:02:02', '2023-02-13 08:02:54', 1, 1, 'main', 'date', 'Y', '', '登録日', '', 'staff', 'staff', 'date', 1, 0),
-(4, '2023-02-13 17:02:48', '2023-02-13 08:02:54', 1, 2, 'main', 'status', 'Y', '', '記事表示', '', 'staff', 'staff', 'radio', 1, 0),
-(5, '2023-02-13 17:43:09', '2023-02-14 18:13:53', 1, 5, 'main', 'file', 'N', '', 'ファイル', '', 'staff', 'staff', 'file', 1, 0),
-(7, '2023-02-14 15:14:07', '2023-02-14 15:16:21', 2, 1, 'main', 'top_slide_display', 'Y', '', 'radio', '', 'staff', 'staff', 'radio', 1, 0),
-(9, '2023-02-14 16:19:37', '2023-02-15 00:59:42', 1, 10, 'block', 'image', 'Y', '', '画像', '', 'staff', 'staff', '3', 0, 0),
-(10, '2023-02-14 17:51:50', '2023-02-15 00:59:42', 1, 6, 'block', 'h2', 'Y', '', '', '', 'staff', 'staff', '7', 0, 0),
-(11, '2023-02-14 17:52:03', '2023-02-15 00:59:42', 1, 7, 'block', 'h3', 'Y', '', '', '', 'staff', 'staff', '1', 0, 0),
-(12, '2023-02-14 17:52:13', '2023-02-15 00:59:42', 1, 8, 'block', 'h4', 'Y', '', '', '', 'staff', 'staff', '5', 0, 0),
-(13, '2023-02-14 17:52:24', '2023-02-15 00:59:42', 1, 9, 'block', 'content', 'Y', '', '', '', 'staff', 'staff', '2', 0, 0),
-(14, '2023-02-14 17:52:35', '2023-02-15 00:59:42', 1, 11, 'block', 'file', 'Y', '', '', '', 'staff', 'staff', '4', 0, 0),
-(15, '2023-02-14 17:53:01', '2023-02-15 00:59:42', 1, 12, 'block', 'button', 'Y', '', '', '', 'staff', 'staff', '8', 0, 0),
-(16, '2023-02-14 17:53:19', '2023-02-15 00:59:42', 1, 13, 'block', 'line', 'Y', '', '', '', 'staff', 'staff', '9', 0, 0),
-(17, '2023-02-14 17:53:43', '2023-02-15 00:59:42', 1, 14, 'block', 'with_image', 'Y', '', '', '', 'staff', 'staff', '11', 0, 0),
-(18, '2023-02-14 18:08:20', '2023-02-15 00:59:42', 1, 15, 'block', 'mm', 'Y', '', '', '', 'staff', 'staff', '15', 0, 0),
-(19, '2023-02-14 18:08:31', '2023-02-15 10:22:46', 1, 16, 'block', 'kw', 'Y', '', '', '', 'staff', 'staff', '16', 0, 0),
-(25, '2023-02-15 10:21:13', '2023-02-15 11:07:54', 1, 17, 'main', 'image', 'Y', NULL, '', '', 'staff', 'staff', 'image', 1, 0),
-(26, '2023-02-15 10:21:28', '2023-02-15 10:54:26', 1, 18, 'section', '', 'Y', NULL, '', '', 'staff', 'staff', '10', 0, 0),
-(27, '2023-02-15 10:21:47', '2023-02-15 01:21:47', 1, 19, 'block', 'user_kaiwa', 'Y', NULL, '', '', 'staff', 'staff', '17', 0, 0);
+(1, '2023-02-15 16:32:29', '2023-02-15 08:23:28', 1, 3, 'main', 'title', 'Y', NULL, 'タイトル', '', 'staff', 'staff', 'text', 1, 100),
+(2, '2023-02-15 16:34:08', '2023-02-15 08:23:28', 1, 2, 'main', 'category_id', 'Y', NULL, 'カテゴリー', '', 'staff', 'staff', 'select', 1, 0),
+(3, '2023-02-15 16:39:28', '2023-02-15 08:23:39', 1, 6, 'main', 'image', 'Y', NULL, '一覧画像', '', 'staff', 'staff', 'image', 1, 0),
+(4, '2023-02-15 17:02:33', '2023-02-17 16:05:23', 1, 1, 'main', 'start_datetime', 'Y', NULL, '掲載日', '', 'staff', 'staff', 'datetime', 1, 0),
+(5, '2023-02-15 17:15:41', '2023-02-15 08:23:36', 1, 4, 'main', 'date', 'N', NULL, '', '', 'staff', 'staff', 'date', 0, 0),
+(6, '2023-02-15 17:22:31', '2023-02-15 08:23:39', 1, 5, 'main', 'notes', 'Y', NULL, '概要', '', 'staff', 'staff', 'text', 1, 200),
+(7, '2023-02-15 18:13:25', '2023-02-15 09:13:25', 1, 7, 'block', 'title', 'Y', NULL, '', '', 'staff', 'staff', '7', 0, 0),
+(8, '2023-02-17 16:06:28', '2023-02-17 16:06:53', 1, 8, 'block', 'image', 'Y', NULL, '', '', 'staff', 'staff', '3', 0, 0),
+(9, '2023-02-17 16:11:57', '2023-02-17 07:11:57', 1, 9, 'block', 'title_h2', 'Y', NULL, '', '', 'staff', 'staff', '1', 0, 0),
+(10, '2023-02-17 16:13:00', '2023-02-17 16:13:13', 1, 10, 'block', 'content', 'Y', NULL, '', '', 'staff', 'staff', '2', 0, 0),
+(11, '2023-02-17 16:33:02', '2023-02-17 17:46:01', 1, 0, 'block', 'many_img', 'Y', NULL, '', '', 'staff', 'staff', '18', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phinxlog`
+-- テーブルの構造 `phinxlog`
 --
 
 CREATE TABLE `phinxlog` (
@@ -421,7 +446,7 @@ CREATE TABLE `phinxlog` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedules`
+-- テーブルの構造 `schedules`
 --
 
 CREATE TABLE `schedules` (
@@ -436,7 +461,7 @@ CREATE TABLE `schedules` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `section_sequences`
+-- テーブルの構造 `section_sequences`
 --
 
 CREATE TABLE `section_sequences` (
@@ -449,7 +474,7 @@ CREATE TABLE `section_sequences` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_configs`
+-- テーブルの構造 `site_configs`
 --
 
 CREATE TABLE `site_configs` (
@@ -464,7 +489,7 @@ CREATE TABLE `site_configs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `site_configs`
+-- テーブルのデータのダンプ `site_configs`
 --
 
 INSERT INTO `site_configs` (`id`, `created`, `modified`, `position`, `status`, `site_name`, `slug`, `is_root`) VALUES
@@ -473,7 +498,7 @@ INSERT INTO `site_configs` (`id`, `created`, `modified`, `position`, `status`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tags`
+-- テーブルの構造 `tags`
 --
 
 CREATE TABLE `tags` (
@@ -489,7 +514,7 @@ CREATE TABLE `tags` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- テーブルの構造 `user`
 --
 
 CREATE TABLE `user` (
@@ -506,7 +531,7 @@ CREATE TABLE `user` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `useradmins`
+-- テーブルの構造 `useradmins`
 --
 
 CREATE TABLE `useradmins` (
@@ -526,7 +551,7 @@ CREATE TABLE `useradmins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `useradmins`
+-- テーブルのデータのダンプ `useradmins`
 --
 
 INSERT INTO `useradmins` (`id`, `created`, `modified`, `email`, `username`, `password`, `temp_password`, `temp_pass_expired`, `temp_key`, `name`, `status`, `face_image`, `role`) VALUES
@@ -536,7 +561,7 @@ INSERT INTO `useradmins` (`id`, `created`, `modified`, `email`, `username`, `pas
 -- --------------------------------------------------------
 
 --
--- Table structure for table `useradmin_sites`
+-- テーブルの構造 `useradmin_sites`
 --
 
 CREATE TABLE `useradmin_sites` (
@@ -548,7 +573,7 @@ CREATE TABLE `useradmin_sites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `useradmin_sites`
+-- テーブルのデータのダンプ `useradmin_sites`
 --
 
 INSERT INTO `useradmin_sites` (`id`, `created`, `modified`, `useradmin_id`, `site_config_id`) VALUES
@@ -556,78 +581,84 @@ INSERT INTO `useradmin_sites` (`id`, `created`, `modified`, `useradmin_id`, `sit
 (2, '2022-12-08 18:30:57', '2022-12-08 18:30:57', 2, 1);
 
 --
--- Indexes for dumped tables
+-- ダンプしたテーブルのインデックス
 --
 
 --
--- Indexes for table `admins`
+-- テーブルのインデックス `admins`
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indexes for table `append_items`
+-- テーブルのインデックス `append_items`
 --
 ALTER TABLE `append_items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `categories`
+-- テーブルのインデックス `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `infos`
+-- テーブルのインデックス `infos`
 --
 ALTER TABLE `infos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_append_items`
+-- テーブルのインデックス `info_append_items`
 --
 ALTER TABLE `info_append_items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_categories`
+-- テーブルのインデックス `info_categories`
 --
 ALTER TABLE `info_categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_contents`
+-- テーブルのインデックス `info_contents`
 --
 ALTER TABLE `info_contents`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_stock_tables`
+-- テーブルのインデックス `info_stock_tables`
 --
 ALTER TABLE `info_stock_tables`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_tags`
+-- テーブルのインデックス `info_tags`
 --
 ALTER TABLE `info_tags`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `info_tops`
+-- テーブルのインデックス `info_tops`
 --
 ALTER TABLE `info_tops`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `kvs`
+-- テーブルのインデックス `kvs`
 --
 ALTER TABLE `kvs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `mst_lists`
+-- テーブルのインデックス `many_images`
+--
+ALTER TABLE `many_images`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- テーブルのインデックス `mst_lists`
 --
 ALTER TABLE `mst_lists`
   ADD PRIMARY KEY (`id`),
@@ -635,204 +666,211 @@ ALTER TABLE `mst_lists`
   ADD KEY `sys_cd_2` (`sys_cd`,`slug`);
 
 --
--- Indexes for table `page_configs`
+-- テーブルのインデックス `page_configs`
 --
 ALTER TABLE `page_configs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `page_config_extensions`
+-- テーブルのインデックス `page_config_extensions`
 --
 ALTER TABLE `page_config_extensions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `page_config_items`
+-- テーブルのインデックス `page_config_items`
 --
 ALTER TABLE `page_config_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `page_config_id` (`page_config_id`);
 
 --
--- Indexes for table `phinxlog`
+-- テーブルのインデックス `phinxlog`
 --
 ALTER TABLE `phinxlog`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `schedules`
+-- テーブルのインデックス `schedules`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `section_sequences`
+-- テーブルのインデックス `section_sequences`
 --
 ALTER TABLE `section_sequences`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `site_configs`
+-- テーブルのインデックス `site_configs`
 --
 ALTER TABLE `site_configs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tags`
+-- テーブルのインデックス `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- テーブルのインデックス `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `useradmins`
+-- テーブルのインデックス `useradmins`
 --
 ALTER TABLE `useradmins`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `useradmin_sites`
+-- テーブルのインデックス `useradmin_sites`
 --
 ALTER TABLE `useradmin_sites`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- ダンプしたテーブルの AUTO_INCREMENT
 --
 
 --
--- AUTO_INCREMENT for table `admins`
+-- テーブルの AUTO_INCREMENT `admins`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `append_items`
+-- テーブルの AUTO_INCREMENT `append_items`
 --
 ALTER TABLE `append_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `categories`
+-- テーブルの AUTO_INCREMENT `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `infos`
+-- テーブルの AUTO_INCREMENT `infos`
 --
 ALTER TABLE `infos`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `info_append_items`
+-- テーブルの AUTO_INCREMENT `info_append_items`
 --
 ALTER TABLE `info_append_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `info_categories`
+-- テーブルの AUTO_INCREMENT `info_categories`
 --
 ALTER TABLE `info_categories`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `info_contents`
+-- テーブルの AUTO_INCREMENT `info_contents`
 --
 ALTER TABLE `info_contents`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `info_stock_tables`
+-- テーブルの AUTO_INCREMENT `info_stock_tables`
 --
 ALTER TABLE `info_stock_tables`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `info_tags`
+-- テーブルの AUTO_INCREMENT `info_tags`
 --
 ALTER TABLE `info_tags`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `info_tops`
+-- テーブルの AUTO_INCREMENT `info_tops`
 --
 ALTER TABLE `info_tops`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `kvs`
+-- テーブルの AUTO_INCREMENT `kvs`
 --
 ALTER TABLE `kvs`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `mst_lists`
+-- テーブルの AUTO_INCREMENT `many_images`
+--
+ALTER TABLE `many_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- テーブルの AUTO_INCREMENT `mst_lists`
 --
 ALTER TABLE `mst_lists`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `page_configs`
+-- テーブルの AUTO_INCREMENT `page_configs`
 --
 ALTER TABLE `page_configs`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `page_config_extensions`
+-- テーブルの AUTO_INCREMENT `page_config_extensions`
 --
 ALTER TABLE `page_config_extensions`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `page_config_items`
+-- テーブルの AUTO_INCREMENT `page_config_items`
 --
 ALTER TABLE `page_config_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `schedules`
+-- テーブルの AUTO_INCREMENT `schedules`
 --
 ALTER TABLE `schedules`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `section_sequences`
+-- テーブルの AUTO_INCREMENT `section_sequences`
 --
 ALTER TABLE `section_sequences`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `site_configs`
+-- テーブルの AUTO_INCREMENT `site_configs`
 --
 ALTER TABLE `site_configs`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `tags`
+-- テーブルの AUTO_INCREMENT `tags`
 --
 ALTER TABLE `tags`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- テーブルの AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `useradmins`
+-- テーブルの AUTO_INCREMENT `useradmins`
 --
 ALTER TABLE `useradmins`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `useradmin_sites`
+-- テーブルの AUTO_INCREMENT `useradmin_sites`
 --
 ALTER TABLE `useradmin_sites`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;

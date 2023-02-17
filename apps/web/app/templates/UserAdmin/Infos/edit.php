@@ -74,4 +74,5 @@
 </script>
 <?= $this->Html->script('/user/common/js/info/base'); ?>
 <?= $this->Html->script('/user/common/js/info/edit'); ?>
+<script src="/user/common/js/info/multiple-uploader.js"></script>
 <?php $this->end(); ?>

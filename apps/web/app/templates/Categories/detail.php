@@ -7,96 +7,14 @@
 
                     <!-- ======= Single Post Content ======= -->
                     <div class="single-post">
-                        <div class="post-meta"><span class="date">Business</span> <span class="mx-1">&bullet;</span> <span>Jul 5th
-                                '22</span></div>
-                        <h1 class="mb-5">13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</h1>
-                        <p><span class="firstcharacter">L</span>orem ipsum dolor sit, amet consectetur adipisicing elit. Ratione
-                            officia sed, suscipit distinctio, numquam omnis quo fuga ipsam quis inventore voluptatum recusandae
-                            culpa, unde doloribus saepe labore alias voluptate expedita? Dicta delectus beatae explicabo odio
-                            voluptatibus quas, saepe qui aperiam autem obcaecati, illo et! Incidunt voluptas culpa neque repellat
-                            sint, accusamus beatae, cumque autem tempore quisquam quam eligendi harum debitis.</p>
-                        <section class="mb-5 bg-light py-5">
-                            <div class="container" data-aos="fade-up">
-                                <div class="row justify-content-between align-items-lg-center">
-                                    <div class="col-lg-5 mb-4 mb-lg-0">
-                                        <h2 class="display-4 mb-4">Latest News</h2>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, rem eaque vel est asperiores iste
-                                            dolore nesciunt culpa adipisci nemo expedita suscipit autem dolorum rerum?</p>
-                                        <p>At magni dolore ullam odio sapiente ipsam, numquam eius minus animi inventore alias quam fugit
-                                            corrupti error iste laboriosam dolorum culpa doloremque eligendi repellat iusto vel impedit odit
-                                            cum. Sequi atque molestias nesciunt rem eum pariatur quibusdam deleniti saepe eius maiores porro
-                                            quam, praesentium ipsa deserunt laboriosam adipisci. Optio, animi!</p>
-                                        <p><a href="#" class="more">View All Blog Posts</a></p>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <img src="assets/img/post-portrait-3.jpg" alt="" class="img-fluid mb-4">
-                                            </div>
-                                            <div class="col-6 mt-4">
-                                                <img src="assets/img/post-portrait-4.jpg" alt="" class="img-fluid mb-4">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section>
-                            <div class="container aos-init aos-animate" data-aos="fade-up">
-                                <div class="row">
-                                    <div class="col-lg-4 text-center mb-5">
-                                        <img src="assets/img/person-1.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4" style="border-radius: 5%!important;width: 100%!important;">
-                                        <h4>Cameron Williamson</h4>
-                                        <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat
-                                            ullam temporibus aut!</p>
-                                    </div>
-                                    <div class="col-lg-4 text-center mb-5">
-                                        <img src="assets/img/person-2.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4" style="border-radius: 5%!important;width: 100%!important;">
-                                        <h4>Wade Warren</h4>
-                                        <span class="d-block mb-3 text-uppercase">Founder, VP</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat
-                                            ullam temporibus aut!</p>
-                                    </div>
-                                    <div class="col-lg-4 text-center mb-5">
-                                        <img src="assets/img/person-3.jpg" alt="" class="img-fluid rounded-circle w-50 mb-4" style="border-radius: 5%!important;width: 100%!important;">
-                                        <h4>Jane Cooper</h4>
-                                        <span class="d-block mb-3 text-uppercase">Editor Staff</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat
-                                            ullam temporibus aut!</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <figure class="my-4">
-                            <img src="assets/img/post-landscape-1.jpg" alt="" class="img-fluid">
-                            <figcaption>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, odit? </figcaption>
-                        </figure>
-                        <p>Sunt reprehenderit, hic vel optio odit est dolore, distinctio iure itaque enim pariatur ducimus. Rerum
-                            soluta, perspiciatis voluptatum cupiditate praesentium repellendus quas expedita exercitationem tempora
-                            aliquam quaerat in eligendi adipisci harum non omnis reprehenderit quidem beatae modi. Ea fugiat enim
-                            libero, ipsam dicta explicabo nihil, tempore, nulla repellendus eos necessitatibus eligendi corporis
-                            cum? Eaque harum, eligendi itaque numquam aliquam soluta.</p>
-                        <p>Explicabo perspiciatis, laborum provident voluptates illum in nulla consectetur atque quaerat excepturi
-                            quisquam, veniam velit ex pariatur quos consequuntur? Excepturi reiciendis perferendis, cupiditate
-                            dolorem eos illum amet. Beatae voluptates nemo esse ratione voluptate, nesciunt fugit magnam veritatis
-                            voluptas dignissimos doloribus maiores? Aliquam, dolores natus exercitationem corrupti blanditiis,
-                            consequuntur nihil nobis sed voluptatibus maiores sunt, illo provident aliquid laborum. Vitae, ut.</p>
 
-                        <figure class="my-4">
-                            <img src="assets/img/post-landscape-5.jpg" alt="" class="img-fluid">
-                            <figcaption>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, odit? </figcaption>
-                        </figure>
-                        <p>Quis molestiae, dolorem consequuntur labore perferendis enim accusantium commodi optio, sequi magnam ad
-                            consectetur iste omnis! Voluptatibus, quia officia esse necessitatibus magnam tempore reprehenderit quo
-                            aspernatur! Assumenda, minus dolorem repellendus corporis corrupti quia temporibus repudiandae in. Sit
-                            rem aut, consectetur repudiandae perferendis nemo alias, iure ipsam omnis quam soluta, nobis animi quis
-                            aliquam blanditiis at. Dicta nemo vero sequi exercitationem.</p>
-
+                        <?php foreach ($contents as $content) : ?>
+                            <?= $this->element('info/content_' . $content['block_type'], ['c' => $content]); ?>
+                        <?php endforeach; ?>
                     </div><!-- End Single Post Content -->
 
                     <!-- ======= Comments ======= -->
-                    <div class="comments">
+                    <!-- <div class="comments">
                         <h5 class="comment-title py-4">2 Comments</h5>
                         <div class="comment d-flex mb-4">
                             <div class="flex-shrink-0">
@@ -171,7 +89,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Comments -->
+                    </div> -->
+                    <!-- End Comments -->
 
                     <!-- ======= Comments Form ======= -->
                     <div class="row justify-content-center mt-5">

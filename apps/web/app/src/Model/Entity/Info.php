@@ -28,6 +28,7 @@ class Info extends AppEntity
     const BLOCK_TYPE_MEMO = 15;
     const BLOCK_TYPE_KAIWA = 16;
     const BLOCK_TYPE_USER_INTRO = 17;
+    const BLOCK_TYPE_MANY_IMG = 18;
 
     const BLOCK_TYPE_LIST = [
         self::BLOCK_TYPE_TITLE_H2 => '大見出し',
@@ -42,6 +43,7 @@ class Info extends AppEntity
         self::BLOCK_TYPE_MEMO => 'メモ',
         self::BLOCK_TYPE_KAIWA => '会話',
         self::BLOCK_TYPE_USER_INTRO => 'ユーザ紹介',
+        self::BLOCK_TYPE_MANY_IMG => '複数画像',
 
     ];
 
@@ -84,6 +86,7 @@ class Info extends AppEntity
         self::BLOCK_TYPE_MEMO => 'MEMO',
         self::BLOCK_TYPE_KAIWA => 'KAIWA',
         self::BLOCK_TYPE_USER_INTRO => 'USER_INTRO',
+        self::BLOCK_TYPE_MANY_IMG => 'MANY_IMG',
     ];
 
     static $option_default_values = [
