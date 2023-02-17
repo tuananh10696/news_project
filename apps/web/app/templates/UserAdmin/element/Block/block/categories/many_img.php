@@ -2,8 +2,8 @@
 	<div class="table__column">
 		<div class="block_header">
 			<?= $this->Form->input("many_img.{$rownum}.info_id", ['type' => 'hidden', 'value' => @$content['id'], 'id' => "idBlockId_" . h($rownum)]); ?>
-			<?= $this->Form->input("many_img.{$rownum}.page_config", ['type' => 'hidden', 'value' => h($content['position'])]); ?>
-			<?= $this->Form->input("many_img.{$rownum}.block_type", ['type' => 'hidden', 'value' => h($content['block_type']), 'class' => 'block_type']); ?>
+			<?= $this->Form->input("many_img.{$rownum}.page_config_id", ['type' => 'hidden', 'value' => '']); ?>
+			<?= $this->Form->input("many_img.{$rownum}.info_content_id", ['type' => 'hidden', 'value' => '']); ?>
 		</div>
 		<div class="multiple-uploader" id="multiple-uploader">
 			<div class="mup-msg">

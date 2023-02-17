@@ -3,7 +3,6 @@ apps/web/app/bin
 apps/web/app/logs
 apps/web/app/plugins
 apps/web/app/tmp
-vendor
 composer.lock
 public_html/admin_lte
 text.txt
