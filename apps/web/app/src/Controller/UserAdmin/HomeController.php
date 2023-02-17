@@ -16,9 +16,8 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Event\Event;
-
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Event\EventInterface;
 
 /**
  * Static content controller
@@ -30,53 +29,45 @@ use Cake\Auth\DefaultPasswordHasher;
 class HomeController extends AppController
 {
 
-
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
         $this->PageConfigs = $this->getTableLocator()->get('PageConfigs');
         $this->Useradmins = $this->getTableLocator()->get('Useradmins');
         $this->UseradminSites = $this->getTableLocator()->get('UseradminSites');
-        $this->Producers = $this->getTableLocator()->get('Producers');
 
         $this->useradminId = $this->Session->read('useradminId');
     }
 
 
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
+        parent::beforeFilter($event);
         $this->viewBuilder()->setLayout("user");
-        $this->setCommon();
-        $this->getEventManager()->off($this->Csrf);
     }
 
 
     public function index()
     {
         $hasher = new DefaultPasswordHasher();
-        $this->viewBuilder()->setLayout("plain");
 
         $layout = "plain";
         $view = "login";
+        $r = null;
 
-        $r = [];
-
-        if ($this->request->is(['post', 'puts'])) {
+        if ($this->request->is(['post', 'put'])) {
             $data = $this->request->getData();
 
-            if (!isset($data['username']) || !isset($data['password'])) goto CHECKSESSION;
+            if (!isset($data['username']) || !isset($data['password']) || empty($data['username']) || empty($data['password'])) goto CHECKSESSION;
 
             $r = $this->Useradmins->find()
-                ->where(
-                    [
-                        'Useradmins.username' => $data['username'],
-                        'Useradmins.status' => 'publish'
-                    ]
-                )
+                ->where(['Useradmins.username' => $data['username'], 'Useradmins.status' => 'publish'])
                 ->first();
 
-            if (!$r) {
+            $is_login = $r ? ($hasher->check($data['password'], $r->password) && $r->temp_password == '') || $r->temp_password == $data['password'] : false;
+
+            if (!$is_login) {
                 $this->Flash->warning('アカウント名またはパスワードが違います', [
                     'key' => 'login_fail',
                     'params' => [
@@ -86,10 +77,6 @@ class HomeController extends AppController
                 ]);
                 goto CHECKSESSION;
             }
-
-            $is_login = ($hasher->check($data['password'], $r->password) && $r->temp_password == '') || $r->temp_password == $data['password'];
-
-            if (!$is_login) goto CHECKSESSION;
 
             $face_image = $r->face_image ? $r->attaches['face_image']['s'] : '';
 
@@ -102,18 +89,19 @@ class HomeController extends AppController
                 'user_role' => $r->role
             ]);
 
+            $this->setCommon();
             $this->AdminMenu->init();
             $this->redirect(['action' => 'index']);
         }
 
         CHECKSESSION:
-
-        if (($this->Session->check('useradminId') && 0 < $this->Session->read('useradminId')) || $this->Session->read('shopId')) {
+        $is_login = ($this->Session->check('useradminId') && 0 < $this->Session->read('useradminId'));
+        if ($is_login || $this->Session->read('shopId')) {
             $layout = 'user';
             $view = "index";
             $this->setList();
 
-            if (($this->Session->check('useradminId') && 0 < $this->Session->read('useradminId'))) {
+            if ($is_login) {
                 if ($this->isUserRole('user_regist', true))
                     return $this->redirect(['prefix' => 'user_regist', 'controller' => 'home', 'action' => 'index']);
 
@@ -128,7 +116,7 @@ class HomeController extends AppController
 
     public function logout()
     {
-        if ($this->Session->check('useradminId') && 0 < $this->Session->read('useradminId')) {
+        if (0 < $this->Session->read('useradminId')) {
             $this->Session->delete('useradminId');
             $this->Session->delete('role');
             $this->Session->delete('current_site_id');
@@ -143,7 +131,6 @@ class HomeController extends AppController
 
     public function setList()
     {
-
         if (!$this->Session->check('current_site_id')) {
             $this->Flash->set('サイト権限がありません');
             $this->logout();

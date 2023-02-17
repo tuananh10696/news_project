@@ -1,0 +1,42 @@
+<div class="table__row first-dir item_block" id="block_no_<?= h($rownum); ?>" data-sub-block-move="0">
+    <div class="table__column">
+        <div class="block_header">
+            <?= $this->Form->hidden("info_contents.{$rownum}.id", ['value' => h($content['id']), 'id' => "idBlockId_" . h($rownum)]); ?>
+            <?= $this->Form->hidden("info_contents.{$rownum}.position", ['value' => h($content['position'])]); ?>
+            <?= $this->Form->hidden("info_contents.{$rownum}.block_type", ['value' => h($content['block_type']), 'class' => 'block_type']); ?>
+            <?= $this->Form->hidden("info_contents.{$rownum}.section_sequence_id", ['value' => h($content['section_sequence_id']), 'class' => 'section_no']); ?>
+            <?= $this->Form->hidden("info_contents.{$rownum}._block_no", ['value' => h($rownum)]); ?>
+        </div>
+
+        <div class="block_content sub-unit__wrap">
+            <div class="editor__table" data-section-no="<?= h($content['section_sequence_id']); ?>" data-block-type="<?= h($content['block_type']); ?>">
+
+                <div class="table__body" data-waku-block-type="<?= $content['block_type']; ?>">
+                    <div class="table__row">
+                        <div colspan="4" class="td__movable old-style" style="border-bottom: 1px solid #cbcbcb;">ここへブロックを移動できます</div>
+                    </div>
+
+                    <div class="table__row">
+                        <div style="min-height:50px" class="table__column list_table_sub" id="wakuId_<?= h($content['section_sequence_id']); ?>" data-section-no="<?= h($content['section_sequence_id']); ?>" data-block-type="<?= h($content['block_type']); ?>">
+
+                            <?php if (isset($content['sub_contents'])) : ?>
+                                <?php foreach ($content['sub_contents'] as $sub_key => $sub_val) : ?>
+                                    <?= $this->element("UserInfos/block_type_{$sub_val['block_type']}", ['rownum' => h($sub_val['_block_no']), 'content' => h($sub_val)]); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table__column table__column-sub">
+        <span style="font-size:0.9rem;"><?= (h($rownum) + 1); ?>.枠</span>
+        <div class="table__row-config">
+            <?= $this->element('UserInfos/sort_handle2'); ?>
+            <?= $this->element('UserInfos/item_block_buttons', ['rownum' => $rownum, 'disable_config' => true]); ?>
+        </div>
+    </div>
+</div>

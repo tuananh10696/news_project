@@ -2,15 +2,7 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-use Cake\Filesystem\Folder;
-
-use App\Model\Entity\Category;
+use Cake\Event\EventInterface;
 
 /**
  * Static content controller
@@ -21,35 +13,30 @@ use App\Model\Entity\Category;
  */
 class CategoriesController extends AppController
 {
-    private $list = [];
 
-    public function initialize()
+
+    public function initialize(): void
     {
         parent::initialize();
 
-        $this->PageTemplates = $this->getTableLocator()->get('PageTemplates');
         $this->Infos = $this->getTableLocator()->get('Infos');
         $this->PageConfigs = $this->getTableLocator()->get('PageConfigs');
         $this->UseradminSites = $this->getTableLocator()->get('UseradminSites');
-
-        //        $this->loadComponent('OutputHtml');
-
     }
 
-    public function beforeFilter(Event $event)
-    {
 
+    public function beforeFilter(EventInterface $event)
+    {
         parent::beforeFilter($event);
-        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
         $this->viewBuilder()->setClassName('Useradmin');
 
         $this->setCommon();
-        $this->getEventManager()->off($this->Csrf);
 
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
     }
+
 
     protected function _getQuery()
     {
@@ -65,13 +52,13 @@ class CategoriesController extends AppController
         return $query;
     }
 
+
     protected function _getConditions($query)
     {
         $cond = [];
-
-
         return $cond;
     }
+
 
     public function index()
     {
@@ -98,12 +85,10 @@ class CategoriesController extends AppController
                 $cond['Categories.parent_category_id'] = $query['parent_id'];
                 $_parent_id = $query['parent_id'];
                 do {
-
                     $tmp = $this->Categories->find()->where(
                         [
                             'Categories.page_config_id' => $query['sch_page_id'],
                             'Categories.id' => $_parent_id,
-                            // 'Categories.parent_category_id >' => 0
                         ]
                     )->first();
                     if (!empty($tmp)) {
@@ -120,6 +105,7 @@ class CategoriesController extends AppController
             'limit' => null
         ]);
     }
+
 
     public function edit($id = 0)
     {
@@ -153,9 +139,6 @@ class CategoriesController extends AppController
         }
 
         $callback = function ($id) {
-            // $data = $this->Categories->find()->where(['Categories.id' => $id])->first();
-            // $entity = $this->Categories->patchEntity($data, ['identifier' => Category::IDENTIFIER . $data->position]);
-            // $this->Categories->save($entity);
             return true;
         };
 
@@ -177,6 +160,7 @@ class CategoriesController extends AppController
 
         parent::_edit($id, $options);
     }
+
 
     public function position($id, $pos)
     {
@@ -201,6 +185,7 @@ class CategoriesController extends AppController
         return parent::_position($id, $pos, $options);
     }
 
+
     public function enable($id)
     {
         $this->checkLogin();
@@ -223,6 +208,7 @@ class CategoriesController extends AppController
 
         parent::_enable($id, $options);
     }
+
 
     public function delete($id, $type, $columns = null)
     {

@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use App\Model\Entity\Useradmin;
@@ -21,7 +21,7 @@ class UseradminsController extends AppController
 {
     private $list = [];
 
-    public function initialize()
+    public function initialize() : void
     {
         parent::initialize();
 
@@ -31,17 +31,16 @@ class UseradminsController extends AppController
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
     }
-    
-    public function beforeFilter(Event $event) {
+
+    public function beforeFilter(EventInterface $event) {
         // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("admin");
-        $this->getEventManager()->off($this->Csrf);
 
 
     }
     public function index() {
         $this->checkLogin();
-        
+
         $this->setList();
 
         $query = $this->_getQuery();
@@ -51,11 +50,11 @@ class UseradminsController extends AppController
         $cond = array();
 
         $cond = $this->_getConditions($query);
-        
+
         parent::_lists($cond, array('order' => array($this->modelName.'.id' =>  'ASC'),
                                             'limit' => null));
 
-        $query = $this->viewVars['query'];
+        $query = $this->ViewBuilder()->getVar('query');
         if (!empty($query)) {
             foreach ($query as $e) {
                 $user_sites = $this->UseradminSites->find()->where(['UseradminSites.useradmin_id' => $e->id])->contain(['SiteConfigs' => function($q){return $q->select(['site_name']);}])->all();
@@ -121,13 +120,13 @@ class UseradminsController extends AppController
         $callback = function($id) use($site_config_ids) {
             $save_ids = [];
             if (!empty($site_config_ids)) {
-                
+
                 foreach ($site_config_ids as $config_id) {
                     $user_site = $this->UseradminSites->find()
                                                  ->where(['UseradminSites.useradmin_id' => $id, 'UseradminSites.site_config_id' => $config_id])
                                                  ->first();
                     if (empty($user_site)) {
-                        $user_site = $this->UseradminSites->newEntity();
+                        $user_site = $this->UseradminSites->newEntity([]);
                         $user_site->useradmin_id = $id;
                         $user_site->site_config_id = $config_id;
                         $this->UseradminSites->save($user_site);
@@ -152,7 +151,7 @@ class UseradminsController extends AppController
 
     public function delete($id, $type, $columns = null) {
         $this->checkLogin();
-        
+
         return parent::_delete($id, $type, $columns);
     }
 
@@ -164,12 +163,12 @@ class UseradminsController extends AppController
 
     public function enable($id) {
         $this->checkLogin();
-        
+
         return parent::_enable($id);
     }
 
     public function setList() {
-        
+
         $list = array();
 
         $list['site_list'] = $this->SiteConfigs->getList();

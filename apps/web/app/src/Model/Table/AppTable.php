@@ -3,57 +3,44 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
-use Cake\Filesystem\Folder;
-use Cake\Utility\Text;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\Entity;
+
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 
 class AppTable extends Table
 {
 
-
-
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         // 作成日時と更新日時の自動化
-        $this->addBehavior('Timestamp', [
-            'events' => [
-                'Model.beforeSave' => [
-                    'created' => 'new',
-                    'modified' => 'always'
-                ]
-            ]
-        ]);
+        $this->addBehavior('Timestamp');
     }
 
 
     // cakePHP2と互換性を保つためにcreateを自前で作る
     public function create($data)
     {
-
         $entity = $this->createEntity()->toArray();
-
         return $entity;
     }
 
 
     public function createEntity($data = null)
     {
-
         if (is_null($data)) {
             $data = $this->defaultValues;
         }
         $entity = $this->newEntity($data);
-
         return $entity;
     }
 
 
     public function toFormData($query)
     {
-
         $data = $query->toArray();
-
         return $data;
     }
 
@@ -67,7 +54,7 @@ class AppTable extends Table
             return false;
         }
 
-        // 画像 
+        // 画像
         $basedir = UPLOAD_DIR . $this->getAlias() . DS . 'images' . DS;
         $distDir = UPLOAD_DIR . $distModel . DS . 'images' . DS;
 
@@ -115,28 +102,6 @@ class AppTable extends Table
 
         return $r;
     }
-
-
-    // public function copyFile($id) {
-    //     $table = str_replace('preview_', '', $this->getTable());
-    //     $preview_table = 'preview_' . $table;
-
-    //     $sql = 'select * from ' . $table;
-    //     $sql .= ' where id = :id';
-
-    //     $bind = ['id' => $id];
-    //     $dataType = ['id' => 'integer'];
-
-    //     $source = $this->_exec($sql, $bind, $dataType);
-
-    //     if (empty($source)) {
-    //         return;
-    //     }
-
-
-
-
-    // }
 
 
     private function _exec($sql, $bind, $dataType)
@@ -212,5 +177,52 @@ class AppTable extends Table
         if (empty($data->{$col})) {
             $data->{$col} = $empty;
         }
+    }
+
+
+    protected function optSum($name, \ArrayObject $data, $empty = '', $isHex = false)
+    {
+        if (!$data->offsetExists($name)) {
+            return $empty;
+        }
+        $bits = (array)$data->offsetGet($name);
+        $amount = 0;
+        if (!empty($bits)) {
+            foreach ($bits as $v) {
+                if ($isHex) {
+                    $v = hexdec($v);
+                }
+                $amount += (is_numeric($v) ? $v : 0);
+            }
+        }
+        return $amount;
+    }
+
+
+    protected function _getMultiples($data, $isHex = false): array
+    {
+        $res = [];
+        for ($i = 1; $i <= $data; $i = $i * 2) {
+            if ($i & $data) {
+                $val = $i;
+                if ($isHex) {
+                    $val = sprintf("0x%0{$isHex}x", $i);
+                }
+                $res[] = $val;
+            }
+        }
+
+        return $res;
+    }
+
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
+    {
+        $table = $event->getSubject();
+        $schema = $table->getSchema();
+
+        foreach ($data as $col => $v)
+            if (in_array(@$schema->getColumn($col)['type'], ['date', 'datetime', 'start_datetime'], true))
+                $data[$col] = new \DateTime($v);
     }
 }

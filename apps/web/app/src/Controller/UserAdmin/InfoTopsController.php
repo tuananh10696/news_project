@@ -2,13 +2,7 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-use Cake\Filesystem\Folder;
 
 /**
  * Static content controller
@@ -19,7 +13,8 @@ use Cake\Filesystem\Folder;
  */
 class InfoTopsController extends AppController
 {
-    private $list = [];
+
+
 
     public function initialize()
     {
@@ -29,13 +24,12 @@ class InfoTopsController extends AppController
         $this->Infos = $this->getTableLocator()->get('Infos');
         $this->PageConfigs = $this->getTableLocator()->get('PageConfigs');
         $this->UseradminSites = $this->getTableLocator()->get('UseradminSites');
-
     }
-    
-    public function beforeFilter(Event $event) {
 
+
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
-        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
         $this->viewBuilder()->setClassName('Useradmin');
 
@@ -44,25 +38,26 @@ class InfoTopsController extends AppController
 
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
-
     }
 
-    protected function _getQuery() {
+
+    protected function _getQuery()
+    {
         $query = [];
-
         $query['slug'] = $this->request->getQuery('slug');
-
         return $query;
     }
 
-    protected function _getConditions($query) {
+
+    protected function _getConditions($query)
+    {
         $cond = [];
-
-
         return $cond;
     }
 
-    public function index() {
+
+    public function index()
+    {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("index");
 
@@ -79,14 +74,16 @@ class InfoTopsController extends AppController
             'Infos'
         ];
 
-        $this->_lists($cond, ['order' => ['InfoTops.position' => 'ASC'],
-                              'contain' => $contain,
-                              'limit' => null]);
+        $this->_lists($cond, [
+            'order' => ['InfoTops.position' => 'ASC'],
+            'contain' => $contain,
+            'limit' => null
+        ]);
     }
 
 
-
-    public function position($id, $pos) {
+    public function position($id, $pos)
+    {
         $this->checkLogin();
 
         $options = [];
@@ -102,7 +99,9 @@ class InfoTopsController extends AppController
         return parent::_position($id, $pos, $options);
     }
 
-    public function enable($id) {
+
+    public function enable($id)
+    {
         $this->checkLogin();
 
         $options = [];
@@ -114,12 +113,13 @@ class InfoTopsController extends AppController
         }
 
         $options['redirect'] = ['action' => 'index', '?' => ['info_id' => $data->info_id, '#' => 'content-' . $id]];
-        
-        parent::_enable($id, $options);
 
+        parent::_enable($id, $options);
     }
 
-    public function delete($id, $type, $columns = null) {
+
+    public function delete($id, $type, $columns = null)
+    {
         $this->checkLogin();
 
         $data = $this->EventSchedules->find()->where(['EventSchedules.id' => $id])->first();
@@ -127,24 +127,22 @@ class InfoTopsController extends AppController
             $this->redirect('/user_admin/');
             return;
         }
-        
+
         $options['redirect'] = ['action' => 'index', '?' => ['info_id' => $data->info_id, '#' => 'content-' . $id]];
 
         $result = parent::_delete($id, $type, $columns, $options);
     }
 
 
-    public function setList() {
-        
+    public function setList()
+    {
         $list = array();
 
         if (!empty($list)) {
-            $this->set(array_keys($list),$list);
+            $this->set(array_keys($list), $list);
         }
 
         $this->list = $list;
         return $list;
     }
-
-
 }

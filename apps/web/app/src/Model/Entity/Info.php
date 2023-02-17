@@ -7,8 +7,9 @@ use App\Model\Entity\AppendItem;
 
 class Info extends AppEntity
 {
-
     use ModelAwareTrait;
+
+    protected $_accessible = ['*' => true];
 
     const BLOCK_TYPE_TITLE = 1;
     const BLOCK_TYPE_CONTENT = 2;
@@ -16,6 +17,7 @@ class Info extends AppEntity
     const BLOCK_TYPE_FILE = 4;
     const BLOCK_TYPE_TITLE_H4 = 5;
     const BLOCK_TYPE_ANCHOR = 6;
+    const BLOCK_TYPE_TITLE_H2 = 7;
     const BLOCK_TYPE_BUTTON = 8;
     const BLOCK_TYPE_LINE = 9;
     const BLOCK_TYPE_SECTION = 10;
@@ -23,36 +25,25 @@ class Info extends AppEntity
     const BLOCK_TYPE_SECTION_FILE = 12;
     const BLOCK_TYPE_SECTION_RELATION = 13;
     const BLOCK_TYPE_RELATION = 14;
-
-    const BLOCK_TYPE_TITLE_H5 = 20;
-    const BLOCK_TYPE_TITLE_H6 = 21;
-    const BLOCK_TYPE_BEFORE_AFTER = 22;
-    const BLOCK_TYPE_DISCUSSION_MEMBER = 23;
-    const BLOCK_TYPE_DISCUSSION_CHAT = 24;
-    const BLOCK_TYPE_MANY_IMG = 25;
-    const BLOCK_TYPE_TEXT_IMG = 26;
-    const BLOCK_TYPE_YOUTUBE = 27;
+    const BLOCK_TYPE_MEMO = 15;
+    const BLOCK_TYPE_KAIWA = 16;
+    const BLOCK_TYPE_USER_INTRO = 17;
 
     const BLOCK_TYPE_LIST = [
-
-        self::BLOCK_TYPE_TITLE => '中見出し(H2)',
-        self::BLOCK_TYPE_TITLE_H4 => '小見出し(H3)',
-        self::BLOCK_TYPE_TITLE_H5 => '見出し（装飾のみ）',
-        self::BLOCK_TYPE_TITLE_H6 => '小見出し(H6)',
-        self::BLOCK_TYPE_MANY_IMG => '複数画像',
-        self::BLOCK_TYPE_YOUTUBE => 'YOUTUBE',
-        self::BLOCK_TYPE_TEXT_IMG => '導入先お客様情報',
+        self::BLOCK_TYPE_TITLE_H2 => '大見出し',
+        self::BLOCK_TYPE_TITLE => '中見出し',
+        self::BLOCK_TYPE_TITLE_H4 => '小見出し',
         self::BLOCK_TYPE_CONTENT => '本文',
         self::BLOCK_TYPE_IMAGE => '画像',
         self::BLOCK_TYPE_FILE => 'ファイル添付',
         self::BLOCK_TYPE_BUTTON => 'リンクボタン',
         self::BLOCK_TYPE_LINE => '区切り線',
         self::BLOCK_TYPE_SECTION_WITH_IMAGE => '画像回り込み用',
-        self::BLOCK_TYPE_BEFORE_AFTER => 'BEFORE・AFTER',
-        self::BLOCK_TYPE_DISCUSSION_MEMBER => '座談会メンバー',
-        self::BLOCK_TYPE_DISCUSSION_CHAT => '座談会チャット',
-    ];
+        self::BLOCK_TYPE_MEMO => 'メモ',
+        self::BLOCK_TYPE_KAIWA => '会話',
+        self::BLOCK_TYPE_USER_INTRO => 'ユーザ紹介',
 
+    ];
 
     // 枠属性リスト
     const BLOCK_TYPE_WAKU_LIST = [
@@ -61,12 +52,7 @@ class Info extends AppEntity
         self::BLOCK_TYPE_SECTION_RELATION => '関連記事',
     ];
 
-
     static $block_name2number_list = [
-        'BLOCK_TYPE_TITLE_H5' => self::BLOCK_TYPE_TITLE_H5,
-        'BLOCK_TYPE_TITLE_H6' => self::BLOCK_TYPE_TITLE_H6,
-
-
         'BLOCK_TYPE_TITLE' => self::BLOCK_TYPE_TITLE,
         'BLOCK_TYPE_TITLE_H4' => self::BLOCK_TYPE_TITLE_H4,
         'BLOCK_TYPE_CONTENT' => self::BLOCK_TYPE_CONTENT,
@@ -81,12 +67,10 @@ class Info extends AppEntity
         'BLOCK_TYPE_RELATION' => self::BLOCK_TYPE_RELATION,
     ];
 
-
     static $block_number2key_list = [
+        self::BLOCK_TYPE_TITLE_H2 => 'H2',
         self::BLOCK_TYPE_TITLE => 'TITLE',
         self::BLOCK_TYPE_TITLE_H4 => 'TITLE_H4',
-        self::BLOCK_TYPE_TITLE_H5 => 'TITLE_H5',
-        self::BLOCK_TYPE_TITLE_H6 => 'TITLE_H6',
         self::BLOCK_TYPE_CONTENT => 'CONTENT',
         self::BLOCK_TYPE_IMAGE => 'IMAGE',
         self::BLOCK_TYPE_FILE => 'FILE',
@@ -97,19 +81,14 @@ class Info extends AppEntity
         self::BLOCK_TYPE_SECTION_FILE => 'SECTION_FILE',
         self::BLOCK_TYPE_SECTION_RELATION => 'SECTION_RELATION',
         self::BLOCK_TYPE_RELATION => 'RELATION',
-        self::BLOCK_TYPE_BEFORE_AFTER => 'BEFORE_AFTER',
-        self::BLOCK_TYPE_DISCUSSION_MEMBER => 'DISCUSSION_MEMBER',
-        self::BLOCK_TYPE_DISCUSSION_CHAT => 'DISCUSSION_CHAT',
-        self::BLOCK_TYPE_MANY_IMG => 'MANY_IMG',
-        self::BLOCK_TYPE_YOUTUBE => 'YOUTUBE',
-        self::BLOCK_TYPE_TEXT_IMG => 'client',
+        self::BLOCK_TYPE_MEMO => 'MEMO',
+        self::BLOCK_TYPE_KAIWA => 'KAIWA',
+        self::BLOCK_TYPE_USER_INTRO => 'USER_INTRO',
     ];
-
 
     static $option_default_values = [
         // self::BLOCK_TYPE_SECTION_WITH_IMAGE => ''
     ];
-
 
     public $append_fields = [];
 
@@ -117,25 +96,14 @@ class Info extends AppEntity
     static $out_waku_list = [
         self::BLOCK_TYPE_SECTION => [
             self::BLOCK_TYPE_RELATION,
-
             self::BLOCK_TYPE_SECTION,
-            // self::BLOCK_TYPE_SECTION_WITH_IMAGE,
             self::BLOCK_TYPE_SECTION_FILE,
             self::BLOCK_TYPE_SECTION_RELATION,
         ],
-        // self::BLOCK_TYPE_SECTION_WITH_IMAGE => [
-        //     self::BLOCK_TYPE_IMAGE,
 
-        //     self::BLOCK_TYPE_SECTION,
-        //     self::BLOCK_TYPE_SECTION_WITH_IMAGE,
-        //     self::BLOCK_TYPE_SECTION_FILE,
-        //     self::BLOCK_TYPE_SECTION_RELATION
-        // ],
         self::BLOCK_TYPE_SECTION_FILE => [
             self::BLOCK_TYPE_TITLE,
             self::BLOCK_TYPE_TITLE_H4,
-            self::BLOCK_TYPE_TITLE_H5,
-            self::BLOCK_TYPE_TITLE_H6,
             self::BLOCK_TYPE_CONTENT,
             self::BLOCK_TYPE_IMAGE,
             self::BLOCK_TYPE_BUTTON,
@@ -145,13 +113,10 @@ class Info extends AppEntity
             self::BLOCK_TYPE_SECTION_WITH_IMAGE,
             self::BLOCK_TYPE_SECTION_FILE,
             self::BLOCK_TYPE_SECTION_RELATION
-
         ],
         self::BLOCK_TYPE_SECTION_RELATION => [
             self::BLOCK_TYPE_TITLE,
             self::BLOCK_TYPE_TITLE_H4,
-            self::BLOCK_TYPE_TITLE_H5,
-            self::BLOCK_TYPE_TITLE_H6,
             self::BLOCK_TYPE_CONTENT,
             self::BLOCK_TYPE_IMAGE,
             self::BLOCK_TYPE_FILE,
@@ -175,13 +140,11 @@ class Info extends AppEntity
         }
     }
 
-
     static $font_list = [
         'font_style_1' => 'Noto Serif JP(明朝)',
         'font_style_2' => 'Noto Sans JP(ゴシック)',
         'font_style_3' => 'Kosugi Maru(丸ゴシック)'
     ];
-
 
     static $line_style_list = [
         'line_style_1' => '線',
@@ -189,7 +152,6 @@ class Info extends AppEntity
         'line_style_3' => '破線',
         'line_style_4' => '点線'
     ];
-
 
     static $line_color_list = [
         'line_color_1' => '赤',
@@ -199,7 +161,6 @@ class Info extends AppEntity
         'line_color_5' => '黒',
         'line_color_6' => 'グレー'
     ];
-
 
     static $line_width_list = [
         '1' => '1px',
@@ -224,7 +185,6 @@ class Info extends AppEntity
         'waku_color_6' => 'グレー',
     ];
 
-
     static $waku_bgcolor_list = [
         'waku_bgcolor_1' => '赤',
         'waku_bgcolor_2' => '緑',
@@ -235,7 +195,6 @@ class Info extends AppEntity
 
     ];
 
-
     static $waku_style_list = [
         'waku_style_1' => '線',
         'waku_style_2' => '破線',
@@ -244,7 +203,6 @@ class Info extends AppEntity
         'waku_style_5' => '上下のみ',
         'waku_style_6' => '影付き'
     ];
-
 
     static $button_color_list = [
         'button_color_1' => '赤',
@@ -261,12 +219,10 @@ class Info extends AppEntity
         'liststyle_3' => '＞',
     ];
 
-
     static $link_target_list = [
         '_self' => '現在のウインドウ',
         '_blank' => '新しいウインドウ'
     ];
-
 
     static $week_strings = [
         '0' => 'SUN',
@@ -278,20 +234,10 @@ class Info extends AppEntity
         '6' => 'SAT'
     ];
 
-
     protected function _setMetaDescription($value)
     {
         return strip_tags(str_replace("\n", '', $value));
     }
-
-    // protected function _setMetaKeywords($value) {
-    //     if (array_key_exists('keywords', $this->_properties)) {
-    //         $value = implode(",", array_values($this->properties['keywords']));
-
-    //     }
-
-    //     return $value;
-    // }
 
 
     protected $_virtual = ['keywords'];
@@ -299,7 +245,7 @@ class Info extends AppEntity
 
     protected function _getKeywords($value)
     {
-        if (!array_key_exists('meta_keywords', $this->_properties)) {
+        if (!array_key_exists('meta_keywords', (array)$this->_properties)) {
             return '';
         }
         $values = explode(',', $this->_properties['meta_keywords']);
@@ -341,6 +287,9 @@ class Info extends AppEntity
         $contain = [
             'AppendItems'
         ];
+        if (empty($info)) {
+            return $this->append_fields;
+        }
         $data = $this->InfoAppendItems->find()->where(['InfoAppendItems.info_id' => $info['id']])->contain($contain)->all();
 
         if (!$data->isEmpty()) {
@@ -423,7 +372,7 @@ class Info extends AppEntity
 
         $cond = [
             'InfoContents.info_id' => $info['id'],
-            'InfoContents.block_type in' => [self::BLOCK_TYPE_CONTENT, self::BLOCK_TYPE_SECTION_WITH_IMAGE, self::BLOCK_TYPE_TITLE, self::BLOCK_TYPE_TITLE_H4, self::BLOCK_TYPE_TITLE_H5, self::BLOCK_TYPE_TITLE_H6],
+            'InfoContents.block_type in' => [self::BLOCK_TYPE_CONTENT, self::BLOCK_TYPE_SECTION_WITH_IMAGE, self::BLOCK_TYPE_TITLE, self::BLOCK_TYPE_TITLE_H4],
         ];
 
         $contents = $this->InfoContents->find()->where($cond)->order(['InfoContents.position' => 'ASC'])->all();
@@ -487,17 +436,17 @@ class Info extends AppEntity
     }
 
 
-    protected function _get_startDate($value)
+    protected function _get_startAtDate($value)
     {
-        if (!array_key_exists('start_date', $this->_properties)) {
+        if (!array_key_exists('start_at', (array)$this->_properties)) {
             return '';
         }
 
-        if (empty($this->_properties['start_date'])) {
+        if (empty($this->_properties['start_at'])) {
             $dt = new \DateTime();
         } else {
-            if (property_exists($this->_properties['start_date'], 'format')) {
-                $dt = new \DateTime($this->_properties['start_date']->format('Y-m-d H:i:s'));
+            if (property_exists($this->_properties['start_at'], 'format')) {
+                $dt = new \DateTime($this->_properties['start_at']->format('Y-m-d H:i:s'));
             } else {
                 $dt = new \DateTime();
             }
@@ -507,17 +456,17 @@ class Info extends AppEntity
     }
 
 
-    protected function _get_startTime($value)
+    protected function _get_startAtTime($value)
     {
-        if (!array_key_exists('start_date', $this->_properties)) {
+        if (!array_key_exists('start_at', (array)$this->_properties)) {
             return '';
         }
 
-        if (empty($this->_properties['start_date'])) {
+        if (empty($this->_properties['start_at'])) {
             $dt = new \DateTime();
         } else {
-            if (property_exists($this->_properties['start_date'], 'format')) {
-                $dt = new \DateTime($this->_properties['start_date']->format('Y-m-d H:i:s'));
+            if (property_exists($this->_properties['start_at'], 'format')) {
+                $dt = new \DateTime($this->_properties['start_at']->format('Y-m-d H:i:s'));
             } else {
                 $dt = new \DateTime();
             }
@@ -578,7 +527,7 @@ class Info extends AppEntity
 
         $cond = [
             'InfoContents.info_id' => $this->id,
-            'InfoContents.block_type in' => [self::BLOCK_TYPE_CONTENT, self::BLOCK_TYPE_SECTION_WITH_IMAGE, self::BLOCK_TYPE_TITLE, self::BLOCK_TYPE_TITLE_H4, self::BLOCK_TYPE_TITLE_H5, self::BLOCK_TYPE_TITLE_H6],
+            'InfoContents.block_type in' => [self::BLOCK_TYPE_CONTENT, self::BLOCK_TYPE_SECTION_WITH_IMAGE, self::BLOCK_TYPE_TITLE, self::BLOCK_TYPE_TITLE_H4],
         ];
 
         $contents = $this->InfoContents->find()->where($cond)->order(['InfoContents.position' => 'ASC'])->all();

@@ -1,13 +1,11 @@
-<?php 
-namespace App\Validator;
+<?php
 
-use Cake\Validation\Validation;
-use App\Model\Table\MstListsTable;
+namespace App\Validator;
 
 class MstListValidation
 {
-    public static function isUnique($value, $context) {
-
+    public static function isUnique($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -19,7 +17,7 @@ class MstListValidation
             "MstLists.{$field}" => $value,
         ];
 
-        if($field == 'ltrl_val'){
+        if ($field == 'ltrl_val') {
             $cond['MstLists.use_target_id'] = $context['data']['use_target_id'];
         }
 

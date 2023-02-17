@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use App\Model\Entity\Customer;
 use Cake\Utility\Hash;
 
@@ -23,7 +23,7 @@ class SchedulesController extends AppController
 {
     private $list = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -34,7 +34,7 @@ class SchedulesController extends AppController
 
     }
 
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
         // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("plain");
@@ -57,7 +57,7 @@ class SchedulesController extends AppController
         // 新規 → 定休日
         $status = 0;
         if (empty($schedule)) {
-            $schedule = $this->Schedules->newEntity();
+            $schedule = $this->Schedules->newEntity([]);
             $status = 1;
         } else {
             $status = ++$schedule->status;

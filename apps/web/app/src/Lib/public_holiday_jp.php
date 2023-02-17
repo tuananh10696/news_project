@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Lib;
+
 /**
  * A SETUP OF A PUBLIC HOLIDAY
  *
@@ -248,7 +250,6 @@ class public_holiday
         $chk = ($this->y * 10000) + ($this->m * 100) + $this->d;
         return ($from <= $chk && $chk <= $to) ? true : false;
     }
-
 }
 
 /**
@@ -414,7 +415,6 @@ class public_holiday_jp extends public_holiday
         }
         return true;
     }
-
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------------------- */
@@ -596,5 +596,3 @@ function date2WeekDate($y, $m, $d)
     if ($week == 0) return date2WeekDate($y - 1, 12, 31);
     return array($y, str_pad($week, 2, '0', STR_PAD_LEFT), $cz);
 }
-
-?>

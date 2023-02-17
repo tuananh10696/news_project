@@ -2,15 +2,8 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
 use Cake\Utility\Inflector;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-use Cake\Filesystem\Folder;
-use Cake\Utility\Hash;
+use Cake\Event\EventInterface;
 
 use App\Model\Entity\Info;
 use App\Model\Entity\PageConfig;
@@ -27,10 +20,9 @@ use App\Model\Entity\PageConfigExtension;
  */
 class BaseInfosController extends AppController
 {
-    private $list = [];
     private $GQuery = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -49,7 +41,6 @@ class BaseInfosController extends AppController
         $this->UseradminSites = $this->getTableLocator()->get('UseradminSites');
         $this->InfoCategories = $this->getTableLocator()->get('InfoCategories');
         $this->InfoTops = $this->getTableLocator()->get('InfoTops');
-        $this->Services = $this->getTableLocator()->get('Services');
 
         $this->loadComponent('OutputHtml');
 
@@ -57,14 +48,13 @@ class BaseInfosController extends AppController
         $this->set('ModelName', $this->modelName);
     }
 
-    public function beforeFilter(Event $event)
-    {
-        // $this->viewBuilder()->theme('Admin');
-        $this->viewBuilder()->setLayout("user");
 
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->viewBuilder()->setLayout("user");
         $this->setCommon();
-        $this->getEventManager()->off($this->Csrf);
     }
+
 
     public function index()
     {
@@ -72,20 +62,13 @@ class BaseInfosController extends AppController
         $this->viewBuilder()->setLayout("index_2");
         $this->viewBuilder()->setClassName("Useradmin");
 
-        $this->setList();
-
         $query = $this->_getQuery();
-
         $this->_setView($query);
+
+        $this->setList();
 
         // slug
         $page_config_id = $query['sch_page_id'];
-
-        // if (!$this->isOwnPageByUser($page_config_id)) {
-        //     $this->Flash->set('不正なアクセスです');
-        //     $this->redirect('/user_admin/');
-        //     return;
-        // }
 
         $page_config = $this->PageConfigs->find()
             ->where(['PageConfigs.id' => $page_config_id])
@@ -98,6 +81,7 @@ class BaseInfosController extends AppController
                 }
             ])
             ->first();
+
         $preview_slug_dir = '';
         $page_title = '';
         if (!empty($page_config)) {
@@ -115,6 +99,7 @@ class BaseInfosController extends AppController
         $pankuzu_category = [];
         $category_list = [];
         $is_data = true;
+
         if ($page_config->is_category == 'Y') {
             if ($page_config->is_category_multilevel == 1) {
                 $_parent_id = $category->parent_category_id;
@@ -194,7 +179,6 @@ class BaseInfosController extends AppController
         $this->set(compact('list_buttons', 'page_buttons'));
         $this->set(compact('preview_slug_dir', 'page_title', 'query', 'page_config', 'category_list', 'is_data'));
 
-        $cond = array();
         $cond = $this->_getConditions($query, $page_config);
 
         $contain = [
@@ -237,10 +221,12 @@ class BaseInfosController extends AppController
         }
     }
 
+
     protected function _getQueryIndex()
     {
         return $this->_getQuery();
     }
+
 
     protected function _getQuery()
     {
@@ -288,6 +274,7 @@ class BaseInfosController extends AppController
 
         return $query;
     }
+
 
     private function _getConditions($query, $page_config = null)
     {
@@ -379,15 +366,12 @@ class BaseInfosController extends AppController
         return $cond;
     }
 
+
     public function edit($id = 0)
     {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("edit");
         $this->viewBuilder()->setClassName("Useradmin");
-
-        if ($this->request->getData('postMode') == 'preview') {
-            return $this->preview($id);
-        }
 
         $validate = 'default';
 
@@ -412,186 +396,134 @@ class BaseInfosController extends AppController
                     return $q->contain(['Tags'])->order(['Tags.position' => 'ASC']);
                 },
                 'InfoAppendItems' => function ($q) {
-                    return $q->contain(['AppendItems'])->order(['AppendItems.position' => 'ASC']);
+                    return $q->find('myFormat')->contain(['AppendItems'])->order(['AppendItems.position' => 'ASC']);
                 },
                 'InfoCategories',
                 // 'Services'
             ] // find時使用
         ];
 
-        $page_title = 'コンテンツ';
-        $page_config = null;
-        if ($sch_page_id) {
-            $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $sch_page_id])->first();
-            if (!empty($page_config)) {
-                $page_title = $page_config->page_title;
-            }
-        }
+        $page_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $sch_page_id])->first();
+        $page_title = $page_config->page_title;
 
-        $parent_config = null;
-        $parent_info = null;
-        if ($page_config->parent_config_id) {
-            $parent_config = $this->PageConfigs->find()->where(['PageConfigs.id' => $page_config->parent_config_id])->first();
-            if (!empty($parent_config)) {
-                $parent_info = $this->Infos->find()->where(['Infos.id' => $query['parent_id']])->first();
-            }
-        }
+        $parent_config = $page_config->parent_config_id ? $this->PageConfigs->find()->where(['PageConfigs.id' => $page_config->parent_config_id])->first() : null;
+        $parent_info = $parent_config ? $this->Infos->find()->where(['Infos.id' => $query['parent_id']])->first() : null;
         $this->set(compact('parent_info', 'parent_config'));
 
         // カテゴリリスト
-        $category_list = [];
-        if ($sch_page_id) {
-            $category_list = $this->Categories->find('list', ['keyField' => 'id', 'valueField' => 'name'])
-                ->where(['Categories.page_config_id' => $sch_page_id])
-                ->order(['Categories.position' => 'ASC'])
-                ->toArray();
-        }
+        $category_list = $this->Categories->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+            ->where(['Categories.page_config_id' => $sch_page_id])
+            ->order(['Categories.position' => 'ASC'])
+            ->toArray();
 
         // 追加入力項目
-        $append_list = [];
-        if ($sch_page_id) {
-            $append_list = $this->AppendItems->find()->where(['page_config_id' => $sch_page_id])->order('position asc')->all();
-        }
+        $append_list = $this->AppendItems->find()
+            ->where(['page_config_id' => $sch_page_id])
+            ->order('position asc')
+            ->all()
+            ->toArray();
 
         $append_item_list = $this->getAppendList($sch_page_id);
-
 
         $this->set(compact('page_title', 'query', 'page_config', 'category_list', 'append_list', 'append_item_list'));
 
         if ($this->request->is(['post', 'put'])) {
 
-            if (empty($this->request->getData())) {
-                $this->Flash->error('アップロード出来る容量を超えました');
-                return $this->redirect(['action' => 'edit', $id, '?' => $query]);
-            }
+            $data = $this->request->getData();
+            $data['page_config_id'] = $sch_page_id;
 
-            $this->request->data['page_config_id'] = $sch_page_id;
             $info_category_ids = $this->request->getData('info_categories');
 
-            // カテゴリ　バリデーション
-            if ($this->isCategoryEnabled($page_config)) {
-                $validate = 'isCategory';
-            }
+            // createの場合
+            if ($this->request->is(['post'])) $validate = 'Create';
+
             // 並び順
-            if (array_key_exists('info_contents', $this->request->getData())) {
+            if (isset($data['info_contents'])) {
                 $position = 0;
-
-                foreach ($this->request->getData('info_contents') as $k => $v) {
-                    $this->request->data['info_contents'][$k]['position'] = ++$position;
-                }
+                foreach ($this->request->getData('info_contents') as $k => $v)
+                    $this->request = $this->request->withData("info_contents.{$k}.position", ++$position);
             }
-
-            // 登録者
-            if (!$id) {
-                $this->request->data['regist_user_id'] = $this->isUserLogin();
-            }
-
-            // 掲載日
-            $now = new \DateTime();
-            $start_date = $this->request->getData('_start_date');
-            if (empty($this->request->getData('_start_date'))) {
-                $start_date = $now->format('Y-m-d');
-            }
-            if (empty($this->request->getData('_start_time'))) {
-                $start_date .= ' ' . $now->format('H:i:00');
-            } else {
-                $start_date .= ' ' . $this->request->getData('_start_time.hour') . ':' . $this->request->getData('_start_time.minute');
-            }
-            $this->request->data['start_date'] = $start_date;
 
             // メタキーワード
-            $meta_keywords = $this->request->getData('keywords');
-            if (!empty($meta_keywords)) {
-                $this->request->data['meta_keywords'] = '';
+            $_keywords = $this->request->getData('keywords');
+            $meta_keywords = '';
+
+            if ($_keywords) {
                 $pre = '';
-                foreach ($meta_keywords as $k => $v) {
+                foreach ($_keywords as $k => $v) {
                     $v = strip_tags(trim($v));
                     if (!empty($v)) {
-                        $this->request->data['meta_keywords'] .= $pre . $v;
+                        $meta_keywords .= $pre . $v;
                         $pre = ',';
                     }
                 }
-            } else {
-                $this->request->data['meta_keywords'] = '';
+            }
+            $data['meta_keywords'] = $meta_keywords;
+
+            // infoAppendItemsがある場合
+            if (isset($data['info_append_items'])) {
+                foreach ($data['info_append_items'] as $ap_num => $i_append_item)
+                    // 必須でないリスト対策
+                    if (empty($i_append_item['value_int']))
+                        $data['info_append_items'][$ap_num]["value_int"] = 0;
             }
 
             $delete_ids = $this->request->getData('delete_ids');
-            unset($this->request->data['delete_ids']);
-
             $tags = $this->request->getData('tags');
-            unset($this->request->data['tags']);
-
-            // infoAppendItemsがある場合
-            if (array_key_exists('info_append_items', $this->request->getData())) {
-                foreach ($this->request->getData('info_append_items') as $ap_num => $i_append_item) {
-                    // 必須でないリスト対策
-                    if (empty($i_append_item['value_int'])) {
-                        $this->request->data['info_append_items'][$ap_num]['value_int'] = 0;
-                    }
-                }
-            }
-
-            // $contents = $this->request->getData('info_contents');
-            // foreach ($contents as $k => $v) {
-            //     if (array_key_exists('_serialize_values', $v) && !empty($v['_serialize_values'])) {
-            //         $this->request->data["info_contents"][$k]['content'] = serialize($v['_serialize_values']);
-            //     }
-            // }
-
 
             $options['callback'] = function ($id) use ($delete_ids, $tags, $page_config, $info_category_ids) {
                 $r = true;
                 // コンテンツ削除
                 if ($id && $delete_ids) {
-
                     $sub_delete_ids = [];
                     foreach ($delete_ids as $del_id) {
                         $sub_delete_ids = $this->content_delete($id, $del_id);
                         // 枠ごと削除した場合の中身のコンテンツ削除
-                        if (!empty($sub_delete_ids)) {
-                            foreach ($sub_delete_ids as $sub_del_id) {
-                                $this->content_delete($id, $sub_del_id);
-                            }
+                        foreach ($sub_delete_ids as $sub_del_id) {
+                            $this->content_delete($id, $sub_del_id);
                         }
                     }
                 }
 
                 // 枠の紐付け
-                $q = $this->InfoContents->find()->where(['InfoContents.info_id' => $id])->order(['position' => 'ASC']);
-                if (!$q->isEmpty()) {
-                    $info_contents = $q->all();
-                    foreach ($info_contents as $v) {
-                        if (array_key_exists((int) $v['block_type'], Info::BLOCK_TYPE_WAKU_LIST)) {
-                            $section_query = $this->SectionSequences->find()->where(['SectionSequences.id' => $v['section_sequence_id']]);
-                            if ($section_query->isEmpty()) {
-                                continue;
-                            }
-                            $section_entity = $section_query->first();
-                            $section_entity->info_content_id = $v['id'];
-                            $this->SectionSequences->save($section_entity);
-                        }
+                $info_contents = $this->InfoContents->find()
+                    ->where(['InfoContents.info_id' => $id])
+                    ->order(['position' => 'ASC'])
+                    ->all()
+                    ->toArray();
+
+                foreach ($info_contents as $v) {
+                    if (isset(Info::BLOCK_TYPE_WAKU_LIST[(int) $v['block_type']])) {
+
+                        $section_query = $this->SectionSequences->find()
+                            ->where(['SectionSequences.id' => $v['section_sequence_id']])
+                            ->first();
+
+                        if (is_null($section_query)) continue;
+
+                        $section_query->info_content_id = $v['id'];
+                        $this->SectionSequences->save($section_query);
                     }
                 }
 
                 // タグ
                 $tag_ids = $this->saveTags($page_config->id, $tags); // マスターの登録
-                if (!empty($tag_ids)) {
-                    foreach ($tag_ids as $tag_id) {
-                        $info_tag = $this->InfoTags->find()->where(['InfoTags.tag_id' => $tag_id, 'InfoTags.info_id' => $id])->first();
-                        if (empty($info_tag)) {
-                            $info_tag = $this->InfoTags->newEntity();
-                            $info_tag->info_id = $id;
-                            $info_tag->tag_id = $tag_id;
-                            $this->InfoTags->save($info_tag);
-                        }
+                foreach ($tag_ids as $tag_id) {
+
+                    $info_tag = $this->InfoTags->find()
+                        ->where(['InfoTags.tag_id' => $tag_id, 'InfoTags.info_id' => $id])
+                        ->first();
+
+                    if (is_null($info_tag)) {
+                        $info_tag = $this->InfoTags->newEntity([]);
+                        $info_tag->info_id = $id;
+                        $info_tag->tag_id = $tag_id;
+                        $this->InfoTags->save($info_tag);
                     }
                 }
+
                 // タグの削除
-                if (empty($tag_ids)) {
-                    $this->InfoTags->deleteAll(['InfoTags.info_id' => $id]);
-                } else {
-                    $this->InfoTags->deleteAll(['InfoTags.info_id' => $id, 'InfoTags.tag_id not in' => $tag_ids]);
-                }
+                $this->InfoTags->deleteAll(empty($tag_ids) ? ['InfoTags.info_id' => $id] : ['InfoTags.info_id' => $id, 'InfoTags.tag_id not in' => $tag_ids]);
 
                 if (!empty($delete_info_cate_ids)) {
                     $delete_info_cate_ids = array_values($delete_info_cate_ids);
@@ -601,11 +533,16 @@ class BaseInfosController extends AppController
                 // 複数カテゴリ
                 if ($page_config->is_category == 'Y' && $page_config->is_category_multiple == 1) {
                     $this->InfoCategories->deleteAll(['InfoCategories.info_id' => $id, 'InfoCategories.id not in ' => $info_category_ids]);
+
                     if (!empty($info_category_ids)) {
                         foreach ($info_category_ids as $cat_id) {
-                            $info_cate = $this->InfoCategories->find()->where(['InfoCategories.info_id' => $id, 'InfoCategories.category_id' => $cat_id])->first();
+
+                            $info_cate = $this->InfoCategories->find()
+                                ->where(['InfoCategories.info_id' => $id, 'InfoCategories.category_id' => $cat_id])
+                                ->first();
+
                             if (empty($info_cate)) {
-                                $info_cate = $this->InfoCategories->newEntity();
+                                $info_cate = $this->InfoCategories->newEntity([]);
                                 $info_cate->info_id = $id;
                                 $info_cate->category_id = $cat_id;
                                 $this->InfoCategories->save($info_cate);
@@ -614,80 +551,34 @@ class BaseInfosController extends AppController
                     }
                 }
 
-                // contentsのcallback
-                $page_slug = Inflector::camelize($page_config->slug);
-                if (method_exists(get_class($this), 'savedHook' . $page_slug)) {
-                    $r = $this->{'savedHook' . $page_slug}($id, $this->request->getData());
-                }
-
-
                 return $r;
-                // HTML更新
-                // $this->_htmlUpdate($id);
             };
 
-            // page_configs.before_save_callback
-            $page_slug = Inflector::camelize($page_config->slug);
-            if (method_exists(get_class($this), 'savingHook' . $page_slug)) {
-                $this->request->data = $this->{'savingHook' . $page_slug}($page_config, $this->request->getData());
-            }
-        } else {
-            if (!$id) {
-                $options['get_callback'] = function ($data) use ($query) {
-                    $data['category_id'] = $query['sch_category_id'];
-
-                    $now = new \DateTime();
-                    $data['_start_date'] = $now->format(DATE_FORMAT);
-                    $data['_start_time'] = $now->format('H:i');
-
-                    return $data;
-                };
-            } else {
-                $options['get_callback'] = function ($data) {
-                    $data['_start_date'] = $data['start_date']->format(DATE_FORMAT);
-                    $data['_start_time'] = $data['start_date']->format('H:i');
-
-                    return $data;
-                };
-            }
+            $this->request->withParsedBody($data);
+        } else
             $info_category_ids = $this->getCategoryIds($id);
-        }
-
 
 
         $this->set(compact('info_category_ids'));
 
         $options['append_validate'] = function ($isValid, $entity) use ($page_config) {
             // infoAppendItemsのバリデーション
-            $isValid = true;
-            if (!empty($entity['info_append_items'])) {
-                $val_iAItems = $this->validInfoAppendItems($entity, $page_config);
-                if (!$val_iAItems) {
-                    $isValid = false;
-                }
+            if (is_null($entity->info_append_items) || empty($entity->info_append_items)) return true;
+
+            $val_iAItems = $this->validInfoAppendItems($entity, $page_config);
+            if (!$val_iAItems) {
+                $isValid = false;
             }
             return $isValid;
         };
+
         $options['associated'] = ['InfoAppendItems', 'InfoContents'];
         $options['redirect'] = ['action' => 'index', '?' => $query];
         $options['validate'] = $validate;
 
-        $page_slug = Inflector::camelize($page_config->slug);
-        if (method_exists(get_class($this), 'prependEditHook' . $page_slug)) {
-            $options = $this->{'prependEditHook' . $page_slug}($page_config, $options);
-        }
-
         parent::_edit($id, $options);
-
-        if (array_key_exists('entity', $this->viewVars)) {
-            $entity = $this->viewVars['entity'];
-        }
-        $editor_old = 0;
-        if (!empty($entity)) {
-            $editor_old = $entity->is_old;
-        }
-        $this->set(compact('editor_old'));
     }
+
 
     public function delete($id, $type, $columns = null)
     {
@@ -748,9 +639,8 @@ class BaseInfosController extends AppController
         }
 
         parent::_delete($id, $type, $columns, $options);
-
-        // $this->_htmlDelete($id, $data);
     }
+
 
     public function position($id, $pos)
     {
@@ -774,11 +664,37 @@ class BaseInfosController extends AppController
 
         if (!$this->isCategorySort($data->page_config_id)) {
             unset($query['sch_category_id']);
+            $options['is_category_sort'] = false;
         }
         $options['redirect'] = ['action' => 'index', '?' => $query];
 
         return parent::_position($id, $pos, $options);
     }
+
+
+    public function resetPosition()
+    {
+        $this->_getQuery();
+
+        $model = $this->Infos;
+        $position = 1;
+
+        $conditions = ['page_config_id' => $this->GQuery['sch_page_id']];
+
+        $data = $model->find()
+            ->where($conditions)
+            ->order(['id DESC'])
+            ->toArray();
+
+        foreach ($data as $value) {
+            $conditions['id'] = $value['id'];
+            $model->updateAll(['position' => $position], $conditions);
+            ++$position;
+        }
+
+        $this->redirect(['action' => 'index', '?' => $this->GQuery]);
+    }
+
 
     public function enable($id)
     {
@@ -828,37 +744,62 @@ class BaseInfosController extends AppController
         }
     }
 
+
     public function setList()
     {
 
-        $list = array();
+        $list = [];
+        $list['_main'] = $this->PageConfigItems
+            ->find('all')
+            ->where([
+                'page_config_id' => $this->GQuery['sch_page_id'],
+                'parts_type' => 'main'
+            ])
+            ->contain(['PageConfigs'])
+            ->order(['PageConfigItems.position' => 'ASC'])
+            ->toArray();
+
+        $list['_content'] = $this->PageConfigItems
+            ->find('all')
+            ->where([
+                'page_config_id' => $this->GQuery['sch_page_id'],
+                'parts_type' => 'block',
+                'status' => 'Y',
+            ])
+            ->contain(['PageConfigs'])
+            ->order(['PageConfigItems.position' => 'ASC'])
+            ->toArray();
+
+        $list['_waku'] = $this->PageConfigItems
+            ->find()
+            ->where([
+                'page_config_id' => $this->GQuery['sch_page_id'],
+                'parts_type' => 'section',
+                'status' => 'Y',
+            ])
+            ->contain(['PageConfigs'])
+            ->first();
+
+        $list['_appendItem'] = $this->AppendItems
+            ->find('all')
+            ->where(['page_config_id' => $this->GQuery['sch_page_id']])
+            ->contain(['PageConfigs'])
+            ->order(['AppendItems.position' => 'ASC'])
+            ->toArray();
 
         // ブロック
-        $_block_type_list = Info::getBlockTypeList();
-        $block_type_list = [];
-        if (empty($this->GQuery['sch_page_id'])) {
-            $block_type_list = $_block_type_list;
-        } else {
-            foreach ($_block_type_list as $no => $name) {
-                if ($this->PageConfigItems->enabled($this->GQuery['sch_page_id'], PageConfigItem::TYPE_BLOCK, Info::$block_number2key_list[$no])) {
-                    $block_type_list[$no] = $name;
-                }
-            }
-        }
-        $list['block_type_list'] = $block_type_list;
+        $list['block_type_list'] = $list['_content'];
 
         // 枠ブロック
-        $_block_type_waku_list = Info::getBlockTypeList('waku');
-        $block_type_waku_list = [];
-        if (empty($this->GQuery['sch_page_id'])) {
-            $block_type_waku_list = $_block_type_waku_list;
-        } else {
-            foreach ($_block_type_waku_list as $no => $name) {
-                if ($this->PageConfigItems->enabled($this->GQuery['sch_page_id'], PageConfigItem::TYPE_SECTION, Info::$block_number2key_list[$no])) {
-                    $block_type_waku_list[$no] = $name;
-                }
-            }
-        }
+        $block_type_waku_list = Info::getBlockTypeList('waku');
+        // $block_type_waku_list = [];
+        // if (empty($this->GQuery['sch_page_id']))
+        //     $block_type_waku_list = $_block_type_waku_list;
+        // else
+        //     foreach ($_block_type_waku_list as $no => $name)
+        //         if ($this->PageConfigItems->enabled($this->GQuery['sch_page_id'], PageConfigItem::TYPE_SECTION, Info::$block_number2key_list[$no])) {
+        //             $block_type_waku_list[$no] = $name;
+
         $list['block_type_waku_list'] = $block_type_waku_list;
         $list['font_list'] = Info::$font_list;
 
@@ -890,13 +831,16 @@ class BaseInfosController extends AppController
         return $list;
     }
 
+
     public function addRow()
     {
         $this->viewBuilder()->setLayout("plain");
 
-        $this->setList();
+        // $this->setList();
 
         $rownum = $this->request->getData('rownum');
+        $slug = $this->request->getData('slug');
+        $info_id = $this->request->getData('info_id');
         $data['block_type'] = $this->request->getData('block_type');
 
         $entity = $this->InfoContents->newEntity($data);
@@ -909,26 +853,27 @@ class BaseInfosController extends AppController
         $entity->option_value3 = "";
         $entity->image_pos = "";
         $entity->title = "";
+        $entity->slug = $slug;
+        $entity->info_id = $info_id;
 
-        if ($this->request->getData('section_no')) {
+        if ($this->request->getData('section_no'))
             $entity->section_sequence_id = $this->request->getData('section_no');
-        }
 
-        if (array_key_exists((int) $data['block_type'], Info::BLOCK_TYPE_WAKU_LIST)) {
+        if (isset(Info::BLOCK_TYPE_WAKU_LIST[$data['block_type']])) {
             $entity->section_sequence_id = $this->SectionSequences->createNumber();
-            if (array_key_exists($data['block_type'], Info::$option_default_values)) {
+
+            if (isset(Info::$option_default_values[$data['block_type']]))
                 $entity->option_value = Info::$option_default_values[$data['block_type']];
-            }
-        }
-        if ($data['block_type'] == Info::BLOCK_TYPE_SECTION_WITH_IMAGE) {
-            $entity->image_pos = 'left';
         }
 
+        if ($data['block_type'] == Info::BLOCK_TYPE_SECTION_WITH_IMAGE)
+            $entity->image_pos = 'left';
 
         $datas = $entity->toArray();
 
         $this->set(compact('rownum', 'datas'));
     }
+
 
     public function addTag()
     {
@@ -937,32 +882,15 @@ class BaseInfosController extends AppController
         $num = $this->request->getData('num');
         $tag = $this->request->getData('tag');
         $tag = strip_tags(trim($tag));
-
-        // $entity = $this->Tags->find()
-        //                      ->where(['Tags.tag' => $tag])
-        //                      ->first();
-
         $this->set(compact('tag', 'num'));
     }
 
+
     private function content_delete($id, $del_id)
     {
-        $q = $this->InfoContents->find()->where(['InfoContents.id' => $del_id, 'InfoContents.info_id' => $id]);
-        $e = $q->first();
-
-        $sub_delete_ids = [];
-
-        if (array_key_exists((int) $e->block_type, Info::BLOCK_TYPE_WAKU_LIST) && $e->section_sequence_id > 0) {
-            $sub_delete_ids = $this->InfoContents->find()
-                ->where(
-                    [
-                        'InfoContents.section_sequence_id' => $e->section_sequence_id,
-                        'InfoContents.id !=' => $del_id,
-                        'InfoContents.info_id' => $id
-                    ]
-                )
-                ->extract('id');
-        }
+        $e = $this->InfoContents->find()
+            ->where(['InfoContents.id' => $del_id, 'InfoContents.info_id' => $id])
+            ->first();
 
         $image_index = array_keys($this->InfoContents->attaches['images']);
         $file_index = array_keys($this->InfoContents->attaches['files']);
@@ -982,146 +910,24 @@ class BaseInfosController extends AppController
                 @unlink($_file);
             }
         }
+
         $this->InfoContents->delete($e);
 
+        $sub_delete_ids = [];
+
+        if (isset(Info::BLOCK_TYPE_WAKU_LIST[$e->block_type]) && $e->section_sequence_id > 0) {
+            $sub_delete_ids = $this->InfoContents->find()
+                ->where(
+                    [
+                        'InfoContents.section_sequence_id' => $e->section_sequence_id,
+                        'InfoContents.id !=' => $del_id,
+                        'InfoContents.info_id' => $id
+                    ]
+                )
+                ->extract('id');
+        }
+
         return $sub_delete_ids;
-    }
-
-    public function htmlUpdateAll($page_config_id, $category_id = 0)
-    { }
-
-    public function _htmlDelete($info_id, $entity)
-    { }
-
-    public function _htmlUpdate($info_id)
-    { }
-
-
-    public function createDetailJson($info_id, $is_create = true)
-    {
-
-        return [];
-    }
-
-    private function setContents($content, $parentBlockType = 0)
-    {
-        $data = [];
-
-        switch ($content['block_type']) {
-            case Info::BLOCK_TYPE_TITLE: // タイトル
-            case Info::BLOCK_TYPE_TITLE_H4: // タイトル
-                $data['title'] = $content['title'];
-                $data['font_name'] = $content['option_value'];
-                break;
-
-            case Info::BLOCK_TYPE_CONTENT: // 本文
-                $data['content'] = $content['content'];
-                $data['font_name'] = $content['option_value'];
-                $data['list_style'] = $content['option_value2'];
-                break;
-
-            case Info::BLOCK_TYPE_IMAGE: // 画像
-                $data['content'] = Hash::get($content, 'attaches.image.0');
-                $data['link'] = $content['content'];
-                $data['target'] = $content['option_value'];
-                break;
-
-            case Info::BLOCK_TYPE_FILE: // ファイル
-                $data['src'] = '';
-                $data['file_name'] = '';
-                $data['file_size'] = 0;
-                if (Hash::get($content, 'attaches.file.src')) {
-                    $data['src'] = '/contents' . Hash::get($content, 'attaches.file.download') . 'file.' . Hash::get($content, 'file_extension');
-                    $data['file_name'] = (Hash::get($content, 'file_name') ?: '添付ファイル') . '.' . $content['file_extension'];
-                    $data['file_size'] = $this->byte_format($content['file_size']);
-                } else {
-                    return false;
-                }
-                break;
-
-            case Info::BLOCK_TYPE_RELATION: // 関連記事
-                $data['title'] = nl2br($content['content']);
-                $data['text'] = nl2br($content['option_value2']);
-                $data['image'] = Hash::get($content, 'attaches.image.0');
-                // $data['content'] = $content['content'];
-                $data['link'] = $content['option_value'];
-                break;
-
-            case Info::BLOCK_TYPE_BUTTON: // リンクボタン
-                $data['name'] = $content['title'];
-                $data['link'] = $content['content'];
-                $data['button_color'] = $content['option_value'];
-                $data['target'] = $content['option_value2'];
-                break;
-
-            case Info::BLOCK_TYPE_LINE: // 区切り線
-                $data['line_style'] = $content['option_value'];
-                $data['line_color'] = $content['option_value2'];
-                $data['line_width'] = $content['option_value3'];
-                break;
-
-            case Info::BLOCK_TYPE_SECTION: // 枠
-                $data['b_style'] = $content['option_value'];
-                if ($data['b_style'] == 'waku_style_6') {
-                    $data['bg_color'] = $content['option_value2'];
-                } else {
-                    $data['b_color'] = $content['option_value2'];
-                }
-                $data['b_width'] = $content['option_value3'];
-
-            case Info::BLOCK_TYPE_SECTION_RELATION: // 関連記事枠
-                $data['sub_contents'] = [];
-                break;
-
-            case Info::BLOCK_TYPE_SECTION_FILE: // ファイル枠
-                $data['title'] = strip_tags($content['title']);
-                $data['sub_contents'] = [];
-                break;
-
-            case Info::BLOCK_TYPE_SECTION_WITH_IMAGE: // 画像回り込み用　枠
-                $data['image'] = Hash::get($content, "attaches.image.0");
-                $data['image_pos'] = $content['image_pos'];
-                $data['image_link'] = $content['option_value3'];
-                $data['title'] = $content['title'];
-                $data['content'] = $content['content'];
-                $data['font_name'] = $content['option_value'];
-                $data['list_style'] = $content['option_value2'];
-
-                break;
-
-            default:
-                # code...
-                break;
-        }
-
-        return $data;
-    }
-
-    private function byte_format($size)
-    {
-        $b = 1024;    // バイト
-        $mb = pow($b, 2);   // メガバイト
-        $gb = pow($b, 3);   // ギガバイト
-
-        switch (true) {
-            case $size >= $gb:
-                $target = $gb;
-                $unit = 'GB';
-                break;
-            case $size >= $mb:
-                $target = $mb;
-                $unit = 'MB';
-                break;
-            default:
-                $target = $b;
-                $unit = 'KB';
-                break;
-        }
-
-        $new_size = round($size / $target, 2);
-        $file_size = number_format($new_size, 2, '.', ',') . $unit;
-
-        return $file_size;
     }
 
 
@@ -1132,26 +938,33 @@ class BaseInfosController extends AppController
         return parent::toHierarchization($id, $entity, $options);
     }
 
+
     private function saveTags($page_config_id, $tags)
     {
         $ids = [];
-        if (!empty($tags)) {
-            foreach ($tags as $t) {
-                $tag = strip_tags(trim($t['tag']));
-                $entity = $this->Tags->find()->where(['Tags.tag' => $tag, 'Tags.page_config_id' => $page_config_id])->first();
-                if (empty($entity)) {
-                    $entity = $this->Tags->newEntity();
-                    $entity->tag = $tag;
-                    $entity->status = 'publish';
-                    $entity->page_config_id = $page_config_id;
+        $tags = $tags ?? [];
 
-                    $this->Tags->save($entity);
-                }
-                $ids[] = $entity->id;
+        foreach ($tags as $t) {
+            $tag = strip_tags(trim($t['tag']));
+
+            $entity = $this->Tags->find()
+                ->where(['Tags.tag' => $tag, 'Tags.page_config_id' => $page_config_id])
+                ->first();
+
+            if (is_null($entity)) {
+                $entity = $this->Tags->newEntity([]);
+                $entity->tag = $tag;
+                $entity->status = 'publish';
+                $entity->page_config_id = $page_config_id;
+
+                $this->Tags->save($entity);
             }
+            $ids[] = $entity->id;
         }
+
         return $ids;
     }
+
 
     public function popTaglist()
     {
@@ -1179,6 +992,7 @@ class BaseInfosController extends AppController
         ]);
     }
 
+
     public function distAttachmentCopy($id)
     {
 
@@ -1204,122 +1018,6 @@ class BaseInfosController extends AppController
         return;
     }
 
-    public function deletePreviewSource($page_id)
-    {
-        $now = new \DateTime();
-
-        if ($this->Infos->getTable() !== 'preview_infos') {
-            return;
-        }
-        if ($this->InfoContents->getTable() !== 'preview_info_contents') {
-            return;
-        }
-
-        $previews = $this->Infos->find()->where(['Infos.created <' => $now->format('Y-m-d 00:00:00'), 'Infos.page_config_id' => $page_id])->contain(['InfoContents'])->all();
-
-        foreach ($previews as $prev) {
-            if (!empty($prev->info_contents)) {
-                foreach ($prev->info_contents as $content) {
-                    $this->modelName = 'InfoContents';
-                    // $this->_delete($content->id, 'content', null, ['redirect' => false]);
-                    $this->InfoContents->delete($content);
-                }
-            }
-            $this->modelName = 'Infos';
-            // $this->_delete($prev->id, 'content', null, ['redirect' => false]);
-            $this->Infos->delete($prev);
-        }
-    }
-
-    private function deletePreviewAttachment()
-    {
-        $this->_deletePreviewImage();
-        $this->_deletePreviewFile();
-    }
-
-    /**
-     * プレビュー用の画像削除
-     * @return [type] [description]
-     */
-    private function _deletePreviewImage()
-    {
-        $limit_dt = new \DatetIme('-24 hour');
-
-        // PreviewInfos
-        $image_dir = UPLOAD_DIR . 'PreviewInfos' . DS . 'images/*';
-
-        $file_list = glob($image_dir, GLOB_BRACE);
-        if (!empty($file_list)) {
-            foreach ($file_list as $file) {
-                if (is_file($file)) {
-                    $unixdate = filemtime($file);
-                    $filedate = date("YmdHis", $unixdate);
-
-                    if ($filedate < $limit_dt->format('YmdHis')) {
-                        @unlink($file);
-                    }
-                }
-            }
-        }
-
-        // PreviewInfoContents
-        $image_dir = UPLOAD_DIR . 'PreviewInfoContents' . DS . 'images/*';
-
-        $file_list = glob($image_dir, GLOB_BRACE);
-        if (!empty($file_list)) {
-            foreach ($file_list as $file) {
-                if (is_file($file)) {
-                    $unixdate = filemtime($file);
-                    $filedate = date("YmdHis", $unixdate);
-                    if ($filedate < $limit_dt->format('YmdHis')) {
-                        @unlink($file);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * プレビュー用のファイルを削除
-     * @return [type] [description]
-     */
-    private function _deletePreviewFile()
-    {
-        $limit_dt = new \DatetIme('-24 hour');
-
-        // PreviewInfos
-        $file_dir = UPLOAD_DIR . 'PreviewInfos' . DS . 'files/*';
-
-        $file_list = glob($file_dir, GLOB_BRACE);
-        if (!empty($file_list)) {
-            foreach ($file_list as $file) {
-                if (is_file($file)) {
-                    $unixdate = filemtime($file);
-                    $filedate = date("YmdHis", $unixdate);
-
-                    if ($filedate < $limit_dt->format('YmdHis')) {
-                        @unlink($file);
-                    }
-                }
-            }
-        }
-
-        // PreviewInfoContents
-        $file_dir = UPLOAD_DIR . 'PreviewInfoContents' . DS . 'files/*';
-
-        $file_list = glob($file_dir, GLOB_BRACE);
-        if (!empty($file_list)) {
-            foreach ($file_list as $file) {
-                if (is_file($file)) {
-                    $unixdate = filemtime($file);
-                    $filedate = date("YmdHis", $unixdate);
-                    if ($filedate < $limit_dt->format('YmdHis')) {
-                        @unlink($file);
-                    }
-                }
-            }
-        }
-    }
 
     protected function getAppendList($config_id = 0, $list_bool = false)
     {
@@ -1328,7 +1026,6 @@ class BaseInfosController extends AppController
         if (empty($config_id)) {
             return $list;
         }
-
 
         if ($list_bool) {
             $append_datas = $this->MstLists->find('list', [
@@ -1347,7 +1044,6 @@ class BaseInfosController extends AppController
             return $list;
         }
 
-
         if ($list_bool) {
             return $append_datas;
         }
@@ -1359,6 +1055,7 @@ class BaseInfosController extends AppController
         return $list;
     }
 
+
     /**
      * Undocumented function
      *
@@ -1369,10 +1066,6 @@ class BaseInfosController extends AppController
     protected function validInfoAppendItems($data, $page_config)
     {
         $valid = false;
-
-        if (empty($data['info_append_items'])) {
-            return $valid;
-        }
 
         // 追加バリデーション用id-slugリスト
         $append_for_additional_list = $this->AppendItems->find('list', [
@@ -1388,52 +1081,47 @@ class BaseInfosController extends AppController
             'AppendItems.page_config_id' => $page_config->id,
             'AppendItems.is_required' => 1
         ];
+
         $require_append_list = $this->AppendItems->find()
             ->contain($contain)
             ->where($cond)
             ->order(['AppendItems.position' => 'ASC'])
             ->toArray();
+
         // empty以外のバリデーションチェック 
         if (empty($require_append_list)) {
-            $r = true;
-            foreach ($data['info_append_items'] as $n => $item) {
+
+            foreach ($data->info_append_items as $n => $item) {
                 $r = $this->additionalValidate($data, $item, $append_for_additional_list, $page_config->slug);
-                if (!$r) {
-                    return $valid;
-                }
+                if (!$r) return false;
             }
-            $valid = true;
-            return $valid;
+            return true;
         }
         // [id => data],['slug' => id]化
         $r_list = [];
         $r_slug_list = [];
         foreach ($require_append_list as $ap) {
-            $r_list[$ap['id']] = $ap;
-            $r_slug_list[$ap['slug']][] = $ap['id'];
+            $r_list[$ap->id] = $ap;
+            $r_slug_list[$ap->slug][] = $ap->id;
         }
 
-
-        foreach ($data['info_append_items'] as $n => $item) {
-            $r = true;
-            if (in_array($item['append_item_id'], array_keys($r_list))) {
+        $check_valid = [];
+        foreach ($data->info_append_items as $n => $item) {
+            if (isset($r_list[$item->append_item_id])) {
                 // 項目別チェック
-                $r = $this->validWithType($data, $item, $r_list[$item['append_item_id']], $r_slug_list, $page_config->slug);
+                $r = $this->validWithType($data, $item, $r_list[$item->append_item_id], $n);
+                $check_valid[] = $r;
+
                 if ($r && !empty($append_for_additional_list)) {
                     // 追加項目に対して個別のバリデーションを入れたければユニークとなるslugを設定しここで記載
-                    $r = $this->additionalValidate($data, $item, $append_for_additional_list, $page_config->slug);
+                    $check_valid[] = $this->additionalValidate($data, $item, $append_for_additional_list, $page_config->slug);
                 }
-            }
-            if (!$r) { //項目チェックがfalseならその時点でfalseを返す
-                return $valid;
             }
         }
 
-        if ($r) {
-            $valid = true;
-        }
-        return $valid;
+        return (!in_array(false, $check_valid, true));
     }
+
 
     /**
      * Undocumented function
@@ -1445,92 +1133,41 @@ class BaseInfosController extends AppController
      * @param [type] $slug page_config->slug
      * @return bool
      */
-    protected function validWithType($entity, $data, $append, $list, $slug)
+    protected function validWithType($entity, $data, $append, $num)
     {
         $valid = true;
-        // 空でないかどうか ----------------------------------
-        // 数字型
-        if ($append['value_type'] == AppendItem::TYPE_NUMBER) {
-            if (empty($data['value_int']) && $data['value_int'] != 0) {
-                $valid = false;
-            }
-        }
-        // テキスト型
-        if ($append['value_type'] == AppendItem::TYPE_TEXT) {
-            if (empty($data['value_text'])) {
-                $valid = false;
-            }
-        }
-        // テキストエリア型
-        if ($append['value_type'] == AppendItem::TYPE_TEXTAREA) {
-            if (empty($data['value_textarea'])) {
-                $valid = false;
-            }
-        }
-        // 日付型
-        if ($append['value_type'] == AppendItem::TYPE_DATE) {
-            if (empty($data['value_date'])) {
-                $valid = false;
-            }
-        }
-        // list
-        if ($append['value_type'] == AppendItem::TYPE_LIST) {
-            if (empty($data['value_int'])) {
-                $valid = false;
-            }
-        }
-        // checkbox
-        if ($append['value_type'] == AppendItem::TYPE_DECIMAL) {
-            if (empty($data['value_key'])) {
-                $valid = false;
-            }
-        }
-        // radio
-        if ($append['value_type'] == AppendItem::TYPE_RADIO) {
-            if (empty($data['value_key'])) {
-                $valid = false;
-            }
-        }
-        // decimal
-        if ($append['value_type'] == AppendItem::TYPE_DECIMAL) {
-            if (empty($data['value_decimal'])) {
-                $valid = false;
-            }
-        }
-        // file
-        if ($append['value_type'] == AppendItem::TYPE_FILE) {
-            if (empty($data['_file']['size']) && empty($data['file_size'])) {
-                $valid = false;
-            }
-        }
-        // 画像
-        if ($append['value_type'] == AppendItem::TYPE_IMAGE) {
-            if (empty($data['image'])) {
-                $valid = false;
-            }
-        }
+
+        // Date型 // DateTime型
+        if (in_array($append->item_type, ['date', 'datetime'], true))
+            $valid = $data->{$append->slug} instanceof \DateTime || $data->{$append->slug} instanceof \Cake\I18n\FrozenDate;
+
+        // Text型 // Textarea型 // WYSIWYG型
+        if (in_array($append->item_type, ['text', 'textarea', 'WYSIWYG'], true))
+            $valid = $data->{$append->slug} != '';
+
+        // Image型
+        if (in_array($append->item_type, ['image'], true))
+            $valid = $data->{$append->slug} != '' || $data->{__('_{0}', $append->slug)}->getError() == 0;
+
+        // File型
+        if (in_array($append->item_type, ['file'], true))
+            $valid = $data->{$append->slug} != '' || $data->{__('_{0}', $append->slug)}->getError() == 0;
+
+        // select型 // checkbox型 // radio型
+        // if (in_array($append->item_type, ['select', 'checkbox', 'radio'], true))
+        //     $valid = $data->{$append->slug} != '' || !is_null($data->{$append->slug}) || $data->{$append->slug} != 0; 
+
         // エラーメッセージセット
         if (!$valid) {
-            if (in_array($append['value_type'], [AppendItem::TYPE_TEXTAREA, AppendItem::TYPE_TEXT,])) {
-                $entity->setErrors([
-                    "{$slug}.{$append['slug']}" => [
-                        'notempty' => '入力してください'
-                    ]
-                ]);
-            }
+            $error = ['notempty' => '選択してください'];
+            if (in_array($append->item_type, ['WYSIWYG', 'text', 'textarea'], true))
+                $error['notempty'] = '入力してください';
 
-            if (in_array($append['value_type'], [AppendItem::TYPE_RADIO, AppendItem::TYPE_LIST, AppendItem::TYPE_IMAGE, AppendItem::TYPE_FILE])) {
-                $entity->setErrors([
-                    "{$slug}.{$append['slug']}" => [
-                        'notempty' => '選択してください'
-                    ]
-                ]);
-            }
+            $data->setError(__('{0}', $append->slug), [$error]);
         }
-
-
         return $valid;
     }
+
 
     /**
      * emptyチェック以外のバリデーション(append項目)
@@ -1544,24 +1181,22 @@ class BaseInfosController extends AppController
     protected function additionalValidate($entity, $data, $list, $slug)
     {
         $valid = true;
-        $append_slug = $list[$data['append_item_id']];
-        // dd([$entity, $data, $list, $slug]);
+        // $append_slug = $list[$data->append_item_id];
 
-        if ($slug == 'glossaries') {
-            if ($append_slug == 'kana') {
-                if (!empty($data['value_text'])) {
-                    if (!$this->InfoAppendItems->checkKana($data['value_text'])) {
-                        $valid = false;
-                        $entity->setErrors([
-                            "{$slug}.{$append_slug}" => [
-                                'checkurl' => '全角カタカナで入力してください'
-                            ]
-                        ]);
-                    }
-                }
-            }
-        }
-
+        // if ($slug == 'glossaries') {
+        //     if ($append_slug == 'kana') {
+        //         if (!empty($data['value_text'])) {
+        //             if (!$this->InfoAppendItems->checkKana($data['value_text'])) {
+        //                 $valid = false;
+        //                 $entity->setErrors([
+        //                     "{$slug}.{$append_slug}" => [
+        //                         'checkurl' => '全角カタカナで入力してください'
+        //                     ]
+        //                 ]);
+        //             }
+        //         }
+        //     }
+        // }
         return $valid;
     }
 
@@ -1593,9 +1228,9 @@ class BaseInfosController extends AppController
             }
         }
 
-
         return $this->InfoAppendItems->delete($e);
     }
+
 
     private function getCategoryIds($id = 0)
     {

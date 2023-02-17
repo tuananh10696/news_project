@@ -8,10 +8,11 @@ use Cake\ORM\TableRegistry;
 
 class AppController extends BaseController
 {
-    // public $helpers = [
-    //     'Paginator' => ['templates' => 'paginator-templates']];
+    public $helpers = [
+        'Paginator' => ['templates' => 'paginator-templates']];
 
     protected function _lists($cond = array(), $options = array()) {
+
         $primary_key = $this->{$this->modelName}->getPrimaryKey();
 
         $this->paginate = array_merge(array('order' => $this->modelName . '.' . $primary_key . ' DESC',
@@ -46,7 +47,7 @@ class AppController extends BaseController
                 $this->redirect(array('action' => $this->request->action));
             }
         }
-        
+
         $this->set(compact('datas', 'query'));
     }
 
@@ -70,7 +71,7 @@ class AppController extends BaseController
         if ($this->request->is(array('post', 'put'))
             && $this->request->getData() //post_max_sizeを越えた場合の対応(空になる)
             )
-        {    
+        {
             $isValid = true;
 
             $entity_options = [];
@@ -80,7 +81,7 @@ class AppController extends BaseController
             if (!empty($validate)) {
                 $entity_options['validate'] = $validate;
             }
-            
+
             $entity = $this->{$this->modelName}->newEntity($this->request->getData(), $entity_options);
 
             if ($entity->getErrors()) {
@@ -110,9 +111,9 @@ class AppController extends BaseController
                     $data = $error_callback($data);
                 }
             } else {
-                
+
             }
-                      
+
 
             if ($isValid) {
                 $tableColumns = $this->{$this->modelName}->getSchema()->columns();
@@ -152,7 +153,7 @@ class AppController extends BaseController
                 $request = $this->getRequest()->withParsedBody($this->{$this->modelName}->toFormData($entity));
                 $this->setRequest($request);
             } else {
-                $entity = $this->{$this->modelName}->newEntity();
+                $entity = $this->{$this->modelName}->newEntity([]);
                 $entity->{$this->{$this->modelName}->getPrimaryKey()} = null;
                 $request = $this->getRequest()->withParsedBody($this->{$this->modelName}->toFormData($entity));
                 $this->setRequest($request);;
@@ -162,7 +163,7 @@ class AppController extends BaseController
                 }
             }
 
-            
+
             $this->set('data', $this->request->getData());
         }
 
@@ -172,7 +173,7 @@ class AppController extends BaseController
             // pr($contents);exit;
         }
 
-        $this->set('entity', $entity);  
+        $this->set('entity', $entity);
     }
 
     public function _detail($id, $option = []) {
@@ -205,7 +206,7 @@ class AppController extends BaseController
             }
         }
 
-        
+
         $this->set('data', $this->request->getData());
 
 
@@ -236,10 +237,10 @@ class AppController extends BaseController
             'redirect' => array('action' => 'index', '#' => 'content-' . $id)
             ), $options);
         extract($options);
-        
+
         $primary_key = $this->{$this->modelName}->getPrimaryKey();
         $query = $this->{$this->modelName}->find()->where([$this->modelName.'.'.$primary_key => $id]);
-        
+
         if (!$query->isEmpty()) {
             // $entity = $this->{$this->modelName}->get($id);
             $this->{$this->modelName}->movePosition($id, $pos);

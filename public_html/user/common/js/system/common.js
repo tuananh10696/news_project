@@ -394,7 +394,6 @@ function nf(self, decimal) {
 }
 
 function alert_dlg(message, options) {
-    $("#kakunin_dialog").removeClass('display_none');
     var buttons = [
         {
           text:'はい',

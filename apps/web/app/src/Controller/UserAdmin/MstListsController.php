@@ -2,16 +2,7 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-use App\Model\Entity\HogeHoge;
-use Cake\Filesystem\Folder;
-use Cake\Utility\Hash;
-use App\Model\Entity\AppendItem;
+use Cake\Event\EventInterface;
 use App\Model\Entity\MstList;
 
 /**
@@ -23,9 +14,9 @@ use App\Model\Entity\MstList;
  */
 class MstListsController extends AppController
 {
-    private $list = [];
 
-    public function initialize()
+
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -35,50 +26,49 @@ class MstListsController extends AppController
 
         $this->modelName = 'MstLists';
         $this->set('ModelName', $this->modelName);
-
-
     }
-    
-    public function beforeFilter(Event $event) {
+
+
+    public function beforeFilter(EventInterface $event)
+    {
         $this->viewBuilder()->setLayout("user");
         $this->viewBuilder()->setClassName('Useradmin');
 
         $this->setCommon();
-        $this->getEventManager()->off($this->Csrf);
-
-
     }
-    public function index() {
+
+
+    public function index()
+    {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("index_2");
 
-        if(!$this->isUserRole('admin')){
+        if (!$this->isUserRole('admin')) {
             $this->Flash->set('不正なアクセスです');
             return $this->redirect('/');
         }
-        
+
         $query = $this->_getQuery();
         $this->setList($query);
 
-        if (!$this->isUserRole('develop')) {
+        if (!$this->isUserRole('develop'))
             $query['list_code'] = MstList::LIST_FOR_USER;
-        }
 
         $this->set(compact('query'));
 
-
         $cond = $this->_getConditions($query);
 
-        $contain = [
-        ];
-
-        $this->_lists($cond, array('order' => array($this->modelName.'.position' =>  'ASC'),
-                                            'limit' => null,
-                                            'contain' => $contain
-                                        ));
+        $contain = [];
+        $this->_lists($cond, [
+            'order' => [$this->modelName . '.position' =>  'ASC'],
+            'limit' => null,
+            'contain' => $contain
+        ]);
     }
 
-    public function edit($id = 0){
+
+    public function edit($id = 0)
+    {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("edit");
 
@@ -100,7 +90,7 @@ class MstListsController extends AppController
             if (!array_key_exists('slug', $query)) {
                 $query['slug'] = $this->request->getData('slug');
             }
-            $redirect = ['action' => 'index','?' => $query];
+            $redirect = ['action' => 'index', '?' => $query];
         } else {
             if (!$id) {
                 $create = [
@@ -123,7 +113,7 @@ class MstListsController extends AppController
             $old_data = $this->MstLists->find()->where(['MstLists.id' => $id])->first();
         }
 
-        $callback = function($id) use($old_data) {
+        $callback = function ($id) use ($old_data) {
             $data = $this->MstLists->find()->where(['MstLists.id' => $id])->first();
             if (!empty($old_data)) {
                 $update = [
@@ -143,13 +133,12 @@ class MstListsController extends AppController
             'create' => $create
         ];
 
-
         parent::_edit($id, $options);
-
-
     }
 
-    public function delete($id = 0, $type, $columns = null) {
+
+    public function delete($id = 0, $type, $columns = null)
+    {
         $this->checkLogin();
 
         if (empty($id)) {
@@ -158,7 +147,7 @@ class MstListsController extends AppController
             return;
         }
 
-        $data = $this->{$this->modelName}->find()->where([$this->modelName.'.id' => $id])->first();
+        $data = $this->{$this->modelName}->find()->where([$this->modelName . '.id' => $id])->first();
 
         if (empty($data)) {
             $this->redirect('/user/');
@@ -170,7 +159,9 @@ class MstListsController extends AppController
         $result = parent::_delete($id, $type, $columns, $options);
     }
 
-    public function position($id, $pos) {
+
+    public function position($id, $pos)
+    {
         $this->checkLogin();
 
 
@@ -178,7 +169,7 @@ class MstListsController extends AppController
 
         $options = [];
 
-        $data = $this->{$this->modelName}->find()->where([$this->modelName.'.id' => $id])->first();
+        $data = $this->{$this->modelName}->find()->where([$this->modelName . '.id' => $id])->first();
 
         if (empty($data)) {
             $this->redirect(['action' => 'index']);
@@ -190,110 +181,96 @@ class MstListsController extends AppController
         return parent::_position($id, $pos, $options);
     }
 
-// -------------------------------------------------------------------------------
 
-    public function _getQuery(){
-        $query = [];
+    public function _getQuery()
+    {
         $query['sys_cd'] = $this->request->getQuery('sys_cd');
-        if(empty($query['sys_cd'])){
-            $query['sys_cd'] = MstList::LIST_FOR_USER;
-        }
+        if (is_null($query['sys_cd'])) $query['sys_cd'] = MstList::LIST_FOR_USER;
         $query['slug'] = $this->request->getQuery('slug');
-
         return $query;
     }
 
-    public function _getConditions($query){
-        $cond = [];
 
-        if(!empty($query['slug'])){
-            $cond['MstLists.slug'] = $query['slug'];
-        }else{
-            $cond['MstLists.slug'] = '';
-        }
-
-        if(!empty($query['sys_cd'])){
-            $cond['MstLists.sys_cd'] = $query['sys_cd'];
-        }
-
-
+    public function _getConditions($query)
+    {
+        if (!is_null($query['slug']) && $query['slug'] != '') $cond['MstLists.slug'] = $query['slug'];
+        $cond['MstLists.sys_cd'] = $query['sys_cd'];
         return $cond;
     }
 
-    public function setList($query) {
 
-        $list = array(
-        );
-
+    public function setList($query)
+    {
+        $list = array();
 
         $list['sys_list'] = MstList::$sys_list;
-        if(!$this->isUserRole('admin')){
+
+        if (!$this->isUserRole('admin'))
             unset($list['sys_list'][MstList::LIST_FOR_ADMIN]);
-        }
 
         $sys_cd = $query['sys_cd'];
-        $cond = [
-            'MstLists.sys_cd' => $sys_cd
-        ];
-        $slug_list = [];
-        $slugs = $this->MstLists->find('list', ['keyField' => 'slug', 'valueField' => 'name'])->where($cond)->group(['sys_cd', 'slug'])->order(['MstLists.id' => 'ASC'])->all();
-        if (!$slugs->isEmpty()) {
-            $slug_list = $slugs->toArray();
-        }
-        $list['slug_list'] = $slug_list;
 
-        if (!empty($list)) {
-            $this->set(array_keys($list),$list);
-        }
+        $cond = ['MstLists.sys_cd' => $sys_cd];
+
+        $list['slug_list'] = $this->MstLists
+            ->find('list', [
+                'keyField' => 'slug',
+                'valueField' => 'name'
+            ])
+            ->where($cond)
+            ->group(['sys_cd', 'slug'])
+            ->order(['MstLists.id' => 'ASC'])
+            ->all()
+            ->toArray();
+
+        if (!empty($list)) $this->set(array_keys($list), $list);
+
         $this->list = $list;
         return $list;
     }
 
-    public function getTargetList($query = []){
+
+    public function getTargetList($query = [])
+    {
         $list = [];
 
         $cond = [];
 
-        if(!empty($query['list_code'])){
+        if (!empty($query['list_code'])) {
             $cond['MstLists.sys_cd'] = $query['list_code'];
-        }else{
-
         }
 
-        
-        $datas = $this->MstLists->find('list', ['keyField' => 'use_target_id','valueField' => 'list_name'])->where($cond)->group('use_target_id')->order(['use_target_id' => 'ASC', 'position' => 'ASC'])->toArray();
+        $datas = $this->MstLists->find('list', ['keyField' => 'use_target_id', 'valueField' => 'list_name'])->where($cond)->group('use_target_id')->order(['use_target_id' => 'ASC', 'position' => 'ASC'])->toArray();
 
-        if(empty($datas)){
+        if (empty($datas)) {
             return $list;
         }
-
         $list = $datas;
-
-
         return $list;
     }
 
 
-    protected function getMaxVals($query){
+    protected function getMaxVals($query)
+    {
         $num = 1;
         $cond['MstLists.use_target_id'] = $query['target_id'];
         $cond['MstLists.sys_cd'] = $query['list_code'];
 
 
         $datas = $this->MstLists->find()
-                               ->where($cond)
-                               ->all();
-        
-        if(empty($datas)){
+            ->where($cond)
+            ->all();
+
+        if (empty($datas)) {
             return $num;
         }
-        
-        foreach($datas as $data){
-            if($num <= intval($data['ltrl_val'])){
+
+        foreach ($datas as $data) {
+            if ($num <= intval($data['ltrl_val'])) {
                 $num = intval($data['ltrl_val']) + 1;
             }
         }
-        
+
         return $num;
     }
 }

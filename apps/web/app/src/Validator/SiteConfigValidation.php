@@ -1,13 +1,14 @@
-<?php 
+<?php
+
 namespace App\Validator;
 
-use Cake\Validation\Validation;
-use App\Model\Table\PageConfigsTable;
 
 class SiteConfigValidation
 {
-    public static function isUnique($value, $context) {
 
+
+    public static function isUnique($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -16,7 +17,6 @@ class SiteConfigValidation
             $id = $context['data']['id'];
         }
         $cond = [
-            // "SiteConfigs.id !=" => $id,
             "SiteConfigs.{$field}" => $value
         ];
         if ($id) {
@@ -32,10 +32,13 @@ class SiteConfigValidation
         }
     }
 
-    public static function ngSlugName($value, $context) {
 
-        $words = ['home', 'index', 'edit', 'logout', 'login', 'detail', 'admin', 'user', 'common','assets', 'images', 'image', 
-                    UPLOAD_BASE_URL,'js','img','css',SITE_PAGES,SITE_DATA_NAME, 'font'];
+    public static function ngSlugName($value, $context)
+    {
+        $words = [
+            'home', 'index', 'edit', 'logout', 'login', 'detail', 'admin', 'user', 'common', 'assets', 'images', 'image',
+            UPLOAD_BASE_URL, 'js', 'img', 'css', SITE_PAGES, SITE_DATA_NAME, 'font'
+        ];
 
         if (in_array($value, $words)) {
             return false;
@@ -43,9 +46,11 @@ class SiteConfigValidation
         return true;
     }
 
-    public static function checkPasswordRule($value, $context) {
 
+    public static function checkPasswordRule($value, $context)
+    {
     }
+
 
     public static function checkName($value, $context)
     {
@@ -55,5 +60,4 @@ class SiteConfigValidation
             return false;
         }
     }
-
 }

@@ -1,37 +1,51 @@
-<?php 
+<?php
+
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class SiteConfigsTable extends AppTable {
-
+class SiteConfigsTable extends AppTable
+{
     // テーブルの初期値を設定する
     public $defaultValues = [
         "id" => null
     ];
 
-    public $attaches = array('images' =>
-                            array(),
-                            'files' => array(),
-                            );
-    
-                            // 
-    public function initialize(array $config)
+    public $attaches = array(
+        'images' =>
+        array(),
+        'files' => array(),
+    );
+
+
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config): void
     {
+        parent::initialize($config);
         $this->hasMany('PageConfigs')->setDependent(true);
-        
+
         $this->hasMany('UserSites')->setDependent(true);
 
         $this->addBehavior('Position', [
-                'order' => 'DESC'
-            ]);
-
-        parent::initialize($config);
-        
+            'order' => 'DESC'
+        ]);
     }
-    // Validation
-    public function validationDefault(Validator $validator)
+
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
     {
         $validator->setProvider('SiteConfig', 'App\Validator\SiteConfigValidation');
 
@@ -39,18 +53,19 @@ class SiteConfigsTable extends AppTable {
             ->notEmpty('site_name', '入力してください')
             ->add('site_name', 'maxLength', [
                 'rule' => ['maxLength', 40],
-                'message' => '40文字以内で入力してください'])
+                'message' => '40文字以内で入力してください'
+            ])
 
             ->notEmpty('slug', '入力してください')
-            ->add('slug', 'chkName', ['rule' => ['checkName'],'provider' => 'SiteConfig','message' => '数字から始まっているか使えない文字が含まれています'])
-            ->add('slug', 'Length', ['rule' => ['lengthBetween', 2, 30],'message' => '2文字以上30文字以内で入力してください'])
-            ->add('slug', 'unique', ['rule' => ['isUnique'],'provider' => 'SiteConfig','message' => 'ご希望のディレクトリ名は既に使われております'])
-            ->add('slug', 'ng_word', ['rule' => ['ngSlugName'],'provider' => 'SiteConfig','message' => 'このディレクトリ名は使えません'])
-            ;
+            ->add('slug', 'chkName', ['rule' => ['checkName'], 'provider' => 'SiteConfig', 'message' => '数字から始まっているか使えない文字が含まれています'])
+            ->add('slug', 'Length', ['rule' => ['lengthBetween', 2, 30], 'message' => '2文字以上30文字以内で入力してください'])
+            ->add('slug', 'unique', ['rule' => ['isUnique'], 'provider' => 'SiteConfig', 'message' => 'ご希望のディレクトリ名は既に使われております'])
+            ->add('slug', 'ng_word', ['rule' => ['ngSlugName'], 'provider' => 'SiteConfig', 'message' => 'このディレクトリ名は使えません']);
 
-        
+
         return $validator;
     }
+
 
     public function validationIsRoot(Validator $validator)
     {
@@ -60,13 +75,14 @@ class SiteConfigsTable extends AppTable {
             ->notEmpty('site_name', '入力してください')
             ->add('site_name', 'maxLength', [
                 'rule' => ['maxLength', 40],
-                'message' => '40文字以内で入力してください'])
-            ;
-        
+                'message' => '40文字以内で入力してください'
+            ]);
+
         return $validator;
     }
 
-    public function getList($cond=[])
+
+    public function getList($cond = [])
     {
         $query = $this->find()->where($cond);
         $list = [];
@@ -81,6 +97,5 @@ class SiteConfigsTable extends AppTable {
         }
 
         return $list;
-
     }
 }

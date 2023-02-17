@@ -3,16 +3,8 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
 use Cake\Datasource\ModelAwareTrait;
-use Cake\Utility\Inflector;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-
 use App\Model\Entity\Info;
-use App\Model\Entity\AppendItem;
-use DateTime;
 
 /**
  * OutputHtml component
@@ -30,11 +22,12 @@ class CmsComponent extends Component
 
     use ModelAwareTrait;
 
-    public function initialize(array $config)
+
+    public function initialize(array $config): void
     {
 
         $this->Controller = $this->_registry->getController();
-        // $this->Session = $this->Controller->getRfindAllequest()->getSession();
+        $this->Session = $this->Controller->getRequest()->getSession();
 
         $this->loadModel('Infos');
         $this->loadModel('PageConfigs');
@@ -44,9 +37,8 @@ class CmsComponent extends Component
         $this->loadModel('AppendItems');
         $this->loadModel('InfoAppendItems');
         $this->loadModel('InfoStockTables');
-
-        $this->now = new \DateTime('now', new \DateTimeZone('Asia/Tokyo'));
     }
+
 
     public function getInfoIdsFromAppendItem($slug, $key, $conditions = [])
     {
@@ -70,6 +62,7 @@ class CmsComponent extends Component
         return $info_ids;
     }
 
+
     public function findAll($slug, $options = [], $paginate = [])
     {
         // page_config
@@ -79,16 +72,13 @@ class CmsComponent extends Component
         }
 
         // デフォルトオプション
-        $default_cond = [
-            'Infos.status' => 'publish',
-            'Infos.start_datetime <=' => $this->now,
+        $now = new \DateTime();
+        $default_cond = ['Infos.status' => 'publish', 'Infos.start_datetime <=' => $now->format('Y-m-d H:i')];
+        $default_contain = [
+            'PageConfigs'
         ];
-
-        $default_contain = ['PageConfigs'];
-
         if ($page_config->is_category == 'Y') {
-            if ($page_config->is_category_multiple == 1) {
-            } else {
+            if ($page_config->is_category_multiple == 1) { } else {
                 $default_contain = [
                     'PageConfigs',
                     'Categories'
@@ -96,7 +86,6 @@ class CmsComponent extends Component
                 $default_cond['Categories.status'] = 'publish';
             }
         }
-
         $order = ['Infos.position' => 'ASC'];
 
         // オプション
@@ -129,7 +118,6 @@ class CmsComponent extends Component
         if (!empty($options['conditions'])) {
             $cond += $options['conditions'];
         }
-
         if (!empty($options['append_cond'])) {
             $cond += $options['append_cond'];
         }
@@ -146,11 +134,9 @@ class CmsComponent extends Component
         if ($options['limit']) {
             $query->limit($options['limit']);
         }
-
         if ($options['order']) {
             $query->order($options['order']);
         }
-
         return $query->all();
     }
 
@@ -228,7 +214,6 @@ class CmsComponent extends Component
         $entity = $this->_detail($slug, $info_id, $options);
         if (empty($entity)) {
             return null;
-            // throw new NotFoundException('ページが見つかりません');
         }
 
         $option['section_block_ids'] = array_keys(Info::BLOCK_TYPE_WAKU_LIST);
@@ -285,15 +270,15 @@ class CmsComponent extends Component
     {
         // page_config
         $page_config = $this->PageConfigs->find()->where(['PageConfigs.slug' => $slug])->first();
-        if (empty($page_config)) return null;
+        if (empty($page_config)) {
+            return null;
+        }
 
         // デフォルトオプション
         $default_cond = [
             'Infos.id' => $info_id,
-            'Infos.status' => 'publish',
-            'Infos.start_datetime <=' => $this->now
+            'Infos.status' => 'publish'
         ];
-
         $default_contain = [
             'PageConfigs',
             'InfoAppendItems' => function ($q) {
@@ -303,14 +288,12 @@ class CmsComponent extends Component
                 return $q->order(['InfoContents.position' => 'ASC'])->contain(['SectionSequences']);
             }
         ];
-
         if ($page_config->is_category == 'Y') {
-            if ($page_config->is_category_multiple != 1) {
+            if ($page_config->is_category_multiple == 1) { } else {
                 $default_contain[] = 'Categories';
                 $default_cond['Categories.status'] = 'publish';
             }
         }
-
         $options = array_merge([
             'conditions' => $default_cond,
             'contain' => $default_contain,
@@ -320,11 +303,14 @@ class CmsComponent extends Component
 
         $cond = $options['conditions'];
 
-        if ($options['isPreview'] && $this->Controller->isUserLogin()) $cond = ['Infos.id' => $info_id];
-        else $cond = $options['conditions'];
+        if ($options['isPreview'] && $this->Controller->isUserLogin()) {
+            unset($cond['Infos.status']);
+            unset($cond['Categories.status']);
+        }
 
-        if (!empty($options['append_cond']))
+        if (!empty($options['append_cond'])) {
             $cond += $options['append_cond'];
+        }
 
         $query = $this->Infos->find()->where($cond)->contain($options['contain']);
 
@@ -334,9 +320,6 @@ class CmsComponent extends Component
 
     public function toHierarchization($id, $entity, $options = [])
     {
-        // $options = array_merge([
-        //     'section_block_ids' => [10]
-        // ], $options);
         $data = $this->request->getData();
         $content_count = 0;
         $contents = [
@@ -348,7 +331,7 @@ class CmsComponent extends Component
 
         $sequence_table = $this->Infos->useHierarchization['sequence_table'];
         $sequence_id_name = $this->Infos->useHierarchization['sequence_id_name'];
-        // if ($id && $entity->has($contents_table)) {
+
         if (!empty($entity->{$contents_table})) {
             $content_count = count($entity->{$contents_table});
             $block_count = 0;
@@ -365,9 +348,7 @@ class CmsComponent extends Component
                         continue;
                     }
                     $sequence_id = $v[$sequence_id_name];
-                    // if (!array_key_exists($block_count, $contents['contents'])) {
-                    //     continue;
-                    // }
+
                     $waku_number = false;
                     foreach ($contents['contents'] as $_no => $_v) {
                         if (in_array($_v['block_type'], $options['section_block_ids']) && $sequence_id == $_v[$sequence_id_name]) {
@@ -388,12 +369,7 @@ class CmsComponent extends Component
                 $block_count++;
             }
         }
-        //  else {
-        //     if (array_key_exists($contents_table, $data)) {
-        //         $contents['contents'] = $data[$contents_table];
-        //         $content_count = count($data[$contents_table]);
-        //     }
-        // }
+
         return [
             'contents' => $contents,
             'content_count' => $content_count
@@ -415,7 +391,7 @@ class CmsComponent extends Component
 
         $info_append = $this->InfoAppendItems->find()->where(['InfoAppendItems.info_id' => $info_id, 'InfoAppendItems.append_item_id' => $append_item->id])->first();
         if (empty($info_append)) {
-            $info_append = $this->InfoAppendItems->newEntity();
+            $info_append = $this->InfoAppendItems->newEntity([]);
         }
         $save = $values;
         $save['info_id'] = $info_id;
@@ -423,5 +399,38 @@ class CmsComponent extends Component
 
         $entity = $this->InfoAppendItems->patchEntity($info_append, $save);
         return $this->InfoAppendItems->save($entity);
+    }
+
+
+    public function getAppend($page_slug, $slug, $info_id, $options = [])
+    {
+        $options = array_merge([
+            'success' => null,
+            'error' => null
+        ], $options);
+
+        $page_config = $this->PageConfigs->find()->where(['PageConfigs.slug' => $page_slug])->first();
+        if (empty($page_config)) {
+            return null;
+        }
+
+        $cond = [
+            'InfoAppendItems.info_id' => $info_id,
+            'AppendItems.page_config_id' => $page_config->id,
+            'AppendItems.slug' => $slug
+        ];
+        $contain = [
+            'AppendItems'
+        ];
+
+        $data = $this->InfoAppendItems->find()->where($cond)->contain($contain)->first();
+        if (empty($data)) {
+            if (!empty($options['error'])) {
+                return $options['error']();
+            }
+            return null;
+        }
+
+        return $options['success']($data);
     }
 }

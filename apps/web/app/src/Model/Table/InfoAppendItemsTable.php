@@ -2,8 +2,10 @@
 
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
+use App\Model\Entity\AppendItem;
+use Cake\Database\Query;
 use Cake\Validation\Validator;
+use Cake\Event\EventInterface;
 
 class InfoAppendItemsTable extends AppTable
 {
@@ -31,8 +33,8 @@ class InfoAppendItemsTable extends AppTable
         ),
         'files' => array(
             'file' => array(
-                'extensions' => array('pdf'),
-                'file_name' => '%2$s%3$s%1$05d',
+                'extensions' => ['pdf', 'xlsx', 'docx', 'csv'],
+                'file_name' => 'ap_file_%d_%s',
                 'prefix' => 'n3'
             )
         ),
@@ -40,7 +42,7 @@ class InfoAppendItemsTable extends AppTable
 
 
     // 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
 
         $this->addBehavior('FileAttache');
@@ -52,15 +54,14 @@ class InfoAppendItemsTable extends AppTable
 
         parent::initialize($config);
     }
+
+
     // Validation
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
-
-        // $validator
-        //     ->allowEmpty('is_required');
-
         return $validator;
     }
+
 
     public function checkKana($value)
     {
@@ -69,5 +70,20 @@ class InfoAppendItemsTable extends AppTable
         } else {
             return false;
         }
+    }
+
+
+    public function findMyFormat(Query $query, $options = [])
+    {
+        $options = array_merge([], $options);
+
+        return $query->formatResults(function ($data) use ($options) {
+            $data->each(function ($row) use ($options) {
+                if ($row->append_item->value_type == AppendItem::TYPE_CHECK && !empty($row->append_item->mst_list_slug)) {
+                    $row->_multiple = $this->_getMultiples($row->value_int, 4);
+                }
+            });
+            return $data;
+        });
     }
 }

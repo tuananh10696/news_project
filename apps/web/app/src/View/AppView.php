@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -11,21 +14,22 @@
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\View;
 
-use Cake\View\View;
 use App\Model\Entity\Useradmin;
+use Cake\View\View;
 
 /**
  * Application View
  *
- * Your application’s default view class
  *
- * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
+ * Your application's default view class
+ *
+ * @link https://book.cakephp.org/4/en/views.html#the-app-view
  */
 class AppView extends View
 {
-
     /**
      * Initialization hook method.
      *
@@ -35,84 +39,34 @@ class AppView extends View
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
-        $this->loadHelper('Common');
-        $this->loadHelper('Html', ['className' => 'MyHtml']);
-        $this->loadHelper('Form', ['className' => 'MyForm',
-                                   'errorClass' => 'error',
-                                   'templates' => [
-                                       'inputContainer' => '{{content}}',
-                                        'inputContainerError' => '{{content}}<div class="error-message">{{error}}</div>',
-                                        'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
-                                        'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
-                                        'radioWrapper' => '<span style="margin-right:10px;color:#000;">{{label}}</span>'
-                                   ]]);
 
-        $user_roles = [
-            'develop' => Useradmin::ROLE_DEVELOP,
-            'admin' => Useradmin::ROLE_ADMIN,
-            'staff' => Useradmin::ROLE_STAFF
-        ];
+        // $this->loadHelper('Common'); // 自動読込なので通常は追記する必要ない
+        $this->loadHelper('Html', ['className' => 'MyHtml']);
+        $this->loadHelper('Form', [
+            'className' => 'MyForm',
+            'errorClass' => 'error',
+            'templates' => [
+                'inputContainer' => '{{content}}',
+                'inputContainerError' => '{{content}}<div class="error-message">{{error}}</div>',
+                'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
+                'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
+                'radioWrapper' => '<div class="icheck-primary d-inline mr-3">{{label}}</div>',
+
+                'checkboxWrapper' => '<div class="icheck-primary d-inline mr-3">{{label}}</div>',
+                'checkboxFormGroup' => '{{label}}',
+                'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}"{{attrs}}>',
+            ]
+        ]);
+
+        $this->loadHelper('editForm');
+
+        $user_roles = Useradmin::$role_key_values;
+
+        $this->Session = $this->request->getSession();
+
         $this->set(compact('user_roles'));
     }
 }
-/* 
-デフォルトで設定されているもの
-
-    'templates' => [
-        'button' => '<button{{attrs}}>{{text}}</button>',
-        'checkbox' => '
-　　　　　　　　<input type="checkbox" name="{{name}}" 
-           value="{{value}}"{{attrs}}>',
-        'checkboxFormGroup' => '{{label}}',
-        'checkboxWrapper' => '<div class="checkbox">{{label}}</div>',
-        'dateWidget' => '
-　　　　　　　　　　{{year}}{{month}}{{day}}
-　　　　　　　　　　{{hour}}{{minute}}{{second}}{{meridian}}',
-        'error' => '<div class="error-message">{{content}}</div>',
-        'errorList' => '<ul>{{content}}</ul>',
-        'errorItem' => '<li>{{text}}</li>',
-        'file' => '<input type="file" name="{{name}}"{{attrs}}>',
-        'fieldset' => '<fieldset{{attrs}}>{{content}}</fieldset>',
-        'formStart' => '<form{{attrs}}>',
-        'formEnd' => '</form>',
-        'formGroup' => '{{label}}{{input}}',
-        'hiddenBlock' => '<div style="display:none;">{{content}}</div>',
-        'input' => '<input type="{{type}}" name="{{name}}"{{attrs}}/>',
-        'inputSubmit' => '<input type="{{type}}"{{attrs}}/>',
-        'inputContainer' => '
-           <div class="input {{type}}{{required}}">
-             {{content}}
-            </div>',
-        'inputContainerError' => '
-　　　　　　　　　　<div class="input {{type}}{{required}} error">
-　　　　　　　　　　　　{{content}}{{error}}
-　　　　　　　　　　</div>',
-        'label' => '<label{{attrs}}>{{text}}</label>',
-        'nestingLabel' => '{{hidden}}<label{{attrs}}>{{input}}{{text}}</label>',
-        'legend' => '<legend>{{text}}</legend>',
-        'multicheckboxTitle' => '<legend>{{text}}</legend>',
-        'multicheckboxWrapper' => '<fieldset{{attrs}}>{{content}}</fieldset>',
-        'option' => '<option value="{{value}}"{{attrs}}>{{text}}</option>',
-        'optgroup' => '
-          <optgroup label="{{label}}"{{attrs}}>
-             {{content}}
-           </optgroup>',
-        'select' => '<select name="{{name}}"{{attrs}}>{{content}}</select>',
-        'selectMultiple' => '
-          <select name="{{name}}[]" multiple="multiple"{{attrs}}>
-             {{content}}
-           </select>',
-        'radio' => '
-          <input type="radio" name="{{name}}"
-              value="{{value}}"{{attrs}}>',
-        'radioWrapper' => '{{label}}',
-        'textarea' => '
-          <textarea name="{{name}}"{{attrs}}>
-              {{value}}
-           </textarea>',
-        'submitContainer' => '<div class="submit">{{content}}</div>',
-    ]
-    */

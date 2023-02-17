@@ -2,12 +2,7 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
-
 use App\Model\Entity\User;
 
 /**
@@ -19,18 +14,18 @@ use App\Model\Entity\User;
  */
 class UsersController extends AppController
 {
-    private $list = [];
+
 
     public function initialize()
     {
         parent::initialize();
-
     }
-    
-    public function beforeFilter(Event $event) {
+
+
+    public function beforeFilter(Event $event)
+    {
 
         parent::beforeFilter($event);
-        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
 
         $this->setCommon();
@@ -38,22 +33,25 @@ class UsersController extends AppController
 
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
-
     }
 
-    protected function _getQuery() {
-        $query = [];
 
+    protected function _getQuery()
+    {
+        $query = [];
         return $query;
     }
 
-    protected function _getConditions($query) {
-        $cond = [];
 
+    protected function _getConditions($query)
+    {
+        $cond = [];
         return $cond;
     }
 
-    public function index() {
+
+    public function index()
+    {
         $this->checkLogin();
 
         $query = $this->_getQuery();
@@ -64,11 +62,15 @@ class UsersController extends AppController
         $cond = $this->_getConditions($query);
 
 
-        $this->_lists($cond, ['order' => ['id' => 'DESC'],
-                              'limit' => null]);
+        $this->_lists($cond, [
+            'order' => ['id' => 'DESC'],
+            'limit' => null
+        ]);
     }
 
-    public function edit($id=0) {
+
+    public function edit($id = 0)
+    {
         $this->checkLogin();
 
         $query = $this->_getQuery();
@@ -99,10 +101,11 @@ class UsersController extends AppController
         $options['validate'] = $validate;
 
         parent::_edit($id, $options);
-
     }
 
-    public function position($id, $pos) {
+
+    public function position($id, $pos)
+    {
         $this->checkLogin();
 
         $options = [];
@@ -118,7 +121,9 @@ class UsersController extends AppController
         return parent::_position($id, $pos, $options);
     }
 
-    public function enable($id) {
+
+    public function enable($id)
+    {
         $this->checkLogin();
 
         $options = [];
@@ -130,12 +135,13 @@ class UsersController extends AppController
         }
 
         $options['redirect'] = ['action' => 'index', '?' => [], '#' => 'content-' . $id];
-        
-        parent::_enable($id, $options);
 
+        parent::_enable($id, $options);
     }
 
-    public function delete($id, $type, $columns = null) {
+
+    public function delete($id, $type, $columns = null)
+    {
         $this->checkLogin();
 
         $data = $this->{$this->modelName}->find()->where([$this->modelName . '.id' => $id])->first();
@@ -143,26 +149,24 @@ class UsersController extends AppController
             $this->redirect('/user_admin/');
             return;
         }
-        
+
         $options = ['redirect' => ['action' => 'index', '?' => []]];
 
         parent::_delete($id, $type, $columns, $options);
     }
 
 
-    public function setList() {
-        
+    public function setList()
+    {
         $list = array();
 
         $list['gender_list'] = User::$gender_list;
 
         if (!empty($list)) {
-            $this->set(array_keys($list),$list);
+            $this->set(array_keys($list), $list);
         }
 
         $this->list = $list;
         return $list;
     }
-
-
 }

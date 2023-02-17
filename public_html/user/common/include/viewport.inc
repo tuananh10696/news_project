@@ -1,1 +1,0 @@
-width=1000px, user-scalable=yes

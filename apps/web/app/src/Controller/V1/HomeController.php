@@ -6,11 +6,13 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
+
 // use Cake\ORM\TableRegistry;
 use Cake\Auth\DefaultPasswordHasher;
 use App\Model\Entity\Customer;
 use Cake\Utility\Hash;
+
 /**
  * Static content controller
  *
@@ -22,7 +24,7 @@ class HomeController extends AppController
 {
     private $list = [];
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -33,17 +35,19 @@ class HomeController extends AppController
         $this->set('ModelName', $this->modelName);
 
     }
-    
-    public function beforeFilter(Event $event) {
+
+    public function beforeFilter(EventInterface $event)
+    {
         // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("plain");
 
         // $this->getEventManager()->off($this->Csrf);
-    
+
     }
 
 
-    public function get($site_slug) {
+    public function get($site_slug)
+    {
 
         $site_config = $this->SiteConfigs->find()->where(['SiteConfigs.slug' => $site_slug])->first();
         if (empty($site_config)) {
@@ -74,7 +78,6 @@ class HomeController extends AppController
         $cases = $this->_getInfos($site_config, 'case', $condition, 10);
 
 
-        
         $result = [
             'infos' => $infos,
             'datas' => $datas,
@@ -85,18 +88,19 @@ class HomeController extends AppController
         $this->rest_success($result);
     }
 
-    public function _getInfos($site_config, $slug, $cond, $limit=0) {
+    public function _getInfos($site_config, $slug, $cond, $limit = 0)
+    {
         $cond['PageConfigs.slug'] = $slug;
 
         $q = $this->Infos->find()
-                          ->where($cond)
-                          ->contain([
-                            'PageConfigs',
-                            'Categories' => function($q) {
-                                return $q->select(['id', 'name', 'identifier']);
-                            }
-                        ])
-                          ->order(['Infos.start_date' => 'DESC']);
+            ->where($cond)
+            ->contain([
+                'PageConfigs',
+                'Categories' => function ($q) {
+                    return $q->select(['id', 'name', 'identifier']);
+                }
+            ])
+            ->order(['Infos.start_date' => 'DESC']);
         if ($limit) {
             $q->limit($limit);
         }
@@ -127,14 +131,15 @@ class HomeController extends AppController
         return $result;
 
     }
-  
 
-    public function setList() {
-        
+
+    public function setList()
+    {
+
         $list = array();
 
         if (!empty($list)) {
-            $this->set(array_keys($list),$list);
+            $this->set(array_keys($list), $list);
         }
 
         $this->list = $list;

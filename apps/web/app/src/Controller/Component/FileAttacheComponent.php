@@ -3,16 +3,13 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
 use Cake\Datasource\ModelAwareTrait;
-use Cake\Utility\Inflector;
 use Cake\Utility\Text;
 use Cake\Filesystem\Folder;
-
-use App\Model\Entity\Info;
+use Cake\Core\Configure;
 
 /**
- * OutputHtml component
+ * バイナリイメージを保存できるぞ
  */
 class FileAttacheComponent extends Component
 {
@@ -21,7 +18,7 @@ class FileAttacheComponent extends Component
     public $uploadFileMask = 0666;
 
     //ImageMagick configure
-    public $convertPath = '/usr/bin/convert';
+    public $convertPath = ''; // initializeで設定しているよ
     public $convertParams = '-thumbnail';
 
     /**
@@ -34,7 +31,7 @@ class FileAttacheComponent extends Component
     use ModelAwareTrait;
 
 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
 
         $this->Controller = $this->_registry->getController();
@@ -54,6 +51,8 @@ class FileAttacheComponent extends Component
         if (!empty($config['wwwUploadDir'])) {
             $this->wwwUploadDir = $config['wwwUploadDir'];
         }
+
+        $this->convertPath = Configure::read('convert_path');
     }
 
 
@@ -87,8 +86,6 @@ class FileAttacheComponent extends Component
         $this->checkUploadDirectory($table);
 
         $uuid = Text::uuid();
-
-        // $table->eventManager()->off('Model.afterSave');
 
         if (!empty($entity)) {
             $id = $entity->id;

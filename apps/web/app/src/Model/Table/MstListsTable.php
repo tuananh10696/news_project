@@ -1,10 +1,11 @@
-<?php 
+<?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class MstListsTable extends AppTable {
+class MstListsTable extends AppTable
+{
 
 
     // テーブルの初期値を設定する
@@ -13,41 +14,42 @@ class MstListsTable extends AppTable {
         'position' => 0
     ];
 
-    public $attaches = array('images' =>
-                            array(),
-                            'files' => array(),
-                            );
-    
+    public $attaches = array(
+        'images' =>
+        array(),
+        'files' => array(),
+    );
+
     // 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         // 添付ファイル
-//        $this->addBehavior('FileAttache');
+        //        $this->addBehavior('FileAttache');
 
         $this->addBehavior('Position', [
-                'group' => ['sys_cd', 'slug'],
-                'groupMove' => true,
-                'order' => 'DESC'
-            ]);
+            'group' => ['sys_cd', 'slug'],
+            'groupMove' => true,
+            'order' => 'DESC'
+        ]);
 
         parent::initialize($config);
-
     }
+
+
     // Validation
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator->setProvider('App', 'App\Validator\AppValidation');
         $validator
-            ->notEmpty('name','リスト名を入力してください')
+            ->notEmpty('name', 'リスト名を入力してください')
 
             ->notEmpty('slug', '識別子を入力してください')
-//            ->add('slug', 'isUnique', ['rule' => ['isUnique'], 'provider' => 'App', 'message' => 'この単語は既に使用されています'])
 
             ->notEmpty('ltrl_val', '入力してください')
-            ->notEmpty('ltrl_cd', '入力してください')
-        ;
+            ->notEmpty('ltrl_cd', '入力してください');
         return $validator;
     }
+
 
     static public function getList($slug)
     {
@@ -60,6 +62,7 @@ class MstListsTable extends AppTable {
 
         return $list;
     }
+
 
     /**
      * @param $slugs

@@ -31,12 +31,22 @@ class AppendItem extends AppEntity
         self::TYPE_LIST => 'list型',
         self::TYPE_CHECK => 'checkbox型',
         self::TYPE_RADIO => 'radio型',
-        self::TYPE_BOOLEAN => '真/偽型',
-        self::TYPE_DECIMAL => 'deceimal3型',
         self::TYPE_FILE => 'file型',
         self::TYPE_IMAGE => '画像型',
-//        self::TYPE_IMAGE_WP => '画像型(WP)',
         self::TYPE_CUSTOM => 'カスタム（カラムなし）'
+    ];
+
+    static $edit_pos_list = [
+        '1' => '一番上',
+        '2' => '記事番号の下',
+        '3' => '掲載期間の下',
+        '4' => 'カテゴリの下',
+        '5' => 'タイトルの下',
+        '6' => '概要の下',
+        '7' => '画像の下',
+        '8' => '画像注釈の下',
+        '9' => 'TOP表示の下',
+        '0' => 'デフォルト（基本項目の一番下）',
     ];
 
     // TYPE_TEXTにて表示するplaceholderがあれば

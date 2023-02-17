@@ -1,13 +1,12 @@
-<?php 
+<?php
+
 namespace App\Validator;
 
-use Cake\Validation\Validation;
-use App\Model\Table\PageConfigsTable;
 
 class PageConfigValidation
 {
-    public static function isUnique($value, $context) {
-
+    public static function isUnique($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -16,7 +15,6 @@ class PageConfigValidation
             $id = $context['data']['id'];
         }
         $cond = [
-            // "PageConfigs.id !=" => $id,
             "PageConfigs.{$field}" => $value,
             "PageConfigs.site_config_id" => $context['data']['site_config_id']
         ];
@@ -33,7 +31,9 @@ class PageConfigValidation
         }
     }
 
-    public static function isUniqueTop($value, $context) {
+
+    public static function isUniqueTop($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -59,10 +59,13 @@ class PageConfigValidation
         return true;
     }
 
-    public static function ngSlugName($value, $context) {
 
-        $words = ['home', 'index', 'edit', 'logout', 'login', 'detail', 'admin', 'user', 'common','assets', 'images', 'image', 
-                    UPLOAD_BASE_URL,'js','img','css',SITE_PAGES,SITE_DATA_NAME, 'font'];
+    public static function ngSlugName($value, $context)
+    {
+        $words = [
+            'home', 'index', 'edit', 'logout', 'login', 'detail', 'admin', 'user', 'common', 'assets', 'images', 'image',
+            UPLOAD_BASE_URL, 'js', 'img', 'css', SITE_PAGES, SITE_DATA_NAME, 'font'
+        ];
 
         if (in_array($value, $words, true)) {
             return false;
@@ -70,9 +73,11 @@ class PageConfigValidation
         return true;
     }
 
-    public static function checkPasswordRule($value, $context) {
 
+    public static function checkPasswordRule($value, $context)
+    {
     }
+
 
     public static function checkName($value, $context)
     {
@@ -82,5 +87,4 @@ class PageConfigValidation
             return false;
         }
     }
-
 }

@@ -48,8 +48,6 @@ function EncodeHTMLForm( data )
     return params.join( '&' ).replace( /%20/g, '+' );
 }
 function alert_dlg(message, options) {
-    $("#kakunin_dialog").removeClass('display_none');
-    
     var buttons = [
         {
           text:'はい',

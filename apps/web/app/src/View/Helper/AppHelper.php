@@ -1,10 +1,8 @@
-<?php 
+<?php
+
 namespace App\View\Helper;
 
-use Cake\Core\Configure;
-use Cake\Http\Response;
 use Cake\View\Helper;
-use Cake\View\StringTemplateTrait;
 use Cake\View\View;
 
 /**
@@ -17,4 +15,8 @@ use Cake\View\View;
  */
 class AppHelper extends Helper
 {
+    public function __construct(View $view, $options = [])
+    {
+        parent::__construct($view, $options);
+    }
 }

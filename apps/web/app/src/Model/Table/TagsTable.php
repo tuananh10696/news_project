@@ -1,10 +1,11 @@
-<?php 
+<?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class TagsTable extends AppTable {
+class TagsTable extends AppTable
+{
 
     // テーブルの初期値を設定する
     public $defaultValues = [
@@ -12,13 +13,15 @@ class TagsTable extends AppTable {
         "position" => 0
     ];
 
-    public $attaches = array('images' =>
-                            array(),
-                            'files' => array(),
-                            );
+    public $attaches = array(
+        'images' =>
+        array(),
+        'files' => array(),
+    );
 
-                            // 
-    public function initialize(array $config)
+
+    // 
+    public function initialize(array $config): void
     {
         $this->addBehavior('Position', [
             'group' => ['page_config_id'],
@@ -28,21 +31,15 @@ class TagsTable extends AppTable {
         $this->hasMany('InfoTags');
 
         parent::initialize($config);
-        
     }
+
+
     // Validation
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
-
-
         $validator
-            ->notEmpty('tag', '入力してください')
-            // ->add('title', 'maxLength', [
-            //     'rule' => ['maxLength', 100],
-            //     'message' => __('100字以内で入力してください')
-            // ])
-            ;
-        
+            ->notEmpty('tag', '入力してください');
+
         return $validator;
     }
 }

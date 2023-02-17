@@ -1,31 +1,31 @@
-<?php 
+<?php
+
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
-use Cake\Validation\Validator;
-use Cake\Utility\Inflector;
 use Cake\Datasource\ConnectionManager;
 
-class SequencesTable extends AppTable {
+class SequencesTable extends AppTable
+{
 
     // テーブルの初期値を設定する
     public $defaultValues = [
         "id" => null,
     ];
 
-    public $attaches = array('images' =>
-                            array(),
-                            'files' => array(),
-                            );
+    public $attaches = array(
+        'images' =>
+        array(),
+        'files' => array(),
+    );
 
-                            // 
+
+    // 
     public function initialize(array $config)
     {
-
-
         parent::initialize($config);
     }
-    
+
+
     public function getNumber($key)
     {
         $connection = ConnectionManager::get('default');
@@ -46,10 +46,10 @@ class SequencesTable extends AppTable {
 
             if ($r) {
                 $entity = $this->query()
-                                ->where(['k' => $key])
-                                ->select(['id', 'k', 'val'])
-                                ->epilog('FOR UPDATE')
-                                ->first();
+                    ->where(['k' => $key])
+                    ->select(['id', 'k', 'val'])
+                    ->epilog('FOR UPDATE')
+                    ->first();
                 $entity->val = $entity->val + 1;
                 $r = $this->save($entity);
             }
@@ -59,7 +59,6 @@ class SequencesTable extends AppTable {
                 $connection->commit();
             } else {
                 throw new \Exception("Error Processing Request", 1);
-                
             }
         } catch (\Exception $e) {
             $connection->rollback();
@@ -67,6 +66,4 @@ class SequencesTable extends AppTable {
 
         return $no;
     }
-
-
 }

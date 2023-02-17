@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Filesystem\Folder;
 use Cake\Routing\RequestActionTrait;
@@ -21,7 +21,7 @@ class SiteConfigsController extends AppController
 {
     private $list = [];
 
-    public function initialize()
+    public function initialize() : void
     {
         parent::initialize();
 
@@ -32,19 +32,19 @@ class SiteConfigsController extends AppController
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
 
-        $this->loadComponent('OutputHtml');
+//        $this->loadComponent('OutputHtml');
     }
-    
-    public function beforeFilter(Event $event) {
+
+    public function beforeFilter(EventInterface $event) {
         // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("admin");
-        $this->getEventManager()->off($this->Csrf);
+//        $this->getEventManager()->off($this->Csrf);
 
 
     }
     public function index() {
         $this->checkLogin();
-        
+
         $this->setList();
 
         $query = $this->_getQuery();
@@ -54,7 +54,7 @@ class SiteConfigsController extends AppController
         $cond = array();
 
         $cond = $this->_getConditions($query);
-        
+
         return parent::_lists($cond, array('order' => array($this->modelName.'.id' =>  'ASC'),
                                             'limit' => null));
     }
@@ -174,7 +174,7 @@ class SiteConfigsController extends AppController
 
     public function delete($id, $type, $columns = null) {
         $this->checkLogin();
-        
+
         return parent::_delete($id, $type, $columns);
     }
 
@@ -186,12 +186,12 @@ class SiteConfigsController extends AppController
 
     public function enable($id) {
         $this->checkLogin();
-        
+
         parent::_enable($id);
     }
 
     public function setList() {
-        
+
         $list = array();
 
 

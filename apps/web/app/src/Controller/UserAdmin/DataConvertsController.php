@@ -2,14 +2,9 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
 use Cake\Datasource\ConnectionManager;
 
-use App\Model\Entity\Info;
 /**
  * Static content controller
  *
@@ -19,7 +14,6 @@ use App\Model\Entity\Info;
  */
 class DataConvertsController extends AppController
 {
-    private $list = [];
 
     public function initialize()
     {
@@ -35,13 +29,12 @@ class DataConvertsController extends AppController
         $this->InfoTops = $this->getTableLocator()->get('InfoTops');
 
         $this->loadComponent('Cms');
-
     }
-    
-    public function beforeFilter(Event $event) {
 
+
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
-        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
 
         $this->setCommon();
@@ -49,10 +42,11 @@ class DataConvertsController extends AppController
 
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
-
     }
 
-    public function convertItems() {
+
+    public function convertItems()
+    {
         $items = $this->OldSpots->find()->where(['OldSpots.is_converted' => 0])->contain(['OldCategoriesSpots'])->order(['OldSpots.position' => 'ASC'])->all();
         $services = $this->Services->find('list')->order(['Services.position' => 'ASC'])->all();
         if ($services->isEmpty()) {
@@ -69,13 +63,10 @@ class DataConvertsController extends AppController
             $connection = ConnectionManager::get('default');
             $connection->begin();
             try {
-
-
                 if ($r) {
                     $connection->commit();
                 } else {
                     $connection->rollback();
-                    // throw new Exception("Error Processing Request", 1);
                 }
             } catch (\Exception $e) {
                 $r = false;
@@ -86,8 +77,9 @@ class DataConvertsController extends AppController
         return $this->redirect('/user_admin/');
     }
 
-    private function appendInfoContent($info_id, $block_type, $values) {
 
+    private function appendInfoContent($info_id, $block_type, $values)
+    {
         $save = [
             'id' => null,
             'info_id' => $info_id,
@@ -99,5 +91,4 @@ class DataConvertsController extends AppController
         $entity = $this->InfoContents->newEntity($save);
         return $this->InfoContents->save($entity);
     }
-
 }

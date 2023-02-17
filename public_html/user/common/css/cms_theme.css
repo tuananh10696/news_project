@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.hidden {
+  display: none !important;
+}
+
 /* 共通 */
 html {
   font-size: 16px;
@@ -362,6 +366,21 @@ ul.ctrlis .ctend a:active {
 .preview_img {
   width: 300px;
   margin-top: 10px;
+}
+
+.preview_img img {
+  width: 100%;
+}
+
+.preview_img.avatar img {
+  border-radius: 50%;
+  border: 3px solid #adb5bd !important;
+  margin: 0 auto;
+  padding: 3px;
+  max-width: 100% !important;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 }
 
 .preview_img .preview_img_btn {

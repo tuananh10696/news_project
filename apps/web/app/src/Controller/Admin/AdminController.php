@@ -18,9 +18,10 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Auth\DefaultPasswordHasher;
+use App\Form\LoginForm;
 /**
  * Static content controller
  *
@@ -30,17 +31,19 @@ use Cake\Auth\DefaultPasswordHasher;
  */
 class AdminController extends AppController
 {
-    
-    public function beforeFilter(Event $event) {
+
+    public function beforeFilter(EventInterface $event) {
         // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("admin");
     }
     public function index() {
 
         $this->Admin = $this->getTableLocator()->get('Admins');
-        
         $this->viewBuilder()->setLayout("plain");
         $view = "login";
+
+        $admin = new LoginForm();
+
         $r = array();
         if ($this->request->is('post') || $this->request->is('put')) {
             $data = $this->request->getData();
@@ -56,7 +59,7 @@ class AdminController extends AppController
                         $r = false;
                     }
                 }
-                
+
                 if ($r) {
                     $this->Session->write(array('uid' => $r->id,
                                                 'role' => $r->role));
@@ -70,6 +73,7 @@ class AdminController extends AppController
             $this->viewBuilder()->setLayout("admin");
             $view = "index";
         }
+        $this->set(compact('admin'));
         $this->render($view);
 	}
 

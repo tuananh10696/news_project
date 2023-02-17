@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Lib;
+
 /**
  * カレンダークラス 曜日ナンバーはdate('w')に順ずる ※0が日曜日で6が土曜日
  *
@@ -40,9 +42,12 @@ namespace App\Lib;
  * @author   PG103
  * @since    2011/07/26
  * @see
----------------------------------------------------------------------------------------------- */
+----------------------------------------------------------------------------------------------
+ */
 
-class CalendarLib {
+
+class CalendarLib
+{
 	/**
 	 * 設定
 	 * @var      array
@@ -89,6 +94,7 @@ class CalendarLib {
 	 */
 	public $Holiday;
 
+
 	/**
 	 * __construct
 	 * @access   public
@@ -97,9 +103,10 @@ class CalendarLib {
 	 * @author   PG103
 	 * @since    2011/07/26
 	 * @see
-	---------------------------------------------------------------------------------------------- */
-
-	public function __construct($settings=array()) {
+	---------------------------------------------------------------------------------------------- 
+	 */
+	public function __construct($settings = array())
+	{
 		if (!class_exists('Holiday') && file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'holiday.php')) {
 			require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'holiday.php');
 		}
@@ -121,9 +128,10 @@ class CalendarLib {
 	 * @author   PG103
 	 * @since    2011/07/26
 	 * @see
-	---------------------------------------------------------------------------------------------- */
-
-	protected function set_days() {
+	---------------------------------------------------------------------------------------------- 
+	 */
+	protected function set_days()
+	{
 		$this->days = array();
 		//modeがweekの場合
 		if ($this->settings['mode'] == 'week') {
@@ -144,7 +152,7 @@ class CalendarLib {
 			}
 		}
 		//日付配列の作成
-		for ($i=0; $i<$days; $i++) {
+		for ($i = 0; $i < $days; $i++) {
 			$time = $start_time + (86400 * $i);
 			$this->days[date($this->settings['format'], $time)] = $this->_getdate($time);
 		}
@@ -152,8 +160,8 @@ class CalendarLib {
 		//weeksの場合は最終日から、最終曜日まで補完
 		if ($this->settings['mode'] == 'calendar') {
 			$last_day =  $this->days[date($this->settings['format'], $time)];
-			$addday = 7-count($this->days)%7;
-			for ($j=0; $j<=$addday; $j++) {
+			$addday = 7 - count($this->days) % 7;
+			for ($j = 0; $j <= $addday; $j++) {
 				$time = $last_day['time'] + (86400 * $j);
 				$this->days[date($this->settings['format'], $time)] = $this->_getdate($time);
 			}
@@ -172,17 +180,16 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	protected function get_week_backday($now_week, $start_week) {
-			//開始曜日より大きい場合
-			if ($now_week >= $start_week) {
-				$backday = $now_week - $start_week;
-			}
-			else {
-				$backday = 7 - ($start_week - $now_week);
-			}
+	protected function get_week_backday($now_week, $start_week)
+	{
+		//開始曜日より大きい場合
+		if ($now_week >= $start_week) {
+			$backday = $now_week - $start_week;
+		} else {
+			$backday = 7 - ($start_week - $now_week);
+		}
 
-			return $backday;
-
+		return $backday;
 	}
 
 
@@ -196,7 +203,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	protected function format($date, $format='') {
+	protected function format($date, $format = '')
+	{
 		if (!$format) {
 			$format = $this->settings['format'];
 		}
@@ -214,7 +222,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function initialize($settings=array()) {
+	public function initialize($settings = array())
+	{
 		$this->settings = array_merge($this->settings_default, $settings);
 		//nowが設定されている場合
 		if ($this->settings['now']) {
@@ -246,7 +255,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function _getdate($time=null, $now=false) {
+	public function _getdate($time = null, $now = false)
+	{
 		$now_time = strtotime(date('Y-m-d'));
 		if (!$time) {
 			$time = $now_time;
@@ -271,11 +281,9 @@ class CalendarLib {
 		//過去、未来、現在ステータス
 		if ($now_time == $time) {
 			$ret_array['status'] = 'today';
-		}
-		elseif ($now_time > $time) {
+		} elseif ($now_time > $time) {
 			$ret_array['status'] = 'past';
-		}
-		elseif ($now_time < $time) {
+		} elseif ($now_time < $time) {
 			$ret_array['status'] = 'future';
 		}
 
@@ -283,8 +291,7 @@ class CalendarLib {
 		if (!$now) {
 			$ret_array['in_month'] = $this->settings['mode'] == 'week' || $this->now['month'] == $ret_array['month'] ? true : false;
 			$ret_array['selected'] = $this->now['time'] == $time ? true : false;
-		}
-		else {
+		} else {
 			$ret_array['in_month'] = true;
 			$ret_array['selected'] = false;
 		}
@@ -312,14 +319,14 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function set_data($date, $array) {
+	public function set_data($date, $array)
+	{
 		$return = false;
 
 		//todayとselectedの場合
-		if ($date == 'today'){
+		if ($date == 'today') {
 			$date = date($this->settings['format']);
-		}
-		elseif ($date == 'selected') {
+		} elseif ($date == 'selected') {
 			$date = $this->now('date');
 		}
 
@@ -333,20 +340,20 @@ class CalendarLib {
 		//past future in_month, out_month
 		elseif ($date == 'past' || $date == 'future' || $date == 'in_month' || $date == 'out_month') {
 			switch ($date) {
-				case 'past' :
+				case 'past':
 					$target_key = 'status';
 					$target_val = 'past';
 					break;
 
-				case 'future' :
+				case 'future':
 					$target_key = 'status';
 					$target_val = 'future';
 					break;
-				case 'in_month' :
+				case 'in_month':
 					$target_key = 'in_month';
 					$target_val = true;
 					break;
-				default :
+				default:
 					$target_key = 'in_month';
 					$target_val = false;
 					break;
@@ -358,8 +365,7 @@ class CalendarLib {
 				}
 			}
 			$return = true;
-		}
-		else {
+		} else {
 			$date = $this->format($date);
 			if (isset($this->days[$date])) {
 				$this->days[$date] = array_merge($this->days[$date], $array);
@@ -382,14 +388,13 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function days($plain=false) {
+	public function days($plain = false)
+	{
 		if ($plain) {
 			return $this->days;
-		}
-		elseif ($this->settings['mode'] == 'calendar'){
+		} elseif ($this->settings['mode'] == 'calendar') {
 			return array_chunk($this->days, 7, true);
-		}
-		else {
+		} else {
 			return array($this->days);
 		}
 	}
@@ -407,7 +412,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function change_day($day, $mode, $key) {
+	public function change_day($day, $mode, $key)
+	{
 		if ($mode != 'week' && $mode != 'month' && $mode != 'year' && $mode != 'day') {
 			$mode = $this->settings['mode'];
 		}
@@ -436,7 +442,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function next($key=null, $mode='') {
+	public function next($key = null, $mode = '')
+	{
 		return $this->change_day('+1', $mode, $key);
 	}
 
@@ -452,7 +459,8 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function prev($key=null, $mode='') {
+	public function prev($key = null, $mode = '')
+	{
 		return $this->change_day('-1', $mode, $key);
 	}
 
@@ -467,12 +475,12 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function now($key='') {
+	public function now($key = '')
+	{
 		if ($key) {
 			return isset($this->now[$key]) ? $this->now[$key] : null;
 		}
 		return $this->now;
-
 	}
 
 
@@ -486,17 +494,16 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function weeks() {
+	public function weeks()
+	{
 		$weeks = $this->settings['weeks'];
 		$array_before = array();
 		$array_after = array();
-		for ($i=0; $i<7; $i++) {
+		for ($i = 0; $i < 7; $i++) {
 			if ($i >= $this->settings['start_week']) {
 				$array_before[$i] = $this->settings['weeks'][$i];
-			}
-			else {
+			} else {
 				$array_after[$i] = $this->settings['weeks'][$i];
-
 			}
 		}
 
@@ -515,12 +522,12 @@ class CalendarLib {
 	 * @see
 	---------------------------------------------------------------------------------------------- */
 
-	public function span($format='', $in_month=false) {
+	public function span($format = '', $in_month = false)
+	{
 		if ($this->settings['mode'] == 'calendar' && $in_month) {
 			$start = $this->_getdate(strtotime($this->now['year'] . '-' . $this->now['mon'] . '-01'));
 			$end = $this->_getdate(strtotime($this->now['year'] . '-' . $this->now['mon'] . '-' . date('t', $this->now['time'])));
-		}
-		else {
+		} else {
 			$tmp = array_values($this->days);
 			$start = array_shift($tmp);
 			$end = array_pop($tmp);
@@ -531,7 +538,4 @@ class CalendarLib {
 
 		return $ret_array;
 	}
-
-
 }
-?>

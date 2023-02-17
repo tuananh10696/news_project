@@ -5,17 +5,13 @@ namespace App\Lib;
 class Util
 {
 
-    // public function __construct()
-    // {
-    //     $this->loadModel('Taxes');
-    // }
+
     /**
      * 端数処理
      * @param [type] $value [description]
      */
     static function Round($number, $decimal = 0, $type = 1)
     {
-
         $res = $number;
         // 四捨五入
         if ($type == 0) {
@@ -59,8 +55,8 @@ class Util
         }
 
         return $res;
-
     }
+
 
     static function wareki($date)
     {
@@ -97,6 +93,7 @@ class Util
         return $ret;
     }
 
+
     /**
      * 割り算
      * @param $value1
@@ -126,6 +123,7 @@ class Util
         return $result;
     }
 
+
     static function calcMul($value1, $value2, $decimal = 0)
     {
 
@@ -147,6 +145,7 @@ class Util
         return $result;
     }
 
+
     static function calcTax($price, $tax_rate = 0, $decimal = 0)
     {
 
@@ -162,6 +161,7 @@ class Util
 
         return $tax;
     }
+
 
     static function getPrice($item, $tax_rate = 0, $is_sale = false, $resultType = 'price_in_tax', $include_shipping = true)
     {
@@ -189,7 +189,6 @@ class Util
             $in_tax = self::calcTax($result, $tax_rate);
             $result = $in_tax;
         } else {
-
         }
 
         if ($include_shipping) {
@@ -199,11 +198,12 @@ class Util
         return $result;
     }
 
+
     static function dateEmpty($value)
     {
         $r = false;
 
-        if ( $value == DATE_ZERO) {
+        if ($value == DATE_ZERO) {
             $r = true;
         }
 
@@ -212,8 +212,8 @@ class Util
         }
 
         return $r;
-
     }
+
 
     static function addressZenkaku($prefecture, $address)
     {

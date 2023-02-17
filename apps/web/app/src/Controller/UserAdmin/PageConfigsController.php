@@ -2,15 +2,7 @@
 
 namespace App\Controller\UserAdmin;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-use Cake\Filesystem\Folder;
-use Cake\Routing\RequestActionTrait;
-
+use Cake\Event\EventInterface;
 use App\Model\Entity\Useradmin;
 use App\Model\Entity\PageConfig;
 
@@ -24,65 +16,66 @@ use App\Model\Entity\PageConfig;
  */
 class PageConfigsController extends AppController
 {
-    private $list = [];
 
-    public function initialize()
+
+    public function initialize(): void
     {
         parent::initialize();
 
         $this->Infos = $this->getTableLocator()->get('Infos');
         $this->SiteConfigs = $this->getTableLocator()->get('SiteConfigs');
         $this->UseradminSites = $this->getTableLocator()->get('UseradminSites');
-
-        $this->loadComponent('OutputHtml');
-
     }
-    
-    public function beforeFilter(Event $event) {
 
+
+    public function beforeFilter(EventInterface $event)
+    {
         parent::beforeFilter($event);
-        // $this->viewBuilder()->theme('Admin');
         $this->viewBuilder()->setLayout("user");
         $this->viewBuilder()->setClassName('Useradmin');
 
         $this->setCommon();
-        $this->getEventManager()->off($this->Csrf);
 
         $this->modelName = $this->name;
         $this->set('ModelName', $this->modelName);
-
     }
 
-    protected function _getQuery() {
-        $query = [];
 
+    protected function _getQuery()
+    {
+        $query = [];
         return $query;
     }
 
-    protected function _getConditions($query) {
-        $cond = [];
 
+    protected function _getConditions($query)
+    {
+        $cond = [];
         return $cond;
     }
 
-    public function index() {
+
+    public function index()
+    {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("index");
 
         $this->setList();
-
-
         $current_site_id = $this->Session->read('current_site_id');
         $site_config = $this->SiteConfigs->find()->where(['SiteConfigs.id' => $current_site_id])->first();
         $this->set(compact('site_config'));
 
-        $cond =['PageConfigs.site_config_id' => $current_site_id];
+        $cond = ['PageConfigs.site_config_id' => $current_site_id];
 
-        $this->_lists($cond, ['order' => 'PageConfigs.position ASC',
-                              'limit' => null]);
+        $this->_lists($cond, [
+            'order' => 'PageConfigs.position ASC',
+            'limit' => null
+        ]);
     }
 
-    public function edit($id=0) {
+
+    public function edit($id = 0)
+    {
         $this->checkLogin();
         $this->viewBuilder()->setLayout("edit");
 
@@ -101,8 +94,7 @@ class PageConfigsController extends AppController
 
         if ($this->request->is(['post', 'put'])) {
             if ($this->request->getData('is_category') == 'N') {
-                // $this->request->withData('is_category_sort','N');
-                $this->request->data['is_category_sort'] = 'N';
+                $this->request = $this->request->withData('is_category_sort', 'N');
             }
         }
 
@@ -119,9 +111,11 @@ class PageConfigsController extends AppController
         $options = [];
 
         parent::_edit($id, $options);
-
     }
-    public function reCreateDetail($page_config_id, $dir) {
+
+
+    public function reCreateDetail($page_config_id, $dir)
+    {
         $infos = $this->Infos->find()->where(['Infos.page_config_id' => $page_config_id])->all();
         if (empty($infos)) {
             return;
@@ -132,7 +126,10 @@ class PageConfigsController extends AppController
         }
         return;
     }
-    public function writeIndex($slug) {
+
+
+    public function writeIndex($slug)
+    {
         $dir = USER_PAGES_DIR . $slug;
         $file = $dir . DS . "index.html";
 
@@ -143,15 +140,17 @@ class PageConfigsController extends AppController
         }
         $html = $this->requestAction(
             ['controller' => 'Contents', 'action' => 'index', 'pass' => ['site_slug' => $params[0], 'slug' => $params[1]]],
-            ['return', 'bare' => false]);
+            ['return', 'bare' => false]
+        );
 
         file_put_contents($file, $html);
 
         chmod($file, 0666);
-
     }
 
-    public function delete($id, $type, $columns = null) {
+
+    public function delete($id, $type, $columns = null)
+    {
         $this->checkLogin();
 
         if (!$this->isOwnPageByUser($id)) {
@@ -159,14 +158,15 @@ class PageConfigsController extends AppController
             $this->redirect('/user_admin/');
             return;
         }
-        
+
         $options = [];
-        // $options['redirect'] = ['action' => 'index'];
 
         parent::_delete($id, $type, $columns, $options);
     }
 
-    public function position($id, $pos) {
+
+    public function position($id, $pos)
+    {
         $this->checkLogin();
 
         if (!$this->isOwnPageByUser($id)) {
@@ -179,8 +179,8 @@ class PageConfigsController extends AppController
     }
 
 
-    public function setList() {
-        
+    public function setList()
+    {
         $list = array();
 
         $list['template_list'] = ['1' => 'デフォルト'];
@@ -196,12 +196,10 @@ class PageConfigsController extends AppController
         }
 
         if (!empty($list)) {
-            $this->set(array_keys($list),$list);
+            $this->set(array_keys($list), $list);
         }
 
         $this->list = $list;
         return $list;
     }
-
-
 }

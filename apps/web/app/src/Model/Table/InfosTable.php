@@ -8,15 +8,13 @@ use Cake\ORM\TableRegistry;
 class InfosTable extends AppTable
 {
 
-    public $is_category_sort = CATEGORY_SORT;
-
     // テーブルの初期値を設定する
+    public $InfoCategories;
     public $defaultValues = [
         "id" => null,
         "position" => 0,
-        'status' => 'publish',
+        'status' => 'draft',
     ];
-
 
     // 新CMSの枠ブロックを使う場合の設定
     public $useHierarchization = [
@@ -56,32 +54,37 @@ class InfosTable extends AppTable
             )
             //image_1
         ),
-        'files' => array(),
+        'files' => [
+            'file' => [
+                'extensions' => ['pdf', 'xlsx', 'docx', 'csv'],
+                'file_name' => 'img_%d_%s',
+            ]
+        ],
     );
-
 
     // 推奨サイズ
     public $recommend_size_display = [
         // 'image' => true, //　編集画面に推奨サイズを常時する場合の指定
         // 'image' => ['width' => 300, 'height' => 300] // attaachesに書かれているサイズ以外の場合の指定
         // 'image' => false
-        // 'image' => '横幅700以上を推奨。1200x1200以内に縮小されます。'
+        'image' => '横幅700以上を推奨。1200x1200以内に縮小されます。'
     ];
 
 
     // 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
 
         // 並び順
-        if ($this->is_category_sort) {
+        if (CATEGORY_SORT) {
             $this->addBehavior('Position', [
                 'group' => ['page_config_id', 'category_id', 'parent_info_id'],
-                'groupMove' => true
+                'groupMove' => true,
+                'contain' => ['PageConfigs']
             ]);
         } else {
             $this->addBehavior('Position', [
-                'group' => ['page_config_id'],
+                'group' => ['page_config_id', 'parent_info_id'],
                 'groupMove' => true
             ]);
         }
@@ -112,44 +115,15 @@ class InfosTable extends AppTable
 
 
     // Validation
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->notEmpty('title', '入力してください')
-            ->maxLength('title', 200, '200字以内で入力してください')
-            ->add(
-                'title',
-                [
-                    'custom' => [
-                        'rule' => function ($value, $context) {
-                            if (mb_ereg_match("^(\s|　)+$", $value)) {
-                                return '入力してください';
-                            }
-                            return true;
-                        },
-                    ],
-                ],
-            )
-            ->notEmpty('notes', '入力してください')
-            ->maxLength('notes', 500, '500字以内で入力してください')
-            ->add(
-                'notes',
-                [
-                    'custom' => [
-                        'rule' => function ($value, $context) {
-                            if (mb_ereg_match("^(\s|　)+$", $value)) {
-                                return '入力してください';
-                            }
-                            return true;
-                        },
-                    ],
-                ],
-            )
+            ->notEmptyString('title', '入力してください')
+            ->maxLength('title', 200, '100字以内で入力してください')
 
-            ->notEmpty('start_date', '入力してください')
             ->notEmpty('category_id', '選択してください')
-            ->add('category_id', 'check', ['rule' => ['comparison', '>', 0], 'message' => '選択してください']);
-        // ->add('start_date', 'checkDateFormat', ['rule' => [$this, 'checkDateFormat'], 'message' => '正しい日付を選択してください'])
+            ->add('category_id', 'check', ['rule' => ['comparison', '>', 0], 'message' => '選択してください'])
+            ->notEmpty('start_at', '入力してください');
 
         return $validator;
     }
@@ -162,27 +136,22 @@ class InfosTable extends AppTable
         $validator->notEmpty('_image', '選択してください', 'create')
             ->add('_image', 'custom', [
                 'rule' => function ($value, $context) {
-                    if ($value['error'] != 0) return 'アップロードできません';
-                    if (!in_array($value['type'], ['image/jpeg', 'image/gif', 'image/png'])) return 'アップロードできません';
+                    $error = !is_string($value) ? $value->getError() : 1;
+                    if ($error != 0) return 'アップロードできません';
+                    if (!in_array($value->getClientMediaType(), ['image/jpeg', 'image/gif', 'image/png'])) return 'アップロードできません';
                     return true;
                 },
             ]);
 
-        return $validator;
-    }
-
-
-    public function validationIsCategory(Validator $validator)
-    {
-        $validator = $this->validationDefault($validator);
-
-        $validator
-            ->notEmpty('category_id', '選択してください')
-            ->add('category_id', 'check', ['rule' => ['comparison', '>', 0], 'message' => '選択してください'])
-            ->notEmpty('start_date', '入力してください')
-            // ->add('start_date', 'checkDateFormat', ['rule' => [$this, 'checkDateFormat'], 'message' => '正しい日付を選択してください'])
-        ;
-
+        $validator->notEmpty('_file', '選択してください', 'create')
+            ->add('_file', 'custom', [
+                'rule' => function ($value, $context) {
+                    $error = !is_string($value) ? $value->getError() : 1;
+                    if ($error != 0) return 'アップロードできません';
+                    if (!in_array($value->getClientMediaType(), ['application/pdf'])) return 'アップロードできません';
+                    return true;
+                },
+            ]);
         return $validator;
     }
 
@@ -202,7 +171,7 @@ class InfosTable extends AppTable
             'empty_result' => '未設定'
         ], $options);
 
-        $this->InfoCategories = TableRegistry::get('InfoCategories');
+        $this->InfoCategories = TableRegistry::getTableLocator()->get('InfoCategories');
 
         $contain = [
             'Categories'

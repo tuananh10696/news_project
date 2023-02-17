@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -11,6 +12,7 @@
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\View;
 
 use Cake\View\View;
@@ -25,25 +27,23 @@ use Cake\View\View;
 class UseradminView extends AppView
 {
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
         $form_templates = [
-               'inputContainer' => '{{content}}',
-                'inputContainerError' => '{{content}}{{error}}',
-                'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
-                'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
-                'radioWrapper' => '<div class="radio icheck-midnightblue d-inline mr-2">{{label}}</div>',
-                'error' => '<p class="error-message">{{content}}</p>',
+            'inputContainer' => '{{content}}',
+            'inputContainerError' => '{{content}}{{error}}',
+            'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
+            'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
+            'radioWrapper' => '<div class="radio icheck-midnightblue d-inline mr-2">{{label}}</div>',
+            'error' => '<p class="error-message">{{content}}</p>',
 
-                'checkboxWrapper' => '<div class="checkbox icheck-midnightblue">{{label}}</div>',
-                'checkboxFormGroup' => '{{label}}',
-                'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}"{{attrs}}>',
-         ];
+            'checkboxWrapper' => '<div class="checkbox icheck-midnightblue">{{label}}</div>',
+            'checkboxFormGroup' => '{{label}}',
+            'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}"{{attrs}}>',
+        ];
 
-         $this->set(compact('form_templates'));
-
+        $this->set(compact('form_templates'));
     }
-
 }

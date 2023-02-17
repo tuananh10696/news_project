@@ -131,6 +131,7 @@ class Image
     }
 }
 
+
 function renderBackUrl($param, $default_url = null)
 {
     if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], $param) === false) {
@@ -140,6 +141,7 @@ function renderBackUrl($param, $default_url = null)
     }
     return $url;
 }
+
 
 function icon($str)
 {
@@ -153,16 +155,19 @@ function icon($str)
     return $icon;
 }
 
+
 function html_decode($text)
 {
     return html_entity_decode(h($text));
 }
+
 
 function getIDofYTfromURL($url)
 {
     preg_match('/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/', $url, $id, PREG_UNMATCHED_AS_NULL);
     return $id ? $id[1] : null;
 }
+
 
 function is_show($content)
 {
@@ -171,27 +176,9 @@ function is_show($content)
         case 3:
             $is_show = trim($content['image']) === '';
             break;
-        case 11:
-            $is_show = trim($content['image']) === '' && trim($content['content']) === '';
-            break;
+
         case 2:
             $is_show = trim($content['content']) === '';
-            break;
-        case 4:
-            $is_show = trim($content['file']) === '';
-            break;
-        case 10:
-            $is_show = empty($content['sub_contents']);
-            break;
-        case 22:
-            $is_show = trim($content['before_text']) === '' && trim($content['after_text']) === '';
-            break;
-        case 23:
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-            $is_show = false;
             break;
         default:
             $is_show = trim($content['title']) === '';
@@ -200,6 +187,7 @@ function is_show($content)
     return $is_show;
 }
 
+
 function human_filesize($bytes, $decimals = 2)
 {
     $sz = 'BKMGTP';
@@ -207,6 +195,7 @@ function human_filesize($bytes, $decimals = 2)
     $s = @$sz[$factor];
     return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ($s != 'B' ? $s . 'B' : $s);
 }
+
 
 function charlimit($string, $limit)
 {

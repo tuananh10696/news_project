@@ -12,7 +12,3 @@ RewriteCond %{REQUEST_FILENAME}/index.php !-f
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
 
-#AuthType Basic
-#AuthName "Input your ID and Password."
-#AuthUserFile /home/atmnet/atm-net.co.jp/public_html/.htpasswd
-#require valid-user

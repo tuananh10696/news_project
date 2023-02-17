@@ -1,15 +1,18 @@
-<?php 
+<?php
+
 namespace App\Validator;
 
-use Cake\Validation\Validation;
 use Cake\Datasource\ConnectionManager;
+
 /**
  * 汎用バリデーション
  */
 class AppValidation
 {
-    public static function isUnique($value, $context) {
 
+
+    public static function isUnique($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -32,7 +35,9 @@ class AppValidation
         }
     }
 
-    public static function checkPasswordRule($value, $context) {
+
+    public static function checkPasswordRule($value, $context)
+    {
         $pattern = '/\A(?=\d{0,99}+[a-zA-Z\-_#\.])(?=[\-_#\.]{0,99}+[a-zA-Z\d])(?=[a-zA-Z]{0,99}+[\d\-_#\.])[a-zA-Z\d\-_#\.]{1,100}+\z/i';
         if (preg_match($pattern, $value)) {
             return true;
@@ -40,6 +45,8 @@ class AppValidation
             return false;
         }
     }
+
+
 
     public static function checkUsername($value, $context)
     {
@@ -50,7 +57,9 @@ class AppValidation
         }
     }
 
-    public static function checkEmail($value, $context) {
+
+    public static function checkEmail($value, $context)
+    {
         $pattern = '/\A[a-zA-Z0-9_-]([a-zA-Z0-9_\!#\$%&~\*\+-\/\=\.]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.([a-zA-Z]{2,20})\z/';
         if (preg_match($pattern, $value)) {
             return true;
@@ -59,24 +68,28 @@ class AppValidation
         }
     }
 
-    public static function checkPostcode($value, $context) {
 
+    public static function checkPostcode($value, $context)
+    {
         return (bool) preg_match('/[0-9]{3}-?[0-9]{4}/', $value);
     }
 
-    public static function checkTel($value, $context) {
 
+    public static function checkTel($value, $context)
+    {
         return (bool) preg_match('/^(0\d{1,4}[\s-]?\d{1,4}[\s-]?\d{4})$/', $value);
     }
 
-    public static function notEmptyAnd($value, ...$args) {
+
+    public static function notEmptyAnd($value, ...$args)
+    {
         $context = array_pop($args);
 
         $r = true;
         if (empty($value)) {
             $r = false;
         }
-        
+
         foreach ($args as $col) {
             if (empty($context['data'][$col])) {
                 $r = false;
@@ -87,7 +100,9 @@ class AppValidation
         return $r;
     }
 
-    public static function comparisonDate($value, ...$args) {
+
+    public static function comparisonDate($value, ...$args)
+    {
         $context = array_pop($args);
 
         $operator = $args[0];
@@ -99,40 +114,40 @@ class AppValidation
             $start = new \DateTime($value);
         }
         $end = $context['data'][$column];
-        if (!is_object($context['data'][$column])){
+        if (!is_object($context['data'][$column])) {
             $end = new \DateTime($end);
         }
 
         $r = false;
-        switch($operator) {
+        switch ($operator) {
             case '>':
                 if ($start->format($format) > $end->format($format)) {
-                   $r = true; 
+                    $r = true;
                 }
                 break;
             case '<':
                 if ($start->format($format) < $end->format($format)) {
-                    $r = true; 
+                    $r = true;
                 }
                 break;
             case '>=':
                 if ($start->format($format) >= $end->format($format)) {
-                    $r = true; 
+                    $r = true;
                 }
                 break;
             case '<=':
                 if ($start->format($format) <= $end->format($format)) {
-                    $r = true; 
+                    $r = true;
                 }
                 break;
             case '!=':
                 if ($start->format($format) != $end->format($format)) {
-                    $r = true; 
+                    $r = true;
                 }
                 break;
             case '=':
                 if ($start->format($format) == $end->format($format)) {
-                    $r = true; 
+                    $r = true;
                 }
                 break;
         }
@@ -140,7 +155,9 @@ class AppValidation
         return $r;
     }
 
-    public static function checkNgWord($value, $context) {
+
+    public static function checkNgWord($value, $context)
+    {
 
         $sql = '
         select count(*) as `ngflag` 
@@ -156,21 +173,24 @@ class AppValidation
         }
 
         return $r;
-
     }
 
-    public function checkKana($value, $context) {
-        if(preg_match("/^[ァ-ヶｦ-ﾟー\s]+$/u",$value)){
+
+    public function checkKana($value, $context)
+    {
+        if (preg_match("/^[ァ-ヶｦ-ﾟー\s]+$/u", $value)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function checkHira($value, $context) {
-        if(preg_match("/^[ぁ-ゞー・． 　０-９]+$/u",$value)){
+
+    public function checkHira($value, $context)
+    {
+        if (preg_match("/^[ぁ-ゞー・． 　０-９]+$/u", $value)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

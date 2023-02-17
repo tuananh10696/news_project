@@ -2,38 +2,32 @@
 
 namespace App\Controller;
 
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 
 class HomesController extends AppController
 {
 
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadComponent('Cms');
+        $this->slug = 'news';
     }
 
 
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->slug = 'news';
+        $this->viewBuilder()->setLayout("simple");
     }
 
 
     public function index()
     {
         $this->setList();
-        $this->setHeadTitle('Share Life Style Pages');
-        $this->set('__description__', 'Trang chia sẻ thông tin Nhật Bản');
-
-        $category_id = $this->request->getQuery('category_id');
-        $this->set('category_id', $category_id ?? 0);
-
-        // $options = [
-        //     ''
-        // ];
+        $infos = $this->Cms->findAll($this->slug, ['limit' => '1']);
+        $this->set(compact('infos'));
     }
 
     public function setList()
@@ -49,7 +43,6 @@ class HomesController extends AppController
             ->contain('PageConfigs')
             ->order('Categories.position ASC')
             ->toArray();
-
 
         if (!empty($list)) $this->set(array_keys($list), $list);
         return $list;

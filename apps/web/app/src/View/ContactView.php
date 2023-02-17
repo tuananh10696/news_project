@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -11,6 +12,7 @@
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\View;
 
 use Cake\View\View;
@@ -26,7 +28,7 @@ use Cake\View\View;
 class ContactView extends AppView
 {
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -39,20 +41,8 @@ class ContactView extends AppView
             'error' => '<p class="txtErr">{{content}}</p>',
             'errorList' => '<ul>{{content}}</ul>',
             'errorItem' => '<li><p class="txtErr">{{text}}</p></li>',
-         ];
-         
-         $this->set(compact('form_templates'));
+        ];
 
+        $this->set(compact('form_templates'));
     }
-
-
-//     public function render($view = null, $layout = null)
-//     {   
-        
-//         // カスタムロジックをここに。
-//         $INFO = new Info();
-//         $this->set(compact('INFO'));
-// pr($INFO);
-//         parent::render($view, $layout);
-//     }
 }

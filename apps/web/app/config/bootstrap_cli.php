@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,11 +14,10 @@
  * @since         3.0.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-use Cake\Core\Configure;
-use Cake\Core\Exception\MissingPluginException;
-use Cake\Core\Plugin;
 
-/**
+use Cake\Core\Configure;
+
+/*
  * Additional bootstrapping and configuration for CLI environments should
  * be put here.
  */
@@ -26,18 +27,9 @@ use Cake\Core\Plugin;
 //Configure::write('App.fullBaseUrl', php_uname('n'));
 
 // Set logs to different files so they don't have permission conflicts.
-Configure::write('Log.debug.file', 'cli-debug');
-Configure::write('Log.error.file', 'cli-error');
-Configure::write('Log.cmd_closed.file', 'cli-cmd_closed');
-
-Configure::write('Cache._cake_core_.prefix', 'cli_cake_core_');
-Configure::write('Cache._cake_model_.prefix', 'cli_cake_model_');
-Configure::write('Cache._cake_routes_.prefix', 'cli_cake_routes_');
-
-try {
-//    Plugin::load('Bake');
-} catch (MissingPluginException $e) {
-    // Do not halt if the plugin is missing
+if (Configure::check('Log.debug')) {
+    Configure::write('Log.debug.file', 'cli-debug');
 }
-
-//Plugin::load('Migrations');
+if (Configure::check('Log.error')) {
+    Configure::write('Log.error.file', 'cli-error');
+}

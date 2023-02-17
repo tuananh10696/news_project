@@ -1,0 +1,1 @@
+<?= $this->element(__('Block/block/{0}/{1}', $datas['slug'], strtolower(\App\Model\Entity\Info::$block_number2key_list[$datas['block_type']])), ['rownum' => $rownum, 'content' => $datas]); ?>

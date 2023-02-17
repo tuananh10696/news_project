@@ -1,10 +1,12 @@
-<?php 
+<?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class PageConfigExtensionsTable extends AppTable {
+class PageConfigExtensionsTable extends AppTable
+{
 
     // テーブルの初期値を設定する
     public $defaultValues = [
@@ -12,10 +14,12 @@ class PageConfigExtensionsTable extends AppTable {
         "position" => 0
     ];
 
-    public $attaches = array('images' =>
-                            array(),
-                            'files' => array(),
-                            );
+    public $attaches = array(
+        'images' =>
+        array(),
+        'files' => array(),
+    );
+
 
     // 推奨サイズ
     // public $recommend_size_display = [
@@ -23,34 +27,33 @@ class PageConfigExtensionsTable extends AppTable {
     //     // 'image' => ['width' => 300, 'height' => 300] // attaachesに書かれているサイズ以外の場合の指定
     //     // 'image' => false
     // ];
-                            // 
-    public function initialize(array $config)
+    // 
+    public function initialize(array $config): void
     {
         $this->setDisplayField('name');
-        
+
         parent::initialize($config);
 
-        
-        
         // 添付ファイル
         // $this->addBehavior('FileAttache');
         $this->addBehavior('Position', [
-                'group' => ['page_config_id'],
-                'order' => 'DESC'
-            ]);
+            'group' => ['page_config_id'],
+            'order' => 'DESC'
+        ]);
 
         // アソシエーション
         $this->belongsTo('PageConfigs');
 
         parent::initialize($config);
-        
     }
+
+
     // Validation
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->allowEmpty('name');
-        
+
         return $validator;
     }
 }

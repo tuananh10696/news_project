@@ -102,12 +102,12 @@ div.cancel {
 	text-indent:-9999px;
 }
 .prev a {
+	display:block;
 	height:22px;
 	text-decoration:none;
-	background:url(/admin/common/images/prev.gif) no-repeat center;
+	background:url(/admin/common/images/prev.gif) no-repeat center top;
 }
-.prev a:hover {background-position:center;}
-.prev a:active {background-position:center;}
+.prev a:hover, .prev a:active {background-position-y:center;}
 
 .ctr {
 	padding:5px 0;

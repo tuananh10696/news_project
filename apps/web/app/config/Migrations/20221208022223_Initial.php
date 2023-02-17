@@ -129,6 +129,11 @@ class Initial extends AbstractMigration
                 'limit' => 100,
                 'null' => false,
             ])
+            ->addColumn('edit_pos', 'integer', [
+                'default' => '0',
+                'limit' => null,
+                'null' => false,
+            ])
             ->create();
 
         $this->table('categories')
@@ -584,24 +589,14 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('start_date', 'date', [
-                'default' => DATE_ZERO,
+            ->addColumn('start_at', 'datetime', [
+                'default' => DATETIME_ZERO,
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('start_time', 'decimal', [
-                'default' => '0',
-                'limit' => 4,
-                'null' => false,
-            ])
-            ->addColumn('end_date', 'date', [
-                'default' => DATE_ZERO,
+            ->addColumn('end_at', 'datetime', [
+                'default' => DATETIME_ZERO,
                 'limit' => null,
-                'null' => false,
-            ])
-            ->addColumn('end_time', 'decimal', [
-                'default' => '0',
-                'limit' => 4,
                 'null' => false,
             ])
             ->addColumn('image', 'string', [

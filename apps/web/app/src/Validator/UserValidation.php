@@ -1,13 +1,14 @@
-<?php 
+<?php
+
 namespace App\Validator;
 
-use Cake\Validation\Validation;
-use App\Model\Table\UsersTable;
 
 class UserValidation
 {
-    public static function isUnique($value, $context) {
 
+
+    public static function isUnique($value, $context)
+    {
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -29,7 +30,9 @@ class UserValidation
         }
     }
 
-    public static function checkPasswordRule($value, $context) {
+
+    public static function checkPasswordRule($value, $context)
+    {
         $pattern = '/\A(?=\d{0,99}+[a-zA-Z\-_#\.])(?=[\-_#\.]{0,99}+[a-zA-Z\d])(?=[a-zA-Z]{0,99}+[\d\-_#\.])[a-zA-Z\d\-_#\.]{1,100}+\z/i';
         if (preg_match($pattern, $value)) {
             return true;
@@ -37,6 +40,7 @@ class UserValidation
             return false;
         }
     }
+
 
     public static function checkUsername($value, $context)
     {
@@ -46,5 +50,4 @@ class UserValidation
             return false;
         }
     }
-
 }
