@@ -7,14 +7,18 @@ function triggerInput ( element, event )
 function previewImage ( element )
 {
     const files = $( element )[ 0 ].files;
-    const mui = $( '#multiple-uploader' );
+    const mui = $( element ).parents( '.multiple-uploader' );
     const current_items = mui.find( '.image-container' );
+    const __image__ = $( element ).siblings( '.__image__' )[ 0 ];
+
     const image_container = $( `
         <div class="image-container">
             <label onclick="deleteImgLabel(this)" for="deleteImg_0">x</label>
-            <input type="hidden" value="41" class="block_type"/>
-            <input type="hidden" value="0" class="section_sequence_id"/>
-            <img src="" class="image-preview" />
+            <div class="thumbImg">
+                <a href="" class="pop_image_single">
+                    <img src="" class="image-preview" />
+                </a>
+            </div>
         </div>
     `);
 
@@ -28,29 +32,41 @@ function previewImage ( element )
 
     mui.find( '.mup-msg' ).addClass( 'd-none' );
 
+    const dt = new DataTransfer();
+    for ( const [ index, file ] of Object.entries( __image__.files ) )
+        dt.items.add( file );
+
     for ( let index = 0; index < files.length; index++ )
     {
         const file = files[ index ];
         const item = image_container.clone();
 
         item.attr( 'data-pos', index + current_items.length );
-        item.find( 'img' ).attr( 'src', URL.createObjectURL( file ) );
-        item.find( '.block_type' ).attr( 'name', `info_contents[${ index + current_items.length }][block_type]` );
-        item.find( '.section_sequence_id' ).attr( 'name', `info_contents[${ index + current_items.length }][section_sequence_id]` );
+        item
+            .find( 'a' )
+            .attr( 'href', URL.createObjectURL( file ) )
+            .find( 'img' )
+            .attr( 'src', URL.createObjectURL( file ) );
 
         mui.append( item );
+
+        dt.items.add( file );
     }
 
-    setDataInput();
+    __image__.files = dt.files;
+    $( element )[ 0 ].value = [];
 }
 
 
 function deleteImgLabel ( e )
 {
+    const _parent = $( e ).parents( '.multiple-uploader' );
     const par = $( e ).parents( '.image-container' );
-    const old_img = $( 'input[name="delete_ids[]"]' );
+    const old_img = _parent.find( 'input[name="delete_ids_multi_image[]"]' );
+    const numrow = _parent.attr( 'data-numrow' );
+
     const dt = new DataTransfer();
-    const __image__ = document.querySelector( '.__image__' );
+    const __image__ = _parent.find( '.__image__' )[ 0 ];
     const inputId = $( e ).attr( 'for' );
 
     $( `#${ inputId }` ).attr( 'checked', 'checked' );
@@ -62,31 +78,13 @@ function deleteImgLabel ( e )
     __image__.files = dt.files;
 
     par.remove();
-    $( '#multiple-uploader .image-container' ).each( function ( i )
+
+    _parent.find( '.image-container' ).each( function ( i )
     {
         $( this ).attr( 'data-pos', i );
-        $( this ).find( '.block_type' ).attr( 'name', `info_contents[${ i }][block_type]` );
-        $( this ).find( '.section_sequence_id' ).attr( 'name', `info_contents[${ i }][section_sequence_id]` );
-        $( this ).find( '.old_img' ).attr( 'name', `info_contents[${ i }][_old_image]` );
-        $( this ).find( '.old_img_id' ).attr( 'name', `info_contents[${ i }][id]` );
+        $( this ).find( '.old_img' ).attr( 'name', `info_contents[${ numrow }][many_images][${ i }][_old_image]` );
+        $( this ).find( '.old_img_id' ).attr( 'name', `info_contents[${ numrow }][many_images][${ i }][id]` );
     } );
 
-    if ( $( '#multiple-uploader' ).find( '.image-container' ).length == 0 ) $( '#multiple-uploader' ).find( '.mup-msg' ).removeClass( 'd-none' );
-}
-
-
-function setDataInput ()
-{
-    const dt = new DataTransfer();
-    const _image_ = document.querySelector( '._image_' );
-    const __image__ = document.querySelector( '.__image__' );
-
-    for ( const [ index, file ] of Object.entries( __image__.files ) )
-        dt.items.add( file );
-
-    for ( const [ index, file ] of Object.entries( _image_.files ) )
-        dt.items.add( file );
-
-    __image__.files = dt.files;
-    _image_.value = [];
+    if ( _parent.find( '.image-container' ).length == 0 ) _parent.find( '.mup-msg' ).removeClass( 'd-none' );
 }

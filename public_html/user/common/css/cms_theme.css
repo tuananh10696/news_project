@@ -48,14 +48,12 @@
   pointer-events: unset;
 }
 
-.image-container:before {
+.image-container label {
   z-index: 3;
-  content: "\2716";
-  align-content: center;
   font-size: 10px;
   font-weight: bold;
   text-align: center;
-  line-height: 22px;
+  line-height: 17px;
   color: white;
   position: absolute;
   top: -5px;

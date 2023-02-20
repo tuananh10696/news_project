@@ -390,7 +390,7 @@ class BaseInfosController extends AppController
             // 'saveAll' => ['associated' => ['InfoContents']], // save時使用
             'contain' => [
                 'InfoContents' => function ($q) {
-                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences']);
+                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences', 'ManyImages']);
                 },
                 'InfoTags' => function ($q) {
                     return $q->contain(['Tags'])->order(['Tags.position' => 'ASC']);
@@ -430,18 +430,30 @@ class BaseInfosController extends AppController
         if ($this->request->is(['post', 'put'])) {
 
             $data = $this->request->getData();
+
             $data['page_config_id'] = $sch_page_id;
 
             $info_category_ids = $this->request->getData('info_categories');
 
             // createの場合
             if ($this->request->is(['post'])) $validate = 'Create';
-
-            // 並び順
+            // ブロック追加の並び順
             if (isset($data['info_contents'])) {
-                $position = 0;
-                foreach ($this->request->getData('info_contents') as $k => $v)
-                    $this->request = $this->request->withData("info_contents.{$k}.position", ++$position);
+                $pos = 0;
+                $img_index = 0;
+                foreach ($data['info_contents'] as $k => $v) {
+                    $data['info_contents'][$k]['position'] = $pos + 1;
+
+                    if (isset($data['__image__'][$k]) && !empty($data['__image__'][$k]) && intval($data['info_contents'][$k]['block_type']) == 18) {
+
+                        foreach ($data['__image__'][$k] as $img) {
+                            if ($img->getError()) continue;
+
+                            $data['info_contents'][$k]['many_images'][] = ['image' => $img];
+                        }
+                    }
+                    $pos++;
+                }
             }
 
             // メタキーワード
@@ -469,9 +481,10 @@ class BaseInfosController extends AppController
             }
 
             $delete_ids = $this->request->getData('delete_ids');
+            $delete_ids_multi_image = $this->request->getData('delete_ids_multi_image');
             $tags = $this->request->getData('tags');
 
-            $options['callback'] = function ($id) use ($delete_ids, $tags, $page_config, $info_category_ids) {
+            $options['callback'] = function ($id) use ($delete_ids, $tags, $page_config, $info_category_ids, $delete_ids_multi_image) {
                 $r = true;
                 // コンテンツ削除
                 if ($id && $delete_ids) {
@@ -551,10 +564,15 @@ class BaseInfosController extends AppController
                     }
                 }
 
+                $manyImages = $this->fetchTable('ManyImages');
+                if (!empty($delete_ids_multi_image))
+                    $manyImages->deleteMany($manyImages->find()->where(['id IN' => $delete_ids_multi_image])->all());
+
+
                 return $r;
             };
 
-            $this->request->withParsedBody($data);
+            $this->request = $this->request->withParsedBody($data);
         } else
             $info_category_ids = $this->getCategoryIds($id);
 
@@ -572,7 +590,7 @@ class BaseInfosController extends AppController
             return $isValid;
         };
 
-        $options['associated'] = ['InfoAppendItems', 'InfoContents'];
+        $options['associated'] = ['InfoAppendItems', 'InfoContents.ManyImages'];
         $options['redirect'] = ['action' => 'index', '?' => $query];
         $options['validate'] = $validate;
 

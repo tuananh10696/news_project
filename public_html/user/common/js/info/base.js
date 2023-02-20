@@ -36,6 +36,7 @@ function chooseFileUpload ( e )
 	var types = types.split( "," );
 
 	var is_file_type = false;
+	var is_file_size = false;
 
 
 	for ( let i = 0; i < files.length; i++ )
@@ -46,10 +47,18 @@ function chooseFileUpload ( e )
 			is_file_type = true;
 			break;
 		}
+
+		if ( files[ i ].size > max_file_size )
+		{
+			is_file_size = true;
+			break;
+		}
 	}
-	if ( is_file_type )
+
+	if ( is_file_type || is_file_size )
 	{
-		$this.parents( '.td_parent' ).append( `<div class="error-message"><div class="error-message">指定されたファイルを選択してください</div></div>` );
+		var text_error = is_file_type ? '指定されたファイルを選択してください' : 'ファイルサイズ5MB以内';
+		$this.parents( 'td.td_parent' ).append( `<div class="error-message"><div class="error-message">${ text_error }</div></div>` );
 		$this.val( '' );
 		return false;
 	}

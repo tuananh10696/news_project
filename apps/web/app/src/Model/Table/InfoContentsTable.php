@@ -68,6 +68,10 @@ class InfoContentsTable extends AppTable
         $this->belongsTo('SectionSequences');
         $this->belongsTo('Infos');
 
+        $this->hasMany('ManyImages')
+            ->setForeignKey('info_content_id')
+            ->setBindingKey('id');
+
         parent::initialize($config);
     }
 

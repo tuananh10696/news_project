@@ -118,7 +118,7 @@ function addBlock ( type, e )
 		'block_type': type,
 		'slug': slug,
 		'info_id': info_id,
-		'_csrfToken': $('input[name="_csrfToken"]').val(),
+		'_csrfToken': $( 'input[name="_csrfToken"]' ).val(),
 	};
 	if ( rownum >= max_row )
 	{
@@ -425,6 +425,14 @@ function setPostionChatBox ( chatContent )
 }
 
 
+function getMeta ( url, callback )
+{
+	const img = new Image();
+	img.src = url;
+	img.onload = function () { callback( this.width, this.height ); }
+}
+
+
 $( function ()
 {
 	rownum = $( "#idContentCount" ).val();
@@ -447,9 +455,17 @@ $( function ()
 	$( "body" ).on( 'change', '.attaches', function ()
 	{
 		var attaches = document.getElementsByClassName( 'attaches' );
-		form_file_size = 0;
+		var form_file_size = 0;
+		var ischeck = false;
+
 		for ( var i = 0; i < attaches.length; i++ )
 		{
+			if ( !getFileSize( attaches[ i ] ) )
+			{
+				ischeck = true;
+				break;
+			}
+
 			form_file_size += getFileSize( attaches[ i ] );
 		}
 
@@ -457,16 +473,10 @@ $( function ()
 		{
 			$( this ).val( '' );
 			alert_dlg( '一度にアップ出来る容量を超えました。一度保存してください' );
-			return;
+			ischeck = true;
 		}
 
-		if ( $( this ).hasClass( 'file' ) )
-		{
-			$( this ).closest( 'label' ).find( '.result' ).html( '' );
-			var input = $( this ).prop( 'files' )[ 0 ];
-			$( this ).closest( 'label' ).find( '.result' ).append( input.name );
-			return;
-		}
+		if ( ischeck ) return;
 
 		let elm = this;
 		let fileReader = new FileReader();
@@ -483,7 +493,7 @@ $( function ()
 
 		fileReader.onload = ( function ()
 		{
-			let imgTag = `<img style="max-width:500px;border:1px solid #e9e9e9" src='${ fileReader.result }'>`
+			let imgTag = `<img src='${ fileReader.result }'>`
 
 			$( elm )
 				.siblings( ".preview_img" )
@@ -615,9 +625,21 @@ $( function ()
 		return false;
 	} )
 
-	$( "body" ).on( 'click', '.pop_image_single', function ()
+	$( "body" ).on( 'click', '.pop_image_single', function (e)
 	{
-		pop_box.image_single();
+		var options = {
+			maxWidth: "90%",
+			maxHeight: "90%",
+			opacith: 0.7,
+			open: true,
+			html: `<img src="${ $( this ).attr( 'href' ) }"/>`
+		};
+
+		getMeta( $( this ).attr( 'href' ), ( w, h ) =>
+		{
+			pop_box.image_single( { ...options, width: w + 'px', height: h + 'px' } );
+		} );
+		e.preventDefault();
 	} );
 
 	$( "#btnSave" ).on( 'click', function ()

@@ -7,3 +7,4 @@ composer.lock
 public_html/admin_lte
 text.txt
 public_html/upload
+vendor
