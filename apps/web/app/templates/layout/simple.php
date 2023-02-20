@@ -78,11 +78,12 @@
             </nav><!-- .navbar -->
 
             <div class="position-relative">
+                <a href="#" class="mx-2"><span class="bi-youtube"></span></a>
                 <a href="#" class="mx-2"><span class="bi-facebook"></span></a>
-                <a href="#" class="mx-2"><span class="bi-twitter"></span></a>
-                <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
 
                 <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
+                <a href="#" class="mx-2"><span class="bi-person-circle"></span> Login</a>
+
                 <i class="bi bi-list mobile-nav-toggle"></i>
 
                 <!-- ======= Search Form ======= -->

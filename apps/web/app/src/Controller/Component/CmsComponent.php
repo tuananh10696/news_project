@@ -207,7 +207,7 @@ class CmsComponent extends Component
     public function findFirst($slug, $info_id, $options = [])
     {
   
-        if ($this->Controller->getRequest('preview') == 'on') {
+        if ($this->Controller->getRequest()->getQuery('preview') == 'on') {
             $options['isPreview'] = true;
         }
 

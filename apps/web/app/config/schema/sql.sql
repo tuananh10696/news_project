@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: localhost:8889
--- 生成日時: 2023 年 2 月 17 日 09:53
+-- 生成日時: 2023 年 2 月 20 日 10:24
 -- サーバのバージョン： 5.7.34
 -- PHP のバージョン: 7.4.21
 
@@ -135,8 +135,8 @@ CREATE TABLE `infos` (
 --
 
 INSERT INTO `infos` (`id`, `created`, `modified`, `page_config_id`, `position`, `status`, `title`, `notes`, `start_datetime`, `date`, `start_date`, `start_time`, `end_date`, `end_time`, `image`, `file`, `file_name`, `file_size`, `file_extension`, `meta_description`, `meta_keywords`, `regist_user_id`, `category_id`, `index_type`, `multi_position`, `parent_info_id`, `value_text`, `popular`, `top_slide_display`) VALUES
-(1, '2023-02-15 16:32:38', '2023-02-17 18:21:57', 1, 2, 'publish', 'test', 'dddddddf', '2023-02-17 18:21:00', '2023-02-16', NULL, '0', NULL, '0', 'img_1_45474454-2304-4974-8654-ee333ecf075d.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '2023-02-15 17:35:38', '2023-02-15 17:36:11', 1, 1, 'publish', 'いtんれいね', 'dfdfdf', '2023-02-15 17:35:00', NULL, NULL, '0', NULL, '0', 'img_2_bfc5fbd1-1281-4514-bc85-8b269aa9714a.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, '2023-02-15 16:32:38', '2023-02-20 09:18:59', 1, 2, 'publish', 'test', 'dddddddf', '2023-02-20 09:18:00', '2023-02-16', NULL, '0', NULL, '0', 'img_1_45474454-2304-4974-8654-ee333ecf075d.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '2023-02-15 17:35:38', '2023-02-20 15:49:01', 1, 1, 'publish', 'いtんれいね', 'dfdfdf', '2023-02-20 15:48:00', NULL, NULL, '0', NULL, '0', 'img_2_bfc5fbd1-1281-4514-bc85-8b269aa9714a.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -220,9 +220,15 @@ CREATE TABLE `info_contents` (
 
 INSERT INTO `info_contents` (`id`, `created`, `modified`, `info_id`, `block_type`, `position`, `title`, `h2`, `content`, `content_2`, `content_3`, `image`, `image_2`, `image_3`, `img_alt`, `image_pos`, `file`, `file_size`, `file_name`, `file_extension`, `section_sequence_id`, `option_value`, `option_value2`, `option_value3`, `title_content`, `title_content_2`, `title_content_3`) VALUES
 (1, '2023-02-17 16:07:27', '2023-02-17 18:21:57', 1, '7', 1, NULL, '※横幅700以上を推奨。1200x1200以内に縮小されます。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '2023-02-17 16:07:27', '2023-02-17 18:21:57', 1, '3', 2, NULL, NULL, '', NULL, NULL, 'img_2_a3c74647-b03f-4270-83fe-1a3bd36f7d9c.jpeg', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL),
-(3, '2023-02-17 17:31:03', '2023-02-17 18:21:57', 1, '2', 3, NULL, NULL, '<p>&nbsp;refsd</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, '2023-02-17 18:21:57', '2023-02-17 18:21:57', 1, '18', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+(2, '2023-02-17 16:07:27', '2023-02-20 09:18:59', 1, '41', 1, NULL, '※横幅700以上を推奨。1200x1200以内に縮小されます。', '', NULL, NULL, 'img_2_a3c74647-b03f-4270-83fe-1a3bd36f7d9c.jpeg', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL),
+(3, '2023-02-17 17:31:03', '2023-02-20 09:18:59', 1, '2', 3, NULL, NULL, '<p>&nbsp;refsd</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, '2023-02-17 18:21:57', '2023-02-17 18:21:57', 1, '18', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, '2023-02-20 09:37:42', '2023-02-20 15:49:01', 2, '3', 1, NULL, NULL, '', NULL, NULL, 'img_5_72c1cd46-a836-4c36-bccc-176274f3ca06.jpeg', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL),
+(6, '2023-02-20 09:38:29', '2023-02-20 15:49:01', 2, '3', 2, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL),
+(7, '2023-02-20 09:47:00', '2023-02-20 15:49:01', 2, '2', 3, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, '2023-02-20 10:09:40', '2023-02-20 15:49:01', 2, '17', 4, '', NULL, '', NULL, NULL, 'img_8_03efffba-3227-4593-8223-c14db7b58c01.jpeg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, '2023-02-20 15:48:30', '2023-02-20 15:49:01', 2, '18', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, '2023-02-20 15:48:53', '2023-02-20 15:48:54', 2, '3', 6, NULL, NULL, '', NULL, NULL, 'img_10_6531e6ec-4983-430d-81fc-64580c9919b6.jpeg', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -294,16 +300,18 @@ CREATE TABLE `kvs` (
 
 CREATE TABLE `many_images` (
   `id` int(11) NOT NULL,
-  `info_id` int(11) NOT NULL,
-  `page_config_id` int(11) NOT NULL,
   `info_content_id` int(11) NOT NULL,
-  `image_1` varchar(200) DEFAULT NULL,
-  `image_2` varchar(200) DEFAULT NULL,
-  `image_3` varchar(200) DEFAULT NULL,
-  `image_4` varchar(200) DEFAULT NULL,
-  `image_5` varchar(200) DEFAULT NULL,
-  `image_6` varchar(200) DEFAULT NULL
+  `image` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- テーブルのデータのダンプ `many_images`
+--
+
+INSERT INTO `many_images` (`id`, `info_content_id`, `image`) VALUES
+(1, 9, 'img_1_4344926f-b6be-4aba-b864-498998de08bf.jpeg'),
+(2, 9, 'img_2_f611e181-f8d8-4ae3-b5e8-67455c04250c.jpeg'),
+(3, 9, 'img_3_7c0a0ba5-423d-4e8b-8afd-48431c6ff3f4.jpeg');
 
 -- --------------------------------------------------------
 
@@ -427,7 +435,9 @@ INSERT INTO `page_config_items` (`id`, `created`, `modified`, `page_config_id`, 
 (8, '2023-02-17 16:06:28', '2023-02-17 16:06:53', 1, 8, 'block', 'image', 'Y', NULL, '', '', 'staff', 'staff', '3', 0, 0),
 (9, '2023-02-17 16:11:57', '2023-02-17 07:11:57', 1, 9, 'block', 'title_h2', 'Y', NULL, '', '', 'staff', 'staff', '1', 0, 0),
 (10, '2023-02-17 16:13:00', '2023-02-17 16:13:13', 1, 10, 'block', 'content', 'Y', NULL, '', '', 'staff', 'staff', '2', 0, 0),
-(11, '2023-02-17 16:33:02', '2023-02-17 17:46:01', 1, 0, 'block', 'many_img', 'Y', NULL, '', '', 'staff', 'staff', '18', 0, 0);
+(11, '2023-02-17 16:33:02', '2023-02-17 17:46:01', 1, 0, 'block', 'many_img', 'Y', NULL, '', '', 'staff', 'staff', '18', 0, 0),
+(14, '2023-02-20 09:24:04', '2023-02-20 00:24:04', 1, 12, 'block', 'text_and_img', 'Y', NULL, '', '', 'staff', 'staff', '19', 0, 0),
+(15, '2023-02-20 10:09:28', '2023-02-20 01:09:28', 1, 13, 'block', 'USER_INTRO', 'Y', NULL, '', '', 'staff', 'staff', '17', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -579,6 +589,21 @@ CREATE TABLE `useradmin_sites` (
 INSERT INTO `useradmin_sites` (`id`, `created`, `modified`, `useradmin_id`, `site_config_id`) VALUES
 (1, '2022-12-08 18:30:57', '2022-12-08 18:30:57', 1, 1),
 (2, '2022-12-08 18:30:57', '2022-12-08 18:30:57', 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` varchar(20) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- ダンプしたテーブルのインデックス
@@ -733,6 +758,12 @@ ALTER TABLE `useradmin_sites`
   ADD PRIMARY KEY (`id`);
 
 --
+-- テーブルのインデックス `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
 
@@ -776,7 +807,7 @@ ALTER TABLE `info_categories`
 -- テーブルの AUTO_INCREMENT `info_contents`
 --
 ALTER TABLE `info_contents`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- テーブルの AUTO_INCREMENT `info_stock_tables`
@@ -806,7 +837,7 @@ ALTER TABLE `kvs`
 -- テーブルの AUTO_INCREMENT `many_images`
 --
 ALTER TABLE `many_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- テーブルの AUTO_INCREMENT `mst_lists`
@@ -818,7 +849,7 @@ ALTER TABLE `mst_lists`
 -- テーブルの AUTO_INCREMENT `page_configs`
 --
 ALTER TABLE `page_configs`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- テーブルの AUTO_INCREMENT `page_config_extensions`
@@ -830,7 +861,7 @@ ALTER TABLE `page_config_extensions`
 -- テーブルの AUTO_INCREMENT `page_config_items`
 --
 ALTER TABLE `page_config_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- テーブルの AUTO_INCREMENT `schedules`
@@ -873,4 +904,10 @@ ALTER TABLE `useradmins`
 --
 ALTER TABLE `useradmin_sites`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- テーブルの AUTO_INCREMENT `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
