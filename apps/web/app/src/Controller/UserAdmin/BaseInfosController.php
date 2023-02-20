@@ -455,7 +455,6 @@ class BaseInfosController extends AppController
                     $pos++;
                 }
             }
-
             // メタキーワード
             $_keywords = $this->request->getData('keywords');
             $meta_keywords = '';
