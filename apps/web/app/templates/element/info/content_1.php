@@ -1,1 +1,1 @@
-<h2 style="margin-top: calc(var(--vw)*2.63543);" class="c-ttls"><span><?= h($c['title']); ?></span></h2>
+<h1 class="mb-5"><?= h($c['title']); ?></h1>

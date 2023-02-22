@@ -56,6 +56,9 @@ define('USER_REGIST', 'user_regist');
 define('DEMO', 'demo');
 define('SIMPLE', 'simple');
 
+define('NEWS', 'news');
+define('COLUMN', 'column');
+
 /*
  * Bootstrap CakePHP.
  *

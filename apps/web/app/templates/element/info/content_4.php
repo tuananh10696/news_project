@@ -1,15 +1,9 @@
 <div class="file">
     <?php if ($c['file_extension'] == 'xls' || $c['file_extension'] == 'xlsx') : ?>
-        <div class="file-excel">
-            <a href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="c-icon c-icon__excel">Excel</i></a>
-        </div>
+        <a style="font-style: oblique;color: #c7aa1d;" href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="bi bi-file-earmark-medical"></i></a>
     <?php elseif ($c['file_extension'] == 'doc' || $c['file_extension'] == 'docx') : ?>
-        <div class="file-word">
-            <a href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="c-icon c-icon__word">Word</i></a>
-        </div>
+        <a style="font-style: oblique;color: #c7aa1d;" href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="bi bi-file-earmark-word"></i></a>
     <?php else : ?>
-        <div class="file-pdf">
-            <a href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="c-icon c-icon__pdf">PDF</i></a>
-        </div>
+        <a style="font-style: oblique;color: #c7aa1d;" href="<?= $c['attaches']['file'][0]; ?>" target="_blank"><?= h($c['file_name']); ?>（<?= human_filesize($c['attaches']['file']['size']) ?>）<i class="bi bi-file-earmark-pdf"></i></a>
     <?php endif; ?>
 </div>

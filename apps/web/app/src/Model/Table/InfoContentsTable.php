@@ -33,8 +33,26 @@ class InfoContentsTable extends AppTable
                         'height' => 800
                     ]
                 ],
-            ]
+            ],
             //image_1
+            'image2' => [
+                'extensions' => ['jpg', 'jpeg', 'gif', 'png'],
+                'width' => 1200,
+                'height' => 1200,
+                'file_name' => 'img_%d_%s',
+                'thumbnails' => [
+                    's' => [
+                        'prefix' => 's_',
+                        'width' => 320,
+                        'height' => 320
+                    ],
+                    'm' => [
+                        'prefix' => 'm_',
+                        'width' => 800,
+                        'height' => 800
+                    ]
+                ],
+            ]
         ],
         'files' => [
             'file' => [
@@ -68,9 +86,10 @@ class InfoContentsTable extends AppTable
         $this->belongsTo('SectionSequences');
         $this->belongsTo('Infos');
 
-        $this->hasMany('ManyImages')
+        $this->hasMany('MultiImages')
             ->setForeignKey('info_content_id')
-            ->setBindingKey('id');
+            ->setBindingKey('id')
+            ->setDependent(true);
 
         parent::initialize($config);
     }

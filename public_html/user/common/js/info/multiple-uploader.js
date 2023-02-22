@@ -82,8 +82,8 @@ function deleteImgLabel ( e )
     _parent.find( '.image-container' ).each( function ( i )
     {
         $( this ).attr( 'data-pos', i );
-        $( this ).find( '.old_img' ).attr( 'name', `info_contents[${ numrow }][many_images][${ i }][_old_image]` );
-        $( this ).find( '.old_img_id' ).attr( 'name', `info_contents[${ numrow }][many_images][${ i }][id]` );
+        $( this ).find( '.old_img' ).attr( 'name', `info_contents[${ numrow }][multi_images][${ i }][_old_image]` );
+        $( this ).find( '.old_img_id' ).attr( 'name', `info_contents[${ numrow }][multi_images][${ i }][id]` );
     } );
 
     if ( _parent.find( '.image-container' ).length == 0 ) _parent.find( '.mup-msg' ).removeClass( 'd-none' );

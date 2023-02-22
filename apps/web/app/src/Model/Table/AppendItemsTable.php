@@ -36,11 +36,14 @@ class AppendItemsTable extends AppTable
         // アソシエーション
         $this->belongsTo('PageConfigs');
         $this->hasMany('InfoAppendItems')->setDependent(true);
+        $this->hasMany('MstLists')
+            ->setForeignKey('slug')
+            ->setBindingKey('mst_list_slug');
 
         parent::initialize($config);
     }
 
-    
+
     // Validation
     public function validationDefault(Validator $validator): Validator
     {

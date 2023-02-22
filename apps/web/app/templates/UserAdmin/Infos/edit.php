@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="/user/common/js/datetimepicker-master/jquery.datetimepicker.css" />
 <style>
 	.ck-editor__editable_inline {
-		min-height: 300px;
+		min-height: 200px;
 	}
 
 	.ui-state-highlight {
@@ -27,6 +27,7 @@
 <?php $this->end(); ?>
 
 <!-- --- Form --- -->
+
 <?= $this->editForm->render(); ?>
 
 <?php $this->start('beforeBodyClose'); ?>
@@ -74,5 +75,5 @@
 </script>
 <?= $this->Html->script('/user/common/js/info/base'); ?>
 <?= $this->Html->script('/user/common/js/info/edit'); ?>
-<script src="/user/common/js/info/multiple-uploader.js"></script>
+<?= $this->Html->script('/user/common/js/info/multiple-uploader'); ?>
 <?php $this->end(); ?>

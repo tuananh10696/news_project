@@ -32,21 +32,25 @@
 	<?php else : ?>
 		<?= $this->Form->input('name', ['type' => 'text', 'maxlength' => 20, 'style' => 'width:250px;', 'class' => 'form-control']) ?>
 	<?php endif; ?>
-	
+
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?php if ($this->Common->isUserRole('develop')) : ?>
+
 		<?= $this->element('edit_form/item-start', ['title' => '識別子', 'required' => true]); ?>
+
 		<?= $this->Form->input('slug', ['type' => 'text', 'maxlength' => 40, 'class' => 'form-control']); ?>
-		<span>※40文字以内で入力してください</span>
-		<span>※半角英字で入力してください</span>
+		<div class="attention">※40文字以内で入力してください</div>
+		<div class="attention">※半角英字で入力してください</div>
 		<?= $this->element('edit_form/item-end'); ?>
 
 		<?= $this->element('edit_form/item-start', ['title' => '値', 'required' => true]); ?>
 		<?= $this->Form->input('ltrl_cd', ['type' => 'text', 'maxlength' => 10, 'class' => 'form-control']); ?>
-		<span>※半角数字で入力してください</span>
+		<div class="attention">※半角数字で入力してください</div>
 		<?= $this->element('edit_form/item-end'); ?>
+
 	<?php else : ?>
+
 		<?= $this->element('edit_form/item-start', ['title' => '識別子', 'required' => true]); ?>
 		<?= $this->Form->input('slug', [
 			'type' => 'text', 'maxlength' => 40, 'readonly' => true,
@@ -64,6 +68,7 @@
 			]); ?>
 		<?php endif; ?>
 		<?= $this->element('edit_form/item-end'); ?>
+
 	<?php endif; ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => '選択肢', 'required' => true]); ?>
@@ -81,7 +86,7 @@
 	<?php if (!empty($data['id']) && $data['id'] > 0) { ?>
 		<a href="javascript:void(0)" onclick="document.fm.submit();" class="btn btn-danger btn_post submitButton">変更する</a>
 		<?php if ($this->Common->isUserRole('admin')) : ?>
-			<a href="javascript:kakunin('データを完全に削除します。よろしいですか？','<?= $this->Url->build(['action' => 'delete', $data['id'], 'content']) ?>')" class="btn btn_post btn_delete"><i class="far fa-trash-alt"></i> 削除する</a>
+			<a href="javascript:kakunin('データを完全に削除します。よろしいですか？','<?= $this->Url->build(['action' => 'delete', $data['id'], 'content', '?' => $query]) ?>')" class="btn btn_post btn_delete"><i class="far fa-trash-alt"></i> 削除する</a>
 		<?php endif; ?>
 	<?php } else { ?>
 		<a href="javascript:void(0)" onclick="document.fm.submit();" class="btn btn-danger btn_post submitButton">登録する</a>
@@ -90,16 +95,7 @@
 
 <div id="deleteArea" style="display: hide;"></div>
 
-
 <!--コンテンツ 終了-->
 <?php $this->start('beforeBodyClose'); ?>
 <link rel="stylesheet" href="/user/common/css/cms.css">
-
-
-<script>
-	$(function() {
-
-
-	})
-</script>
 <?php $this->end(); ?>

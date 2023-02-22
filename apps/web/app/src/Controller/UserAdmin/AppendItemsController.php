@@ -203,7 +203,7 @@ class AppendItemsController extends AppController
             ->find('list', [
                 'keyField' => 'item_key',
                 'valueField' => function ($article) {
-                    return __('【{0}】の下', $article->title);
+                    return __('【{0}】の下', $article->title != '' ? $article->title : $article->item_key);
                 }
             ])
             ->where([
@@ -227,13 +227,10 @@ class AppendItemsController extends AppController
 
     public function getTargetList()
     {
-        $list = [];
-        $datas = $this->MstLists->find('list', ['keyField' => 'slug', 'valueField' => 'name'])->group('slug')->order(['id' => 'ASC'])->toArray();
-
-        if (empty($datas)) {
-            return $list;
-        }
-        $list = $datas;
-        return $list;
+        return $this->MstLists
+            ->find('list', ['keyField' => 'slug', 'valueField' => 'name'])
+            ->group('slug')
+            ->order(['id' => 'ASC'])
+            ->toArray();
     }
 }

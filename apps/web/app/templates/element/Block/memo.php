@@ -1,0 +1,1 @@
+<p class="notes"><?= nl2br(h($c->content)) ?></p>

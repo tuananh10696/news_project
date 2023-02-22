@@ -13,7 +13,7 @@
             <th class="t_align_c">掲載</th>
             <th class="t_align_c">記事ID</th>
             <th class="t_align_c">掲載日時</th>
-            <th>タイトル</th>
+            <th><?= ($this->Common->isCategoryEnabled($page_config) ? 'カテゴリ / ' : '') ?>タイトル</th>
             <th class="t_align_c">確認</th>
             <th class="t_align_c">順序の変更</th>
 
@@ -33,14 +33,14 @@
         $status_btn_class = $status ? 'visi' : 'unvisi';
         if ($status) {
             $now = new \DateTime();
-            if ($data->start_datetime->format('Y-m-d') > $now->format('Y-m-d')) {
+            if ($data->date && $data->date->format('Y-m-d') > $now->format('Y-m-d')) {
                 // 掲載待ち
                 $status_class = 'unvisible';
                 $status_text = '掲載待ち';
             }
         }
 
-        $preview_url = "/blog/{$data->id}?preview=on";
+        $preview_url = "/column/{$data->id}?preview=on";
     ?>
         <a name="m_<?= $id ?>"></a>
         <tr class="<?= $status_class; ?>" id="content-<?= $data->id ?>">
@@ -53,7 +53,7 @@
             </td>
 
             <td class="t_align_c">
-                <?= $data->start_datetime ? $data->start_datetime->format('Y/m/d') : "&nbsp;" ?>
+                <?= $data->date ? $data->date->format('Y/m/d') : "&nbsp;" ?>
             </td>
 
             <td>

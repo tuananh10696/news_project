@@ -60,7 +60,7 @@ class PositionBehavior extends Behavior
 
             if ($current_check) {
                 $data = $model->find()->where([__('{0}.id', $modelName) => $id])->contain($contain)->first();
-                $is_cat_sort = $data->page_config->is_category_sort == 'Y';
+                $is_cat_sort = @$data->page_config->is_category_sort == 'Y';
 
                 // グループ変更チェック
                 $_isGroupUpdated = false;

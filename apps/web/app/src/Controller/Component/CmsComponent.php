@@ -72,13 +72,13 @@ class CmsComponent extends Component
         }
 
         // デフォルトオプション
-        $now = new \DateTime();
-        $default_cond = ['Infos.status' => 'publish', 'Infos.start_datetime <=' => $now->format('Y-m-d H:i')];
+        $default_cond = ['Infos.status' => 'publish'];
         $default_contain = [
             'PageConfigs'
         ];
         if ($page_config->is_category == 'Y') {
-            if ($page_config->is_category_multiple == 1) { } else {
+            if ($page_config->is_category_multiple == 1) {
+            } else {
                 $default_contain = [
                     'PageConfigs',
                     'Categories'
@@ -206,16 +206,12 @@ class CmsComponent extends Component
 
     public function findFirst($slug, $info_id, $options = [])
     {
-  
-        if ($this->Controller->getRequest()->getQuery('preview') == 'on') {
+        if ($this->Controller->getRequest()->getQuery('preview') == 'on')
             $options['isPreview'] = true;
-        }
-
 
         $entity = $this->_detail($slug, $info_id, $options);
-        if (empty($entity)) {
-            return null;
-        }
+
+        if (is_null($entity)) return null;
 
         $option['section_block_ids'] = array_keys(Info::BLOCK_TYPE_WAKU_LIST);
         $data = $this->toHierarchization($info_id, $entity, $option);
@@ -271,30 +267,33 @@ class CmsComponent extends Component
     {
         // page_config
         $page_config = $this->PageConfigs->find()->where(['PageConfigs.slug' => $slug])->first();
-        if (empty($page_config)) {
-            return null;
-        }
+        if (empty($page_config)) return null;
 
         // デフォルトオプション
         $default_cond = [
             'Infos.id' => $info_id,
             'Infos.status' => 'publish'
         ];
+
         $default_contain = [
             'PageConfigs',
             'InfoAppendItems' => function ($q) {
-                return $q->contain(['AppendItems'])->order(['AppendItems.position' => 'ASC']);
+                return $q->contain(['AppendItems'])
+                    ->order(['AppendItems.position' => 'ASC']);
             },
             'InfoContents' => function ($q) {
-                return $q->order(['InfoContents.position' => 'ASC'])->contain(['SectionSequences']);
+                return $q->order(['InfoContents.position' => 'ASC'])
+                    ->contain(['SectionSequences', 'MultiImages']);
             }
         ];
+
         if ($page_config->is_category == 'Y') {
-            if ($page_config->is_category_multiple == 1) { } else {
+            if ($page_config->is_category_multiple != 1) {
                 $default_contain[] = 'Categories';
                 $default_cond['Categories.status'] = 'publish';
             }
         }
+
         $options = array_merge([
             'conditions' => $default_cond,
             'contain' => $default_contain,
@@ -309,66 +308,56 @@ class CmsComponent extends Component
             unset($cond['Categories.status']);
         }
 
-        if (!empty($options['append_cond'])) {
+        if (!empty($options['append_cond']))
             $cond += $options['append_cond'];
-        }
 
-        $query = $this->Infos->find()->where($cond)->contain($options['contain']);
-
-        return $query->first();
+        return $this->Infos
+            ->find()
+            ->where($cond)
+            ->contain($options['contain'])
+            ->first();
     }
 
 
     public function toHierarchization($id, $entity, $options = [])
     {
-        
-        // $data = $this->request->getData();
         $content_count = 0;
         $contents = [
-            'contents' => []
+            'contents' => [],
+            'content_count' => 0
         ];
 
-        $contents_table = $this->Infos->useHierarchization['contents_table'];
-        $contents_id_name = $this->Infos->useHierarchization['contents_id_name'];
+        if (is_null($entity->info_contents)) return ['contents' => [], 'content_count' => 0];
 
-        $sequence_table = $this->Infos->useHierarchization['sequence_table'];
-        $sequence_id_name = $this->Infos->useHierarchization['sequence_id_name'];
+        $contents['content_count'] = count($entity->info_contents);
 
-        if (!empty($entity->{$contents_table})) {
-            $content_count = count($entity->{$contents_table});
-            $block_count = 0;
-            foreach ($entity->{$contents_table} as $k => $val) {
-                $v = $val->toArray();
+        foreach ($entity->info_contents as $k => $v) {
 
-                // 枠ブロックの中にあるブロック以外　（枠ブロックも対象）
-                if (!$v[$sequence_id_name] || ($v[$sequence_id_name] > 0 && in_array($v['block_type'], $options['section_block_ids']))) {
-                    $contents["contents"][$block_count] = $v;
-                    $contents["contents"][$block_count]['_block_no'] = $block_count;
-                } else {
-                    // 枠ブロックの中身
-                    if (!array_key_exists($sequence_table, $v)) {
-                        continue;
+            // 枠ブロックの中にあるブロック以外　（枠ブロックも対象）
+            if (!$v->section_sequence_id || in_array($v->block_type, $options['section_block_ids'])) {
+                $contents["contents"][$k] = $v;
+                $contents["contents"][$k]['_block_no'] = $k;
+            } else {
+                // 枠ブロックの中身
+                if (is_null($v->section_sequence)) continue;
+
+                $sequence_id = $v->section_sequence_id;
+
+                $waku_number = false;
+
+                foreach ($contents['contents'] as $_k => $_v) {
+                    if (in_array($_v->block_type, $options['section_block_ids']) && $sequence_id == $_v->section_sequence_id) {
+                        $waku_number = $_k;
+                        break;
                     }
-                    $sequence_id = $v[$sequence_id_name];
-
-                    $waku_number = false;
-                    foreach ($contents['contents'] as $_no => $_v) {
-                        if (in_array($_v['block_type'], $options['section_block_ids']) && $sequence_id == $_v[$sequence_id_name]) {
-                            $waku_number = $_no;
-                            break;
-                        }
-                    }
-                    if ($waku_number === false) {
-                        continue;
-                    }
-
-                    if (!array_key_exists('sub_contents', $contents["contents"][$waku_number])) {
-                        $contents["contents"][$waku_number]['sub_contents'] = null;
-                    }
-                    $contents["contents"][$waku_number]['sub_contents'][$block_count] = $v;
-                    $contents["contents"][$waku_number]['sub_contents'][$block_count]['_block_no'] = $block_count;
                 }
-                $block_count++;
+                if ($waku_number === false) continue;
+
+                if (is_null($contents["contents"][$waku_number]->sub_contents))
+                    $contents["contents"][$waku_number]->sub_contents = [];
+
+                $contents["contents"][$waku_number]->sub_contents[$k] = $v;
+                $contents["contents"][$waku_number]->sub_contents[$k]['_block_no'] = $k;
             }
         }
 

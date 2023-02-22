@@ -61,6 +61,7 @@ class editFormHelper extends Helper
         $datetime = false;
 
         foreach ($this->main as $item) {
+            // if ($item->status != 'Y') continue;
             if ($item->item_key == 'status') $status = true;
             if ($item->item_key == 'date') $datetime = true;
         }
@@ -70,7 +71,7 @@ class editFormHelper extends Helper
             $status->item_type = 'radio';
             $status->item_key = 'status';
             $status->title = '記事表示';
-            // $status->sub_title = '一覧に表示';
+            $status->sub_title = '一覧に表示';
             $status->is_required = 1;
             array_splice($this->main, 0, 0, [$status]);
         }
@@ -271,7 +272,8 @@ class editFormHelper extends Helper
     {
         $count_append = 0;
         foreach ($this->main as $item) {
-            if ($item->status != 'Y') continue;
+            if ($item->parts_type == 'main' && $item->status != 'Y') continue;
+
             $is_main = $item->getSource() == 'PageConfigItems';
             $sub_path = $is_main ? $item->parts_type : 'append';
             $slug = @$item->page_config->slug ? __('/{0}', $item->page_config->slug) : '';
@@ -306,6 +308,7 @@ class editFormHelper extends Helper
     public function render()
     {
         $this->setMain()->createForm();
+        $this->createDiv(['id' => 'deleteArea', 'class' => 'dpl_none'])->closeDiv();
         array_push($this->_form, $this->Form->end());
         return implode('', $this->_form);
     }

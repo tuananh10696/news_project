@@ -11,7 +11,7 @@ class Info extends AppEntity
 
     protected $_accessible = ['*' => true];
 
-    const BLOCK_TYPE_TITLE = 1;
+    const BLOCK_TYPE_TITLE_H3 = 1;
     const BLOCK_TYPE_CONTENT = 2;
     const BLOCK_TYPE_IMAGE = 3;
     const BLOCK_TYPE_FILE = 4;
@@ -28,11 +28,13 @@ class Info extends AppEntity
     const BLOCK_TYPE_MEMO = 15;
     const BLOCK_TYPE_KAIWA = 16;
     const BLOCK_TYPE_USER_INTRO = 17;
-    const BLOCK_TYPE_MANY_IMG = 18;
+    const BLOCK_TYPE_MULTI_IMAGE = 18;
+    const BLOCK_TYPE_VIDEO = 19;
+    const BLOCK_TYPE_TEXT_IMG = 20;
 
     const BLOCK_TYPE_LIST = [
         self::BLOCK_TYPE_TITLE_H2 => '大見出し',
-        self::BLOCK_TYPE_TITLE => '中見出し',
+        self::BLOCK_TYPE_TITLE_H3 => '中見出し',
         self::BLOCK_TYPE_TITLE_H4 => '小見出し',
         self::BLOCK_TYPE_CONTENT => '本文',
         self::BLOCK_TYPE_IMAGE => '画像',
@@ -43,19 +45,21 @@ class Info extends AppEntity
         self::BLOCK_TYPE_MEMO => 'メモ',
         self::BLOCK_TYPE_KAIWA => '会話',
         self::BLOCK_TYPE_USER_INTRO => 'ユーザ紹介',
-        self::BLOCK_TYPE_MANY_IMG => '複数画像',
+        self::BLOCK_TYPE_MULTI_IMAGE => '複数画像',
+        self::BLOCK_TYPE_VIDEO => '動画',
+        self::BLOCK_TYPE_TEXT_IMG => 'TEXT_IMG',
 
     ];
 
     // 枠属性リスト
     const BLOCK_TYPE_WAKU_LIST = [
         self::BLOCK_TYPE_SECTION => '枠',
-        self::BLOCK_TYPE_SECTION_FILE => 'ファイル枠',
-        self::BLOCK_TYPE_SECTION_RELATION => '関連記事',
+        // self::BLOCK_TYPE_SECTION_FILE => 'ファイル枠',
+        // self::BLOCK_TYPE_SECTION_RELATION => '関連記事',
     ];
 
     static $block_name2number_list = [
-        'BLOCK_TYPE_TITLE' => self::BLOCK_TYPE_TITLE,
+        'BLOCK_TYPE_TITLE' => self::BLOCK_TYPE_TITLE_H3,
         'BLOCK_TYPE_TITLE_H4' => self::BLOCK_TYPE_TITLE_H4,
         'BLOCK_TYPE_CONTENT' => self::BLOCK_TYPE_CONTENT,
         'BLOCK_TYPE_IMAGE' => self::BLOCK_TYPE_IMAGE,
@@ -71,8 +75,8 @@ class Info extends AppEntity
 
     static $block_number2key_list = [
         self::BLOCK_TYPE_TITLE_H2 => 'H2',
-        self::BLOCK_TYPE_TITLE => 'TITLE',
-        self::BLOCK_TYPE_TITLE_H4 => 'TITLE_H4',
+        self::BLOCK_TYPE_TITLE_H3 => 'H3',
+        self::BLOCK_TYPE_TITLE_H4 => 'H4',
         self::BLOCK_TYPE_CONTENT => 'CONTENT',
         self::BLOCK_TYPE_IMAGE => 'IMAGE',
         self::BLOCK_TYPE_FILE => 'FILE',
@@ -86,7 +90,9 @@ class Info extends AppEntity
         self::BLOCK_TYPE_MEMO => 'MEMO',
         self::BLOCK_TYPE_KAIWA => 'KAIWA',
         self::BLOCK_TYPE_USER_INTRO => 'USER_INTRO',
-        self::BLOCK_TYPE_MANY_IMG => 'MANY_IMG',
+        self::BLOCK_TYPE_MULTI_IMAGE => 'MULTI_IMAGE',
+        self::BLOCK_TYPE_VIDEO => 'VIDEO',
+        self::BLOCK_TYPE_TEXT_IMG => 'TEXT_IMG',
     ];
 
     static $option_default_values = [
@@ -105,7 +111,7 @@ class Info extends AppEntity
         ],
 
         self::BLOCK_TYPE_SECTION_FILE => [
-            self::BLOCK_TYPE_TITLE,
+            self::BLOCK_TYPE_TITLE_H3,
             self::BLOCK_TYPE_TITLE_H4,
             self::BLOCK_TYPE_CONTENT,
             self::BLOCK_TYPE_IMAGE,
@@ -118,7 +124,7 @@ class Info extends AppEntity
             self::BLOCK_TYPE_SECTION_RELATION
         ],
         self::BLOCK_TYPE_SECTION_RELATION => [
-            self::BLOCK_TYPE_TITLE,
+            self::BLOCK_TYPE_TITLE_H3,
             self::BLOCK_TYPE_TITLE_H4,
             self::BLOCK_TYPE_CONTENT,
             self::BLOCK_TYPE_IMAGE,

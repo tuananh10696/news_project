@@ -142,7 +142,7 @@ class BaseInfosController extends AppController
                     ->all();
                 if (!$tmp->isEmpty()) {
                     $category_list[] = [
-                        'category' => (object) ['id' => 0],
+                        'category' => (object)['id' => 0],
                         'list' => $tmp->toArray(),
                         'empty' => ['' => '選択してください']
                     ];
@@ -301,9 +301,9 @@ class BaseInfosController extends AppController
             if ($query['sch_status'] == 'waiting_pl') {
                 $query['sch_status'] = 'publish';
 
-                $cond[$cnt++]['Infos.start_datetime >'] = $now->format('Y-m-d 00:00');
+                $cond[$cnt++]['Infos.date >'] = $now->format('Y-m-d 00:00');
             } elseif ($query['sch_status'] == 'publish') {
-                $cond[$cnt++]['Infos.start_datetime <='] = $now->format('Y-m-d 00:00');
+                $cond[$cnt++]['Infos.date <='] = $now->format('Y-m-d 00:00');
             }
             $cond[$cnt++]['Infos.status'] = $query['sch_status'];
         }
@@ -390,7 +390,7 @@ class BaseInfosController extends AppController
             // 'saveAll' => ['associated' => ['InfoContents']], // save時使用
             'contain' => [
                 'InfoContents' => function ($q) {
-                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences', 'ManyImages']);
+                    return $q->order('InfoContents.position ASC')->contain(['SectionSequences', 'MultiImages']);
                 },
                 'InfoTags' => function ($q) {
                     return $q->contain(['Tags'])->order(['Tags.position' => 'ASC']);
@@ -430,13 +430,13 @@ class BaseInfosController extends AppController
         if ($this->request->is(['post', 'put'])) {
 
             $data = $this->request->getData();
-
             $data['page_config_id'] = $sch_page_id;
 
             $info_category_ids = $this->request->getData('info_categories');
 
             // createの場合
             if ($this->request->is(['post'])) $validate = 'Create';
+
             // ブロック追加の並び順
             if (isset($data['info_contents'])) {
                 $pos = 0;
@@ -449,12 +449,13 @@ class BaseInfosController extends AppController
                         foreach ($data['__image__'][$k] as $img) {
                             if ($img->getError()) continue;
 
-                            $data['info_contents'][$k]['many_images'][] = ['image' => $img];
+                            $data['info_contents'][$k]['multi_images'][] = ['image' => $img];
                         }
                     }
                     $pos++;
                 }
             }
+
             // メタキーワード
             $_keywords = $this->request->getData('keywords');
             $meta_keywords = '';
@@ -505,7 +506,7 @@ class BaseInfosController extends AppController
                     ->toArray();
 
                 foreach ($info_contents as $v) {
-                    if (isset(Info::BLOCK_TYPE_WAKU_LIST[(int) $v['block_type']])) {
+                    if (isset(Info::BLOCK_TYPE_WAKU_LIST[(int)$v['block_type']])) {
 
                         $section_query = $this->SectionSequences->find()
                             ->where(['SectionSequences.id' => $v['section_sequence_id']])
@@ -563,10 +564,9 @@ class BaseInfosController extends AppController
                     }
                 }
 
-                $manyImages = $this->fetchTable('ManyImages');
+                $manyImages = $this->fetchTable('MultiImages');
                 if (!empty($delete_ids_multi_image))
                     $manyImages->deleteMany($manyImages->find()->where(['id IN' => $delete_ids_multi_image])->all());
-
 
                 return $r;
             };
@@ -589,7 +589,7 @@ class BaseInfosController extends AppController
             return $isValid;
         };
 
-        $options['associated'] = ['InfoAppendItems', 'InfoContents.ManyImages'];
+        $options['associated'] = ['InfoAppendItems', 'InfoContents.MultiImages'];
         $options['redirect'] = ['action' => 'index', '?' => $query];
         $options['validate'] = $validate;
 
@@ -770,7 +770,7 @@ class BaseInfosController extends AppController
             ->find('all')
             ->where([
                 'page_config_id' => $this->GQuery['sch_page_id'],
-                'parts_type' => 'main'
+                'parts_type' => 'main',
             ])
             ->contain(['PageConfigs'])
             ->order(['PageConfigItems.position' => 'ASC'])
@@ -800,7 +800,7 @@ class BaseInfosController extends AppController
         $list['_appendItem'] = $this->AppendItems
             ->find('all')
             ->where(['page_config_id' => $this->GQuery['sch_page_id']])
-            ->contain(['PageConfigs'])
+            ->contain(['PageConfigs', 'MstLists'])
             ->order(['AppendItems.position' => 'ASC'])
             ->toArray();
 
@@ -809,13 +809,6 @@ class BaseInfosController extends AppController
 
         // 枠ブロック
         $block_type_waku_list = Info::getBlockTypeList('waku');
-        // $block_type_waku_list = [];
-        // if (empty($this->GQuery['sch_page_id']))
-        //     $block_type_waku_list = $_block_type_waku_list;
-        // else
-        //     foreach ($_block_type_waku_list as $no => $name)
-        //         if ($this->PageConfigItems->enabled($this->GQuery['sch_page_id'], PageConfigItem::TYPE_SECTION, Info::$block_number2key_list[$no])) {
-        //             $block_type_waku_list[$no] = $name;
 
         $list['block_type_waku_list'] = $block_type_waku_list;
         $list['font_list'] = Info::$font_list;
@@ -909,22 +902,27 @@ class BaseInfosController extends AppController
             ->where(['InfoContents.id' => $del_id, 'InfoContents.info_id' => $id])
             ->first();
 
+        if (is_null($e)) return [];
+
         $image_index = array_keys($this->InfoContents->attaches['images']);
         $file_index = array_keys($this->InfoContents->attaches['files']);
 
-        foreach ($image_index as $idx) {
-            foreach ($e->attaches[$idx] as $_) {
-                $_file = WWW_ROOT . $_;
+        if (isset($e->attaches) && !is_null($e->attaches) && !empty($e->attaches)) {
+            foreach ($image_index as $idx) {
+                foreach ($e->attaches[$idx] as $_) {
+                    $_file = WWW_ROOT . $_;
+                    if (is_file($_file)) {
+                        @unlink($_file);
+                    }
+                }
+            }
+
+            foreach ($file_index as $idx) {
+                if (!isset($e->attaches[$idx][0])) continue;
+                $_file = WWW_ROOT . $e->attaches[$idx][0];
                 if (is_file($_file)) {
                     @unlink($_file);
                 }
-            }
-        }
-
-        foreach ($file_index as $idx) {
-            $_file = WWW_ROOT . $e->attaches[$idx][0];
-            if (is_file($_file)) {
-                @unlink($_file);
             }
         }
 

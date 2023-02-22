@@ -21,7 +21,7 @@ class AppForm extends Form
 
     public function checkTel($value, $context)
     {
-        return (bool) preg_match('/^(0\d{1,4}[\s-]?\d{1,4}[\s-]?\d{4})$/', $value);
+        return (bool) preg_match('/^(0\d{1,4}[\s]?\d{1,4}[\s]?\d{4})$/', $value);
     }
 
 

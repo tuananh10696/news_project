@@ -20,10 +20,8 @@ $item_key = $is_main ? $content->item_key : __('info_append_items.{0}.{1}', $num
             <?= $this->element('/Block/append/hidden_field', ['num' => $num]) ?>
         <?php endif ?>
 
-        <?php $options = [
-            'Value 1' => 'Label 1',
-            'Value 2' => 'Label 2'
-        ];?>
+        
+        <?php $options = $is_main || empty($content->mst_lists) ? ['value1', 'value2'] : \Cake\Utility\Hash::combine($content->mst_lists, '{n}.ltrl_cd', '{n}.ltrl_val'); ?>
 
         <?= $this->Form->select($item_key, $options, ['multiple' => 'checkbox']) ?>
     </div>

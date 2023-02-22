@@ -8,8 +8,8 @@ use Cake\ORM\TableRegistry;
 
 class AppController extends BaseController
 {
-    public $helpers = [
-        'Paginator' => ['templates' => 'paginator-templates']];
+    // public $helpers = [
+    //     'Paginator' => ['templates' => 'paginator-templates']];
 
     protected function _lists($cond = array(), $options = array()) {
 

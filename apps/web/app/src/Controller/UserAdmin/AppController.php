@@ -143,7 +143,7 @@ class AppController extends BaseController
         
         if ($this->request->is(array('post', 'put')) && $this->request->getData()) {
             $data = $this->request->getData();
-            
+
             $entity_options = [];
             if (!empty($associated)) $entity_options['associated'] = $associated;
             if (!empty($validate)) $entity_options['validate'] = $validate;

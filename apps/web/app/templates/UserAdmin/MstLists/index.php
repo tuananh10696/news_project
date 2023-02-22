@@ -61,7 +61,7 @@
 					</div>
 					<?php if ($this->Common->isUserRole('develop')) : ?>
 						<div class="btn_area center">
-							<a href="<?= $this->Url->build(['action' => 'edit', 0, '?' => ['sys_cd' => $query['sys_cd']]]); ?>" class="btn btn-primary mr-2">新規登録</a>
+							<a href="<?= $this->Url->build(['action' => 'edit', 0, '?' => $query]); ?>" class="btn btn-primary mr-2">新規登録</a>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -91,7 +91,10 @@ $this->assign('create_label', 'リストへ追加'); //新規登録ボタンの�
 			<col style="width: 150px;">
 			<col style="width: 150px;">
 			<col style="width: 70px;">
-			<col style="width: 150px">
+
+			<?php if ($this->Common->isUserRole('admin') && !empty($query['slug'])) : ?>
+				<col style="width: 150px">
+			<?php endif; ?>
 		</colgroup>
 
 		<thead class="bg-gray">
@@ -103,7 +106,9 @@ $this->assign('create_label', 'リストへ追加'); //新規登録ボタンの�
 				<th style="text-align:center;">識別子</th>
 				<th style="text-align:left;">予備キー</th>
 				<th style="text-align:left;">詳細</th>
-				<th>順序の変更</th>
+				<?php if ($this->Common->isUserRole('admin') && !empty($query['slug'])) : ?>
+					<th>順序の変更</th>
+				<?php endif; ?>
 			</tr>
 		</thead>
 
@@ -123,7 +128,7 @@ $this->assign('create_label', 'リストへ追加'); //新規登録ボタンの�
 					<td> <?= h($data->slug) ?> </td>
 					<td> <?= h($data->ltrl_sub_val) ?> </td>
 					<td> <?= $this->Html->link("編集", ['action' => 'edit', $data->id], ['class' => 'btn btn-success']) ?> </td>
-					<?php if ($this->Common->isUserRole('admin')) : ?>
+					<?php if ($this->Common->isUserRole('admin') && !empty($query['slug'])) : ?>
 						<td>
 							<?= $this->element('position', ['key' => $key, 'data' => $data, 'data_query' => $data_query]); ?>
 						</td>

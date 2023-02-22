@@ -74,24 +74,16 @@ class MstListsController extends AppController
 
         $query = $this->_getQuery();
         $this->setList($query);
+
         $this->set(compact('query'));
         $redirect = null;
         $create = [];
-        $old_data = [];
+        $old_data = null;
+        $redirect = ['action' => 'index', '?' => $query];
 
-        if (empty($query['sys_cd'])) {
-            return $this->redirect(['action' => 'index']);
-        }
+        if (empty($query['sys_cd'])) return $this->redirect(['action' => 'index']);
 
-        if ($this->request->is(['post', 'put'])) {
-            if (!array_key_exists('sys_cd', $query)) {
-                $query['sys_cd'] = $this->request->getData('sys_cd');
-            }
-            if (!array_key_exists('slug', $query)) {
-                $query['slug'] = $this->request->getData('slug');
-            }
-            $redirect = ['action' => 'index', '?' => $query];
-        } else {
+        if ($this->request->is(['get'])) {
             if (!$id) {
                 $create = [
                     'id' => null,
@@ -99,7 +91,11 @@ class MstListsController extends AppController
                     'position' => 0
                 ];
                 if ($query['slug']) {
-                    $mst_list = $this->MstLists->find()->where(['MstLists.sys_cd' => $query['sys_cd'], 'MstLists.slug' => $query['slug']])->first();
+                    $mst_list = $this->MstLists
+                        ->find()
+                        ->where(['MstLists.sys_cd' => $query['sys_cd'], 'MstLists.slug' => $query['slug']])
+                        ->first();
+
                     if (!empty($mst_list)) {
                         $create['sys_cd'] = $mst_list->sys_cd;
                         $create['slug'] = $mst_list->slug;
@@ -109,20 +105,19 @@ class MstListsController extends AppController
             }
         }
 
-        if ($id) {
-            $old_data = $this->MstLists->find()->where(['MstLists.id' => $id])->first();
-        }
+        if ($id) $old_data = $this->MstLists->find()->where(['MstLists.id' => $id])->first();
 
         $callback = function ($id) use ($old_data) {
             $data = $this->MstLists->find()->where(['MstLists.id' => $id])->first();
-            if (!empty($old_data)) {
+            if (!is_null($old_data)) {
+
                 $update = [
                     'name' => $data->name,
                     'slug' => $data->slug
                 ];
-                if ($data->name != $old_data->name || $data->slug != $old_data->slug) {
+
+                if ($data->name != $old_data->name || $data->slug != $old_data->slug)
                     $this->MstLists->updateAll($update, ['sys_cd' => $data->sys_cd, 'slug' => $old_data->slug]);
-                }
             }
             return true;
         };
@@ -146,7 +141,7 @@ class MstListsController extends AppController
             $this->redirect('/user/');
             return;
         }
-
+        $query = $this->_getQuery();
         $data = $this->{$this->modelName}->find()->where([$this->modelName . '.id' => $id])->first();
 
         if (empty($data)) {
@@ -154,9 +149,9 @@ class MstListsController extends AppController
             return;
         }
 
-        $options = ['redirect' => ['action' => 'index']];
+        $options = ['redirect' => ['action' => 'index', '?' => $query]];
 
-        $result = parent::_delete($id, $type, $columns, $options);
+        parent::_delete($id, $type, $columns, $options);
     }
 
 

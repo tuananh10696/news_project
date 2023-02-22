@@ -36,11 +36,11 @@ class ContactView extends AppView
             'inputContainer' => '{{content}}',
             'inputContainerError' => '{{content}}{{error}}',
             'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
-            'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
-            'radioWrapper' => '<div class="radio-item radio-item--white">{{label}}</div>',
+            'radio' => '<div class="col"><input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
+            'radioWrapper' => '{{label}}</div>',
             'error' => '<p class="txtErr">{{content}}</p>',
-            'errorList' => '<ul>{{content}}</ul>',
-            'errorItem' => '<li><p class="txtErr">{{text}}</p></li>',
+            // 'errorList' => '<ul>{{content}}</ul>',
+            'errorItem' => '<p class="txtErr">{{text}}</p>',
         ];
 
         $this->set(compact('form_templates'));

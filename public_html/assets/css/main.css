@@ -23,7 +23,9 @@ a {
   color: var(--color-links);
   text-decoration: none;
 }
-
+p>a{
+  color: rgb(51, 20, 227);
+}
 a:hover {
   color: var(--color-links-hover);
   text-decoration: none;
@@ -733,7 +735,9 @@ section {
   display: inline-block;
   padding-bottom: 5px;
 }
-
+.more:hover{
+  color: #beae39;
+}
 .more:before {
   content: "";
   position: absolute;

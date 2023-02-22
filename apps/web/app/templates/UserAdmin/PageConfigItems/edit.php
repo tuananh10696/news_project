@@ -23,15 +23,16 @@
 	<?= $this->Form->input('parts_type', ['type' => 'select', 'options' => $parts_type_list, 'class' => 'form-control', 'onchange' => 'changeDataType(this)']); ?>
 	<?= $this->element('edit_form/item-end'); ?>
 
+	<?= $this->element('edit_form/item-start', ['title' => '項目キー', 'required' => true, 'elementClass' => 'not_section']); ?>
+	<?= $this->Form->select($is_main ? 'item_key' : 'null', $list_item_key, ['class' => __('form-control _main _main_key {0}', $is_main ? '' : 'd-none')]); ?>
+	<?= $this->Form->select($is_block ? 'item_key' : 'null', $list_item_key_block, ['class' => __('form-control _block _block_key {0}', $is_block ? '' : 'd-none')]); ?>
+	<?= $this->Form->select($is_section ? 'item_key' : 'null', $list_item_key_section, ['class' => __('form-control _section _section_key d-none')]); ?>
+	<?= $this->element('edit_form/item-end'); ?>
+
 	<?= $this->element('edit_form/item-start', ['title' => 'データ型', 'required' => true, 'elementClass' => 'not_section']); ?>
 	<?= $this->Form->select($is_main ? 'item_type' : 'null', $value_type_list, ['class' => __('form-control _main {0}', $is_main ? '' : 'd-none')]); ?>
 	<?= $this->Form->select($is_block ? 'item_type' : 'null', $value_type_list_block, ['class' => __('form-control _block {0}', $is_block ? '' : 'd-none')]); ?>
 	<?= $this->Form->select($is_section ? 'item_type' : 'null', $value_type_list_section, ['class' => __('form-control _section d-none')]); ?>
-	<?= $this->element('edit_form/item-end'); ?>
-
-	<?= $this->element('edit_form/item-start', ['title' => '項目キー', 'required' => true, 'elementClass' => 'not_section']); ?>
-	<?= $this->Form->input('item_key', array('type' => 'text', 'maxlength' => 40, 'class' => 'form-control')); ?>
-	<div class="attention">※英数字で入力してください</div>
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => '項目名', 'required' => false, 'elementClass' => 'not_section']); ?>
@@ -81,6 +82,11 @@
 
 		$(`._${eval}`)
 			.attr('name', 'item_type')
+			.siblings('select')
+			.attr('name', 'null');
+
+		$(`._${eval}_key`)
+			.attr('name', 'item_key')
 			.siblings('select')
 			.attr('name', 'null');
 

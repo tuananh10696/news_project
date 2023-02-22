@@ -4,7 +4,7 @@ $is_main = $content->getSource() == 'PageConfigItems'; // main or append_item
 $title = $is_main ? $content->title : $content->name;
 $sub_title = $is_main ? $content->sub_title : $content->attention;
 $item_key = $is_main ? $content->item_key : __('info_append_items.{0}.{1}', $num, $content->slug);
-$value = $is_main ? $entity->date : @$entity->info_append_items[$num]->{$content->slug};
+$value = $is_main ? $entity->{$content->item_key} : @$entity->info_append_items[$num]->{$content->slug};
 ?>
 
 <div class="form-group row ">

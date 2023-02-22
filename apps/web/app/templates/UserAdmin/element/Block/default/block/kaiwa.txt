@@ -33,15 +33,7 @@
 				</div>
 				<div class="col-9">
 					<div class="row mb-1">
-						<div class="col-3">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">背景色</span>
-								</div>
-								<input class="form-control _color" type="color" value="<?= $content['option_value2'] ? $content['option_value2'] : '#f1f349' ?>">
-								<?= $this->Form->input("info_contents.{$rownum}.option_value2", ['type' => 'text', 'class' => '_color form-control', 'maxlength' => 20]); ?>
-							</div>
-						</div>
+
 						<div class="col-4">
 							<div class="input-group">
 								<div class="input-group-prepend">

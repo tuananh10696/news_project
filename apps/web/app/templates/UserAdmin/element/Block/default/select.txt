@@ -20,7 +20,8 @@ $item_key = $is_main ? $content->item_key : __('info_append_items.{0}.{1}', $num
             <?= $this->element('/Block/append/hidden_field', ['num' => $num]) ?>
         <?php endif ?>
         
-        <?php $options = ['value1', 'value2'] ?>
+        
+        <?php $options = $is_main || empty($content->mst_lists) ? ['value1', 'value2'] : \Cake\Utility\Hash::combine($content->mst_lists, '{n}.ltrl_cd', '{n}.ltrl_val'); ?>
         <?= $this->Form->select($item_key, $options, ['class' => 'form-control', 'empty' => '選択ください', 'required' => false]) ?>
         <?= $this->Form->error($item_key) ?>
     </div>

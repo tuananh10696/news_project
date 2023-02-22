@@ -230,6 +230,27 @@ class PageConfigItemsController extends AppController
 
         $list['value_type_list_block'] = Info::BLOCK_TYPE_LIST;
         $list['value_type_list_section'] = [10 => '枠'];
+        $list['list_item_key'] = [];
+        $list['list_item_key_block'] = [];
+        $list['list_item_key_section'] = [];
+
+        $info_schema = $this->Infos->getSchema();
+        foreach ($info_schema->columns() as $col) {
+            if (in_array($col, ['id', 'created', 'modified', 'position', 'page_config_id'], true)) continue;
+            $type = $info_schema->getColumnType($col);
+            $length = $info_schema->getColumn($col)['length'];
+
+            $list['list_item_key'][$col] = __("{0}　'{' \"type\" : \"{1}\";{2} }", $col, $type, $length ? __(' "length" : {0}', $length) : '');
+        }
+
+        $info_content_schema = $this->fetchTable('InfoContents')->getSchema();
+        foreach ($info_content_schema->columns() as $col) {
+            if (in_array($col, ['id', 'created', 'modified', 'position', 'info_id', 'block_type'], true)) continue;
+            $type = $info_content_schema->getColumnType($col);
+            $length = $info_content_schema->getColumn($col)['length'];
+
+            $list['list_item_key_block'][$col] = __("{0}　'{' \"type\" : \"{1}\";{2} }", $col, $type, $length ? __(' "length" : {0}', $length) : '');
+        }
 
         if (!empty($list)) {
             $this->set(array_keys($list), $list);

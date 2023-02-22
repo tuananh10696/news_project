@@ -31,7 +31,7 @@ return static function (RouteBuilder $routes) {
 
     $routes->scope('/', function (RouteBuilder $builder) {
 
-        $builder->connect('/contact/:page', ['controller' => 'Contact', 'action' => 'index'])->setPass(['page']);
+        $builder->connect('/reserve/:page', ['controller' => 'Reserve', 'action' => 'index'])->setPass(['page']);
         $builder->connect('/', ['controller' => 'Homes', 'action' => 'index']);
 
         $builder->connect('/:controller/:id', ['action' => 'detail'])
@@ -53,10 +53,6 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/logout', ['controller' => 'Home', 'action' => 'logout', 'prefix' => 'userAdmin'], ['_name' => 'logout']);
         $builder->connect('/menu-reload', ['controller' => 'Home', 'action' => 'menu-reload', 'prefix' => 'userAdmin'], ['_name' => 'userMenuReload']);
 
-        $builder->fallbacks(DashedRoute::class);
-    });
-
-    $routes->prefix('v1', function (RouteBuilder $builder) {
         $builder->fallbacks(DashedRoute::class);
     });
 };

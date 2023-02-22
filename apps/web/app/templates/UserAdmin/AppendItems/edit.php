@@ -33,7 +33,11 @@
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => 'データ型', 'required' => true]); ?>
-	<?= $this->Form->select('item_type', $value_type_list, ['class' => 'form-control']); ?>
+	<?= $this->Form->select('item_type', $value_type_list, ['class' => 'form-control', 'onchange' => 'changeDataType(this)']); ?>
+	<?= $this->element('edit_form/item-end'); ?>
+
+	<?= $this->element('edit_form/item-start', ['title' => '使用リスト', 'required' => false, 'elementClass' => 'd-none is_list']); ?>
+	<?= $this->Form->select("mst_list_slug", $target_list, ['empty' => ['' => '--'], 'class' => 'form-control']) ?>
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => '文字数制限', 'required' => false]); ?>
@@ -41,7 +45,7 @@
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => '表示位置', 'required' => false]); ?>
-	<?= $this->Form->input('after_field', ['type' => 'select', 'options' => $edit_pos_list, 'class' => 'form-control']); ?>
+	<?= $this->Form->input('after_field', ['type' => 'select', 'options' => $edit_pos_list, 'empty' => ['' => '一番下'], 'class' => 'form-control']); ?>
 	<?= $this->element('edit_form/item-end'); ?>
 
 </div>
@@ -65,6 +69,15 @@
 
 
 <script>
+	function changeDataType(e) {
+		var eval = $(e).val()
+		arr = ['select', 'checkbox', 'radio'];
+		if (jQuery.inArray(eval, arr) != -1)
+			$('.is_list').removeClass('d-none');
+		else
+			$('.is_list').addClass('d-none');
+	}
+
 	function changeHome() {
 		var is_home = $("#idIsHome").prop('checked');
 		if (is_home) {
@@ -87,6 +100,7 @@
 	$(function() {
 
 		changeHome();
+		changeDataType('select[name="item_type"]');
 
 		$("#idIsHome").on('change', function() {
 			changeHome();

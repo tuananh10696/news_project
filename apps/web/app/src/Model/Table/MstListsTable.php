@@ -14,18 +14,14 @@ class MstListsTable extends AppTable
         'position' => 0
     ];
 
-    public $attaches = array(
-        'images' =>
-        array(),
-        'files' => array(),
-    );
+    public $attaches = [
+        'images' => [],
+        'files' => [],
+    ];
 
     // 
     public function initialize(array $config): void
     {
-        // 添付ファイル
-        //        $this->addBehavior('FileAttache');
-
         $this->addBehavior('Position', [
             'group' => ['sys_cd', 'slug'],
             'groupMove' => true,

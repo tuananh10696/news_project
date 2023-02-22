@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use Cake\Event\EventInterface;
-
 class HomesController extends AppController
 {
 
@@ -12,38 +10,21 @@ class HomesController extends AppController
     {
         parent::initialize();
         $this->loadComponent('Cms');
-        $this->slug = 'news';
-    }
-
-
-    public function beforeFilter(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        $this->viewBuilder()->setLayout("simple");
     }
 
 
     public function index()
     {
-        $this->setList();
-        $infos = $this->Cms->findAll($this->slug, ['limit' => '1']);
-        $this->set(compact('infos'));
+        // $this->setLists();
+        // $news = $this->Cms->findAll(NEWS, ['limit' => 1]);
+        // $column = $this->Cms->findAll(COLUMN, ['limit' => 3]);
+        // $this->set(compact(NEWS, COLUMN));
     }
 
-    public function setList()
+    public function setLists()
     {
-        $list = [];
-
-        $list['category'] = $this->loadModel('Categories')
-            ->find('all')
-            ->where([
-                'Categories.status' => 'publish',
-                'PageConfigs.slug' => $this->slug
-            ])
-            ->contain('PageConfigs')
-            ->order('Categories.position ASC')
-            ->toArray();
-
+        $list = ['body_class' => 'page-home'];
+        $list['cat_color'] = ['インタビュー' => '', 'イベントレポート' => 'label--clr02', '情報記事' => 'label--clr03'];
         if (!empty($list)) $this->set(array_keys($list), $list);
         return $list;
     }

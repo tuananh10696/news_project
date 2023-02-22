@@ -38,7 +38,6 @@ function chooseFileUpload ( e )
 	var is_file_type = false;
 	var is_file_size = false;
 
-
 	for ( let i = 0; i < files.length; i++ )
 	{
 		const __type = files[ i ].type;
@@ -47,18 +46,17 @@ function chooseFileUpload ( e )
 			is_file_type = true;
 			break;
 		}
-
 		if ( files[ i ].size > max_file_size )
 		{
 			is_file_size = true;
 			break;
 		}
-	}
 
+	}
 	if ( is_file_type || is_file_size )
 	{
 		var text_error = is_file_type ? '指定されたファイルを選択してください' : 'ファイルサイズ5MB以内';
-		$this.parents( 'td.td_parent' ).append( `<div class="error-message"><div class="error-message">${ text_error }</div></div>` );
+		$this.parents( '.td_parent' ).append( `<div class="error-message"><div class="error-message">${ text_error }</div></div>` );
 		$this.val( '' );
 		return false;
 	}
@@ -89,24 +87,49 @@ function matchYoutubeUrl ( url )
 	return matches ? matches[ 1 ] : false;
 }
 
+function detectVideo ( e )
+{
+	var par = $( e ).parents( '.group-video' );
+	var videoType = par.find( '.video-type' ).val();
+
+	return videoType == 'youtube' ? getVideoYT( par.find( '.input-video' ) ) : getVideoVimeo( par.find( '.input-video' ) );
+}
+
 function getVideoYT ( e )
 {
 	var inp_val = $( e ).val();
+	var par = $( e ).parents( '.group-video' );
+	var is_url = par.find( '.is_url' );
+
 	if ( inp_val != '' )
 	{
-		$( '.yt' ).removeClass( 'dpl_none' );
+		par.find( '.yt' ).removeClass( 'dpl_none' );
 
-		if ( inp_val.match( /^\/movie\// ) )
-		{
-			var video = `<video width="320" height="240" controls>
-				<source src="${ inp_val }" type="video/mp4">
-			</video>`;
-		} else
-		{
-			var id = matchYoutubeUrl( inp_val ) ? matchYoutubeUrl( inp_val ) : inp_val;
-			var video = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${ id }" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-		}
+		var id = is_url.is( ':checked' ) ? matchYoutubeUrl( inp_val ) : inp_val;
+		var video = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${ id }" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 
-		$( '.yt' ).html( video );
-	} else $( '.yt' ).addClass( 'dpl_none' ).html( '' );
+		par.find( '.yt' ).html( video );
+	} else par.find( '.yt' ).addClass( 'dpl_none' ).html( '' );
+}
+
+
+function getVideoVimeo ( e )
+{
+	var inp_val = $( e ).val();
+	var par = $( e ).parents( '.group-video' );
+	var is_url = par.find( '.is_url' );
+
+	if ( inp_val != '' )
+	{
+		par.find( '.yt' ).removeClass( 'dpl_none' );
+
+		var p = /^(?:http|https)?:?\/?\/?(?:www\.)?(?:player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)$/;
+		var matches = inp_val.match( p );
+
+		var id = is_url.is( ':checked' ) ? ( matches ? matches[ 1 ] : 0 ) : inp_val;
+
+		var video = `<iframe src="https://player.vimeo.com/video/${ id }" width="560" height="315" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
+
+		par.find( '.yt' ).html( video );
+	} else par.find( '.yt' ).addClass( 'dpl_none' ).html( '' );
 }

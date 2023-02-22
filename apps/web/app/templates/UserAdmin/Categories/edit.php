@@ -1,4 +1,3 @@
-
 <?php $this->assign('content_title', "「{$page_config->page_title}」のカテゴリ"); ?>
 <?php $this->start('menu_list'); ?>
 <li class="breadcrumb-item"><a href="<?= $this->Url->build(['controller' => 'page-configs']); ?>">コンテンツ設定</a></li>
@@ -35,6 +34,22 @@
 	<?= $this->element('edit_form/item-start', ['title' => 'カテゴリ名', 'required' => true]); ?>
 	<?= $this->Form->input('name', array('type' => 'text', 'maxlength' => 40, 'class' => 'form-control')); ?>
 	<div class="attention">※40文字以内で入力してください</div>
+	<?= $this->element('edit_form/item-end'); ?>
+
+	<?php $radio_data = ['gray' => 'グレー', 'lightblue' => '青',  'orange' => 'オレンジ', 'olive' => '緑', 'maroon' => '赤', 'fuchsia' => '紫'] ?>
+	<?= $this->element('edit_form/item-start', ['title' => '色']); ?>
+	<?php foreach ($radio_data as $k => $rd) : ?>
+		<?= $this->Form->control('cate_color', [
+			'type' => 'radio',
+			'options' => [$k => $rd],
+			'hiddenField' => false,
+			'label' => false,
+			'default' => 'gray',
+			'templates' => [
+				'radioWrapper' => '<div class="radio icheck-' . $k . ' d-inline mr-2">{{label}}</div>',
+			],
+		]); ?>
+	<?php endforeach ?>
 	<?= $this->element('edit_form/item-end'); ?>
 
 	<?= $this->element('edit_form/item-start', ['title' => '有効/無効']); ?>

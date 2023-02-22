@@ -242,31 +242,6 @@ function changeWidth ( elm, rownum, target_class, name )
 		$( elm ).val( num );
 	}
 }
-function getFileSize ( e )
-{
-
-	var file = e.files[ 0 ];
-
-	if ( typeof file === 'undefined' )
-	{
-		return 0;
-	}
-	if ( file.length == 0 )
-	{
-		return 0;
-	}
-
-	var reader = new FileReader();
-
-	if ( file.size > max_file_size )
-	{
-		alert_dlg( '１ファイルのアップロード出来る容量を超えています' );
-		$( e ).val( '' );
-		return 0;
-	}
-
-	return file.size;
-}
 
 function changeButtonName ( elm )
 {
@@ -433,6 +408,39 @@ function getMeta ( url, callback )
 }
 
 
+
+function getFileSize ( e )
+{
+
+	var files = $( e )[ 0 ].files;
+
+	var is_file_size = false;
+	var total = 0;
+
+	for ( let i = 0; i < files.length; i++ )
+	{
+		const __size = files[ i ]?.size || 0;
+
+		if ( __size > max_file_size )
+		{
+			is_file_size = true;
+			break;
+		}
+
+		total += __size;
+	}
+
+	if ( is_file_size )
+	{
+		alert_dlg( '１ファイルのアップロード出来る容量を超えています' );
+		$( e ).val( '' );
+		return -1;
+	}
+
+	return total;
+}
+
+
 $( function ()
 {
 	rownum = $( "#idContentCount" ).val();
@@ -460,7 +468,7 @@ $( function ()
 
 		for ( var i = 0; i < attaches.length; i++ )
 		{
-			if ( !getFileSize( attaches[ i ] ) )
+			if ( getFileSize( attaches[ i ] ) == -1 )
 			{
 				ischeck = true;
 				break;
@@ -493,7 +501,7 @@ $( function ()
 
 		fileReader.onload = ( function ()
 		{
-			let imgTag = `<img src='${ fileReader.result }'>`
+			let imgTag = `<img src='${ fileReader.result }' style='max-width:500px;border:1px solid #e9e9e9'>`
 
 			$( elm )
 				.siblings( ".preview_img" )
@@ -625,7 +633,7 @@ $( function ()
 		return false;
 	} )
 
-	$( "body" ).on( 'click', '.pop_image_single', function (e)
+	$( "body" ).on( 'click', '.pop_image_single', function ( e )
 	{
 		var options = {
 			maxWidth: "90%",

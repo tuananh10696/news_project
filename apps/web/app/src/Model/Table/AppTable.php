@@ -222,7 +222,7 @@ class AppTable extends Table
         $schema = $table->getSchema();
 
         foreach ($data as $col => $v)
-            if (in_array(@$schema->getColumn($col)['type'], ['date', 'datetime', 'start_datetime'], true))
+            if (in_array(@$schema->getColumn($col)['type'], ['date', 'datetime'], true))
                 $data[$col] = new \DateTime($v);
     }
 }

@@ -43,95 +43,6 @@ function render_text_schedule($start, $end = null)
 }
 
 
-class Image
-{
-    /**
-     * 画像（バイナリ）のEXif情報を元に回転する
-     */
-    public function rotateFromBinary($binary)
-    {
-        $exif_data = $this->getExifFromBinary($binary);
-        if (empty($exif_data['Orientation']) || in_array($exif_data['Orientation'], [1, 2])) {
-            return $binary;
-        }
-        return $this->rotate($binary, $exif_data);
-    }
-
-    /**
-     * バイナリデータからexif情報を取得
-     */
-    private function getExifFromBinary($binary)
-    {
-        $temp = tmpfile();
-        fwrite($temp, $binary);
-        fseek($temp, 0);
-
-        $meta_data = stream_get_meta_data($temp);
-        $exif_data = @exif_read_data($meta_data['uri']);
-
-        fclose($temp);
-        return $exif_data;
-    }
-
-    /**
-     * 画像を回転させる
-     */
-    private function rotate($binary, $exif_data)
-    {
-        ini_set('memory_limit', '256M');
-
-        $src_image = imagecreatefromstring($binary);
-
-        $degrees = 0;
-        $mode = '';
-        switch ($exif_data['Orientation']) {
-            case 2: // 水平反転
-                $mode = IMG_FLIP_VERTICAL;
-                break;
-            case 3: // 180度回転
-                $degrees = 180;
-                break;
-            case 4: // 垂直反転
-                $mode = IMG_FLIP_HORIZONTAL;
-                break;
-            case 5: // 水平反転、 反時計回りに270回転
-                $degrees = 270;
-                $mode = IMG_FLIP_VERTICAL;
-                break;
-            case 6: // 反時計回りに270回転
-                $degrees = 270;
-                break;
-            case 7: // 反時計回りに90度回転（反時計回りに90度回転） 水平反転
-                $degrees = 90;
-                $mode = IMG_FLIP_VERTICAL;
-                break;
-            case 8: // 反時計回りに90度回転（反時計回りに90度回転）
-                $degrees = 90;
-                break;
-        }
-
-        if (!empty($mode)) {
-            imageflip($src_image, $mode);
-        }
-
-        if ($degrees > 0) {
-            $src_image = imagerotate($src_image, $degrees, 0);
-        }
-
-        ob_start();
-        if (empty($exif_data['MimeType']) || $exif_data['MimeType'] == 'image/jpeg') {
-            imagejpeg($src_image);
-        } elseif ($exif_data['MimeType'] == 'image/png') {
-            imagepng($src_image);
-        } elseif ($exif_data['MimeType'] == 'image/gif') {
-            imagegif($src_image);
-        }
-        imagedestroy($src_image);
-        return ob_get_clean();
-    }
-}
-
-
 function renderBackUrl($param, $default_url = null)
 {
     if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], $param) === false) {
@@ -169,19 +80,39 @@ function getIDofYTfromURL($url)
 }
 
 
+function getIDofVimeofromURL($url)
+{
+    preg_match('/^(?:http|https)?:?\/?\/?(?:www\.)?(?:player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)$/', $url, $id, PREG_UNMATCHED_AS_NULL);
+    return $id ? $id[1] : null;
+}
+
+
 function is_show($content)
 {
+    $list_block = \App\Model\Entity\Info::$block_number2key_list;
+    $block = isset($list_block[$content->block_type]) ? strtolower($list_block[$content->block_type]) : 'default';
 
-    switch (intval($content['block_type'])) {
-        case 3:
-            $is_show = trim($content['image']) === '';
+    switch ($block) {
+        case 'image':
+            $is_show = trim($content->image) === '';
             break;
-
-        case 2:
-            $is_show = trim($content['content']) === '';
+        case 'h3':
+        case 'button':
+            $is_show = trim($content->title) === '';
+            break;
+        case 'memo':
+        case 'content':
+        case 'video':
+            $is_show = trim($content->content) === '';
+            break;
+        case 'file':
+            $is_show = trim($content->file_name) === '';
+            break;
+        case 'h2':
+            $is_show = trim($content->h2) === '';
             break;
         default:
-            $is_show = trim($content['title']) === '';
+            $is_show = false;
     }
 
     return $is_show;
@@ -199,5 +130,13 @@ function human_filesize($bytes, $decimals = 2)
 
 function charlimit($string, $limit)
 {
-    return substr($string, 0, $limit) . (strlen($string) > $limit ? "..." : '');
+    return mb_substr($string, 0, $limit, 'UTF-8') . (mb_strlen($string, 'UTF-8') > $limit ? "..." : '');
+}
+
+function _preventGarbledCharacters($bigText, $width = 249)
+{
+    $pattern = "/(.{1,{$width}})(?:\\s|$)|(.{{$width}})/uS";
+    $replace = '$1$2' . "\n";
+    $wrappedText = preg_replace($pattern, $replace, $bigText);
+    return $wrappedText;
 }
