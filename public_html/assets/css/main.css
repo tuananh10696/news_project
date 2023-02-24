@@ -23,12 +23,28 @@ a {
   color: var(--color-links);
   text-decoration: none;
 }
-p>a{
+
+p>a {
   color: rgb(51, 20, 227);
 }
+
 a:hover {
   color: var(--color-links-hover);
   text-decoration: none;
+}
+
+.categoryClass {
+  background-color: transparent !important;
+  color: var(--color-black);
+  border-radius: 0 !important;
+  border-bottom: 2px solid var(--color-black) !important;
+}
+
+.fileClass  {
+  border-bottom: 2px solid #a68759 !important;
+  padding-bottom: 3px;
+  font-style: oblique;
+  color: #c7aa1d;
 }
 
 h1,
@@ -735,9 +751,11 @@ section {
   display: inline-block;
   padding-bottom: 5px;
 }
-.more:hover{
+
+.more:hover {
   color: #beae39;
 }
+
 .more:before {
   content: "";
   position: absolute;

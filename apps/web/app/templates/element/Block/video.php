@@ -1,4 +1,4 @@
-<?php if ($c->content != '') : ?>
+<?php dd(1) ;if ($c->content != '') : ?>
 	<?php if ($c->option_value3 == 'youtube') : ?>
 		<?php $id = intval($c->option_value2) == 1 ? getIDofYTfromURL($c->content) : $c->content ?>
 		<div class="box-movie">

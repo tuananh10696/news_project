@@ -431,6 +431,7 @@ class BaseInfosController extends AppController
 
             $data = $this->request->getData();
             $data['page_config_id'] = $sch_page_id;
+            // $data['top_slide'] = $data['top_slide'][0];
 
             $info_category_ids = $this->request->getData('info_categories');
 

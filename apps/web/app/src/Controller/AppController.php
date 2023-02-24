@@ -65,7 +65,7 @@ class AppController extends Controller
         $this->is_preview = $this->isUserLogin() && $this->request->getQuery('preview') == 'on';
 
         $this->set('__description__', $this->head_description);
-        $this->set('body_class', '');
+        $this->set('category', '');
     }
 
 
