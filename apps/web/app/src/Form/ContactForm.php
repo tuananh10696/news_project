@@ -4,6 +4,10 @@ namespace App\Form;
 
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
+use App\Controller\AppController;
+use Cake\Event\EventInterface;
+use Cake\Core\Configure;
+use Cake\Mailer\Mailer;
 
 class ContactForm extends AppForm
 {
@@ -103,5 +107,54 @@ class ContactForm extends AppForm
             ->add('chk_privacy', 'custom', ['rule' => [$this, 'checkIsPrivacy'], 'message' => '※同意してください']);
 
         return $validator;
+    }
+
+    private function _sendmail($form)
+    {
+        $contact_form = new ContactForm();
+
+        // 文字化け対応
+        // $form['content'] = _preventGarbledCharacters($form['content']);
+
+        $to = ['bui.tuanAnh@caters.co.jp.co.jp'];
+        $from = ['bui.tuanAnh@caters.co.jp.co.jp' => 'Daily-Vn'];
+
+        $test_dev_local_server = (strpos($_SERVER["HTTP_HOST"], 'test') !== false ||
+            strpos($_SERVER["HTTP_HOST"], 'caters') !== false ||
+            strpos($_SERVER["HTTP_HOST"], 'loca') !== false ||
+            strpos($_SERVER["HTTP_HOST"], 'localhost') !== false);
+
+        $is_honban = !Configure::read('debug') && !$test_dev_local_server;
+
+        if ($is_honban) {
+            // 本番の場合
+            $to = ['bui.tuanAnh@caters.co.jp.co.jp'];
+            $from = ['bui.tuanAnh@caters.co.jp.co.jp' => 'Daily-Vn'];
+        }
+
+        $info_email = new Mailer();
+        $info_email->setCharset('ISO-2022-JP-MS')
+            ->setEmailFormat('text')
+            ->setFrom($from)
+            ->setTo($to)
+            ->setViewVars(['form' => $form])
+            ->setSubject('【Daily-Vn】お問合せがありました')
+            ->viewBuilder()
+            ->setTemplate('contact_admin');
+
+        $info_email->send();
+
+
+        $thank_email = new Mailer();
+        $thank_email->setCharset('ISO-2022-JP-MS')
+            ->setEmailFormat('text')
+            ->setViewVars(['form' => $form])
+            ->setFrom($from)
+            ->setTo($form['email'])
+            ->setSubject('【Daily-Vn】お問い合わせありがとうございます')
+            ->viewBuilder()
+            ->setTemplate('contact_user');
+
+        $thank_email->send();
     }
 }

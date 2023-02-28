@@ -40,7 +40,7 @@ a:hover {
   border-bottom: 2px solid var(--color-black) !important;
 }
 
-.fileClass  {
+.fileClass {
   border-bottom: 2px solid #a68759 !important;
   padding-bottom: 3px;
   font-style: oblique;
@@ -1139,6 +1139,11 @@ section {
   text-align: left;
   padding: 15px;
   font-weight: 600;
+}
+
+.txtErr {
+  text-align: center;
+  color: var(--color-red);
 }
 
 .contact .php-email-form .error-message br+br {

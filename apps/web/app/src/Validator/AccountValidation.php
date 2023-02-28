@@ -3,13 +3,12 @@
 namespace App\Validator;
 
 
-class UserValidation
+class AccountValidation
 {
 
 
     public static function isUnique($value, $context)
     {
-
         $field = $context['field'];
         $table = $context['providers']['table'];
 
@@ -17,10 +16,10 @@ class UserValidation
         if (array_key_exists('id', $context['data'])) {
             $id = $context['data']['id'];
         }
-        dd($value);
+
         $cond = [
-            "Useradmins.id !=" => $id,
-            "Useradmins.{$field}" => $value
+            "Accounts.id !=" => $id,
+            "Accounts.{$field}" => $value
         ];
 
         $count = $table->find()->where($cond)->count();
