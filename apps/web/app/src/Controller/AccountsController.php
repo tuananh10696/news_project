@@ -63,10 +63,10 @@ class AccountsController extends AppController
             $data = $this->request->getData();
 
             $entity = $this->Accounts->newEntity($data);
+            // dd($entity->getErrors()); 
             if (empty($entity->getErrors())) {
-                $saved = $this->Accounts->save($entity);
                 $contact_form->_sendmail($data);
-
+                $saved = $this->Accounts->save($entity);
 
                 if ($saved) {
                     // $this->Session->write(['is_login' => true]);
@@ -74,6 +74,7 @@ class AccountsController extends AppController
                 }
             }
             $this->set('err', $entity->getErrors());
+            // $this->set('err', ['custom' => 'Có lỗi xảy ra , vui lòng đăng kí lại.']);
         }
     }
 

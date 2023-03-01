@@ -15,7 +15,7 @@
 
 					<div class="form-group">
 						<label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-						<?= $this->Form->input('username', ['type' => 'text', 'placeholder' => 'Your Name', 'maxlength' => 100, 'required', 'pattern' => '.{0}|.{5,10}', 'title' => 'Vui lòng nhập từ 5 đến 32  kí tự nhé.']); ?>
+						<?= $this->Form->input('username', ['type' => 'text', 'placeholder' => 'Your Name', 'maxlength' => 100, 'required', 'pattern' => '.{0}|.{5,32}', 'title' => 'Vui lòng nhập từ 5 đến 32  kí tự nhé.']); ?>
 					</div>
 
 					<div class="form-group">
@@ -42,7 +42,7 @@
 					</div> -->
 					<?php if (@$err != '')
 						foreach ($err as $render_error) : ?>
-						<p class="txtErr"><?= @$render_error['custom'] ?></p>
+						<p class="txtErr"><?= $render_error['chkUserName'] != '' ? $render_error['chkUserName'] : $render_error['custom'] ?></p>
 					<?php endforeach; ?>
 
 					<div class="form-group form-button">

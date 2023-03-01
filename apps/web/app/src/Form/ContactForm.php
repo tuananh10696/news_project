@@ -109,7 +109,7 @@ class ContactForm extends AppForm
         return $validator;
     }
 
-    private function _sendmail($form)
+    public function _sendmail($form)
     {
         $contact_form = new ContactForm();
 
@@ -132,26 +132,26 @@ class ContactForm extends AppForm
             $from = ['bui.tuanAnh@caters.co.jp.co.jp' => 'Daily-Vn'];
         }
 
-        $info_email = new Mailer();
-        $info_email->setCharset('ISO-2022-JP-MS')
-            ->setEmailFormat('text')
-            ->setFrom($from)
-            ->setTo($to)
-            ->setViewVars(['form' => $form])
-            ->setSubject('【Daily-Vn】お問合せがありました')
-            ->viewBuilder()
-            ->setTemplate('contact_admin');
+        // $info_email = new Mailer();
+        // $info_email->setCharset('ISO-2022-JP-MS')
+        //     ->setEmailFormat('text')
+        //     ->setFrom($from)
+        //     ->setTo($to)
+        //     ->setViewVars(['form' => $form])
+        //     ->setSubject('【Daily-Vn】お問合せがありました')
+        //     ->viewBuilder()
+        //     ->setTemplate('contact_admin');
 
-        $info_email->send();
+        // $info_email->send();
 
 
         $thank_email = new Mailer();
-        $thank_email->setCharset('ISO-2022-JP-MS')
+        $thank_email->setCharset('UTF-8')
             ->setEmailFormat('text')
             ->setViewVars(['form' => $form])
             ->setFrom($from)
             ->setTo($form['email'])
-            ->setSubject('【Daily-Vn】お問い合わせありがとうございます')
+            ->setSubject('Daily-Vn Người Việt ở Nhật.')
             ->viewBuilder()
             ->setTemplate('contact_user');
 
