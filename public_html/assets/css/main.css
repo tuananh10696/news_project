@@ -65,6 +65,7 @@ h6 {
 --------------------------------------------------------------*/
 section {
   padding: 40px 0;
+  padding-bottom: 6px;
   overflow: hidden;
 }
 
@@ -470,12 +471,18 @@ section {
 /*--------------------------------------------------------------
 # Posts
 --------------------------------------------------------------*/
+div.author {
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
 .post-entry-1 {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 
 .post-entry-1 img {
-  margin-bottom: 30px;
+  margin-bottom: 6px;
 }
 
 .post-entry-1 h2 {
@@ -491,7 +498,7 @@ section {
 }
 
 .post-entry-1.lg h2 {
-  font-size: 40px;
+  font-size: 25px;
   line-height: 1;
 }
 
@@ -502,7 +509,7 @@ section {
   font-weight: 600;
   font-family: var(--font-secondary);
   color: rgba(var(--color-black-rgb), 0.4);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 @media (max-width: 768px) {
@@ -516,9 +523,10 @@ section {
 }
 
 .author .photo img {
-  width: 40px;
+  width: 33px;
   border-radius: 50%;
   margin-bottom: 0;
+  margin-top: -12px;
 }
 
 .author .name h3 {
@@ -526,6 +534,7 @@ section {
   padding: 0;
   font-size: 15px;
   font-family: var(--font-secondary);
+  color: cadetblue;
 }
 
 .trending {
@@ -886,6 +895,25 @@ section {
   background-color: var(--color-black) !important;
   background-color: transparent !important;
   color: var(--color-black);
+  border-bottom: 2px solid var(--color-black);
+}
+
+.nav-item-top button.nav-link {
+  color: var(--color-black);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin-right: 20px;
+}
+
+.nav-item-top button.active {
+  background-color: var(--color-black) !important;
+  background-color: transparent !important;
+  color: var(--color-black) !important;
   border-bottom: 2px solid var(--color-black);
 }
 

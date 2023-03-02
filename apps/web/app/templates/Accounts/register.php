@@ -42,7 +42,7 @@
 					</div> -->
 					<?php if (@$err != '')
 						foreach ($err as $render_error) : ?>
-						<p class="txtErr"><?= $render_error['chkUserName'] != '' ? $render_error['chkUserName'] : $render_error['custom'] ?></p>
+						<p class="txtErr"><?= @$render_error['chkUserName'] != '' ? $render_error['chkUserName'] : $render_error['custom'] ?></p>
 					<?php endforeach; ?>
 
 					<div class="form-group form-button">

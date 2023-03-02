@@ -37,11 +37,11 @@ class AccountsTable extends AppTable
 
         $validator
             ->notEmpty('username', 'Vui lòng nhập tên tài khoản.')
-            ->add('username', 'chkUserName', [
-                'rule' => ['checkUsername'],
-                'provider' => 'Accounts',
-                'message' => 'Tên tài khoản có kí tự đặc biệt.'
-            ])
+            // ->add('username', 'chkUserName', [
+            //     'rule' => ['checkUsername'],
+            //     'provider' => 'Accounts',
+            //     'message' => 'Tên tài khoản có kí tự đặc biệt.'
+            // ])
             ->add('username', 'Length', [
                 'rule' => ['lengthBetween', 3, 30],
                 'message' => 'Tên tài khoản từ 3 đến 30 kí tự.'

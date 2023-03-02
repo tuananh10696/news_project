@@ -5,6 +5,8 @@
         <col style="width: 135px">
         <col>
         <col style="width: 75px;">
+        <col style="width: 100px;">
+        <col style="width: 75px;">
         <col style="width: 150px">
     </colgroup>
 
@@ -14,6 +16,8 @@
             <th class="t_align_c">記事ID</th>
             <th class="t_align_c">掲載日時</th>
             <th><?= ($this->Common->isCategoryEnabled($page_config) ? 'カテゴリ / ' : '') ?>タイトル</th>
+            <th class="t_align_c">Top Slide</th>
+            <th class="t_align_c">News Type</th>
             <th class="t_align_c">確認</th>
             <th class="t_align_c">順序の変更</th>
 
@@ -42,7 +46,7 @@
         }
 
         $preview_url = "/news/{$data->id}?preview=on";
-    ?>
+        ?>
         <a name="m_<?= $id ?>"></a>
         <tr class="<?= $status_class; ?>" id="content-<?= $data->id ?>">
             <td>
@@ -62,6 +66,15 @@
                     <?= $this->Html->view((!empty($data->category->name) ? $data->category->name : '未設定'), ['before' => '【', 'after' => '】<br>']); ?>
                 <?php endif; ?>
                 <?= $this->Html->link(charlimit(h($data->title), 80), ['action' => 'edit', $data->id, '?' => $query], ['escape' => false, 'class' => 'btn btn-light w-100 text-left']) ?>
+            </td>
+
+            <td class="t_align_c">
+                <?= $data['top_slide_display'] == true ? '○' : '' ?>
+            </td>
+
+            <td>
+                <?php $popular = ['All', 'Trending', 'Popular'];?>
+                <?= $popular[$data['popular']] ?>
             </td>
 
             <td>

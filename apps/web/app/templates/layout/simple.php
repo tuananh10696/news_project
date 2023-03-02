@@ -56,16 +56,13 @@
 			<a href="/" class="logo d-flex align-items-center">
 				<!-- Uncomment the line below if you also wish to use an image logo -->
 				<!-- <img src="assets/img/logo.png" alt=""> -->
-				<h1>Daily-vn</h1>
+				<h1>Genki-Vn</h1>
 			</a>
 
 			<nav id="navbar" class="navbar">
 				<ul>
-					<?php foreach ($category as $category_data) : ?>
-						<li><a href="/news?category_id=<?= $category_data->id ?>"><?= h($category_data->name) ?></a></li>
-					<?php endforeach; ?>
-					<li><a href="/news">Videos</a></li>
-					<li class="dropdown"><a href="/news"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+
+					<li class="dropdown"><a href="/news"><span>Tin Tức</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
 							<li><a href="/news">All</a></li>
 							<?php foreach ($category as $category_data) : ?>
@@ -82,7 +79,16 @@
 							</li> -->
 						</ul>
 					</li>
-					<li><a href="about.html">About</a></li>
+					<li class="dropdown"><a href="/news"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+						<ul>
+							<li><a href="/news">Người Tìm Việc</a></li>
+							<li><a href="/news">Việc Tìm Người</a></li>
+							</li> 
+						</ul>
+					</li>
+					<li><a href="/news">Videos</a></li>
+					<li><a href="/news">Đăng Bài</a></li>
+					<li><a href="about.html">Genki-Vn</a></li>
 					<li><a href="contact.html">Contact</a></li>
 					<li class="dropdown"><a href="/accounts/" class="mx-2"><span class="bi-person-circle"> <?= $this->Session->read('user_data') != '' ? $this->Session->read('user_data')['name'] : ' Đăng Nhập' ?></span></a>
 						<ul>
@@ -91,6 +97,7 @@
 								<li><a href="/accounts/register/">Tạo Tài Khoản</a></li>
 							<?php else : ?>
 								<li><a href="/accounts/user/">Trang Cá Nhân</a></li>
+								<li><a href="/accounts/user/">Đăng Bài</a></li>
 								<li><a href="/accounts/logout/">Đăng Xuất</a></li>
 							<?php endif; ?>
 						</ul>

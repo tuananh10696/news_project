@@ -133,3 +133,15 @@
 		</div>
 	</section>
 </main><!-- End #main -->
+
+<div class="col-lg-4 border-start custom-border">
+	<?php foreach ($all_news as $id => $all_news_data) : ?>
+		<?php if ($id != 0 && $all_news_data['category_id'] === 2) : ?>
+			<div class="post-entry-1">
+				<a href="/news/<?= $all_news_data['id'] ?>"><img src="><?= $all_news_data['attaches']['image'][0] ?>" alt="" class="img-fluid"></a>
+				<div class="post-meta"><span class="date"><?= $all_news_data['category']['name'] ?></span> <span class="mx-1">&bullet;</span> <span>><?= $all_news_data['start_datetime']->format('Y.m.d') ?></span></div>
+				<h2><a href="/news/<?= $all_news_data['id'] ?>"><?= h($all_news_data['title']) ?></a></h2>
+			</div>
+		<?php endif; ?>
+	<?php endforeach; ?>
+</div>

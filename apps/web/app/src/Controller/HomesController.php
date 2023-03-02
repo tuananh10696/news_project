@@ -16,42 +16,32 @@ class HomesController extends AppController
     {
         $this->setLists();
 
-        //category sort
-        $category_id = $this->request->getQuery('category_id') ?? 0;
-        $cat = $this->loadModel('Categories')
-            ->find()
-            ->where([
-                'Categories.id' => intval($category_id),
-                'Categories.status' => 'publish',
-                'PageConfigs.slug' => NEWS,
-            ])
-            ->contain(['PageConfigs'])
-            ->first();
-        $category_id = $cat ? $cat->id : 0;
-        $this->set('category_id', intval($category_id));
-
-        // Sidebar data
-        $opts = [
-            'limit' => 5,
-            'paginate' => true
+        $opt_doi_song = [
+            'limit' => 6,
+            'append_cond' => ['Infos.category_id' => 1],
+            'paginate' => false
         ];
-        $opt_trending = [
-            'limit' => 5,
-            'append_cond' => ['Infos.popular' => 1]
+        $opt_giai_tri = [
+            'limit' => 4,
+            'append_cond' => ['Infos.category_id' => 2],
+            'paginate' => false
         ];
-        $opt_popular = [
-            'limit' => 5,
-            'append_cond' => ['Infos.popular' => 2]
+        $opt_hoc_tap = [
+            'limit' => 4,
+            'append_cond' => ['Infos.category_id' => 3],
+            'paginate' => false
+        ];
+        $opt_kinh_nghiem = [
+            'limit' => 6,
+            'append_cond' => ['Infos.category_id' => 4],
+            'paginate' => false
         ];
 
-        if ($category_id) $opts['append_cond'] = ['category_id' => $category_id];
-
-        $infos = $this->Cms->findAll(NEWS, $opts);
-        $opt_trending = $this->Cms->findAll(NEWS, $opt_trending);
-        $opt_popular = $this->Cms->findAll(NEWS, $opt_popular);
-
-        // $this->set('category', $this->setLists());
-        $this->set(compact('infos', 'opt_trending', 'opt_popular'));
+        $doi_song = $this->Cms->findAll(NEWS, $opt_doi_song);
+        $giai_tri = $this->Cms->findAll(NEWS, $opt_giai_tri);
+        $hoc_tap = $this->Cms->findAll(NEWS, $opt_hoc_tap);
+        $kinh_nghiem = $this->Cms->findAll(NEWS, $opt_kinh_nghiem);
+        $this->set(compact('doi_song', 'giai_tri', 'hoc_tap', 'kinh_nghiem'));
     }
 
     public function setLists()
@@ -59,22 +49,28 @@ class HomesController extends AppController
         $list = [];
 
         $opts = [
-            'limit' => 5,
-            'paginate' => true
+            'limit' => 6,
+            'paginate' => false
         ];
         $opt_trending = [
-            'limit' => 5,
+            'limit' => 8,
             'append_cond' => ['Infos.popular' => 1]
         ];
         $opt_popular = [
-            'limit' => 5,
+            'limit' => 8,
             'append_cond' => ['Infos.popular' => 2]
+        ];
+
+        $top_slide = [
+            'limit' => 8,
+            'append_cond' => ['Infos.top_slide_display' => 1]
         ];
 
 
         $list['all_news'] = $this->Cms->findAll(NEWS, $opts);
         $list['opt_trending'] = $this->Cms->findAll(NEWS, $opt_trending);
         $list['opt_popular'] = $this->Cms->findAll(NEWS, $opt_popular);
+        $list['top_slide'] = $this->Cms->findAll(NEWS, $top_slide);
 
         $list['category'] = $this->loadModel('Categories')
             ->find('all')
