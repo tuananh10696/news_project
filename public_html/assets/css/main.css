@@ -60,9 +60,29 @@ h6 {
   margin-top: 90px;
 }
 
-
+/* tu_css */
 .thum_img {
   border-radius: 8px !important;
+}
+
+.store-sort {
+  display: inline-block;
+  padding-bottom: 14px;
+}
+
+.store-sort label {
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-right: 15px;
+}
+
+.store-sort .input-select {
+  padding: 0;
+  font-size: 16px;
+  background: #FFF;
+  border: 1px solid #ECE8DD;
+  height: 40px;
 }
 /*--------------------------------------------------------------
 # Sections & Section Header
@@ -528,7 +548,7 @@ div.author {
 
 .author .photo img {
   width: 33px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   margin-bottom: 0;
   margin-top: -12px;
 }
@@ -610,7 +630,8 @@ div.author {
   font-weight: 600;
   font-family: var(--font-secondary);
   color: rgba(var(--color-black-rgb), 0.4);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .post-entry-2 .author {

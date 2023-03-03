@@ -57,7 +57,7 @@ define('DEMO', 'demo');
 define('SIMPLE', 'simple');
 
 define('NEWS', 'news');
-define('COLUMN', 'column');
+define('JOBS', 'jobs');
 
 /*
  * Bootstrap CakePHP.

@@ -79,10 +79,10 @@
 							</li> -->
 						</ul>
 					</li>
-					<li class="dropdown"><a href="/news"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+					<li class="dropdown"><a href="/jobs/"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li><a href="/news">Người Tìm Việc</a></li>
-							<li><a href="/news">Việc Tìm Người</a></li>
+							<li><a href="/jobs?type=nguoi_tim_viec">Người Tìm Việc</a></li>
+							<li><a href="/jobs?type=viec_tim_nguoi">Việc Tìm Người</a></li>
 							</li> 
 						</ul>
 					</li>

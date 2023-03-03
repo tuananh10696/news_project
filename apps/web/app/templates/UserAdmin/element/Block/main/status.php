@@ -24,3 +24,19 @@
         ]); ?>
     </div>
 </div>
+
+<?php if ($page_config->slug == 'jobs') : ?>
+    <div class="form-group row">
+        <label for="" class="col-12 col-md-3 col-form-label control_title">
+            Job Type <span class="attent">※必須</span> </label>
+
+        <div class="col-12 col-md-9 control_value">
+            <?= $this->Form->input('job_type', [
+                    'type' => 'radio',
+                    'value' => @$data['job_type'] != '' ? $data['job_type'] : 0,
+                    'options' => ['Việc Tìm Người', 'Người Tìm Việc'],
+                    'hiddenField' => false
+                ]); ?>
+        </div>
+    </div>
+<?php endif; ?>
