@@ -4,10 +4,21 @@
  * ページネーションのレイアウトを変更したい場合はここを編集
  */
 return [
-    'nextActive' => '<li class="next"><a href="{{url}}"><i class="icon-arrow glyphs-arrow-right"></i></a></li>',
-    'nextDisabled' => '<li class="next disable"><a href="#"><i class="icon-arrow glyphs-arrow-right"></i></a></li>',
-    'prevActive' => '<li class="prev"><a href="{{url}}"><i class="icon-arrow glyphs-arrow-left"></i></a>',
-    'prevDisabled' => '<li class="prev disable"><a href="#"><i class="icon-arrow glyphs-arrow-left"></i></a></li>',
-    'current' => '<li class="active"><a>{{text}}</a></li>',
-    'ellipsis' => '<li class="dot"><a>...</a></li>'
+    'nextActive' => '<a class="next" href="{{url}}"></a>',
+    'nextDisabled' => '<a href="#"></a>',
+    'prevActive' => '<a class="prev" href="{{url}}"></a>',
+    'prevDisabled' => '<a href="#"></a>',
+    'current' => '<a class="active">{{text}}</a>',
+    'ellipsis' => '<a>...</a>'
 ];
+// <div class="text-start py-4">
+//   <div class="custom-pagination">
+//     <a href="#" class="prev">Prevous</a>
+//     <a href="#" class="active">1</a>
+//     <a href="#">2</a>
+//     <a href="#">3</a>
+//     <a href="#">4</a>
+//     <a href="#">5</a>
+//     <a href="#" class="next">Next</a>
+//   </div>
+// </div><!-- End Paging -->

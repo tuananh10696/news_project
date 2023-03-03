@@ -217,7 +217,7 @@ class PageConfigItemsController extends AppController
 
         $list['value_type_list'] = [
             'text' => 'テキスト型',
-            'date' => '日付型',
+            'start_datetime' => 'start_datetime',
             'datetime' => '日付時間型',
             'select' => 'list型',
             'checkbox' => 'checkbox型',

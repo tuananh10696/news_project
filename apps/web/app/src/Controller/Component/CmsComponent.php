@@ -72,13 +72,13 @@ class CmsComponent extends Component
         }
 
         // デフォルトオプション
-        $default_cond = ['Infos.status' => 'publish'];
+        $now = new \DateTime();
+        $default_cond = ['Infos.status' => 'publish', 'Infos.start_datetime <=' => $now->format('Y-m-d H:i')];
         $default_contain = [
             'PageConfigs'
         ];
         if ($page_config->is_category == 'Y') {
-            if ($page_config->is_category_multiple == 1) {
-            } else {
+            if ($page_config->is_category_multiple == 1) { } else {
                 $default_contain = [
                     'PageConfigs',
                     'Categories'
@@ -270,9 +270,11 @@ class CmsComponent extends Component
         if (empty($page_config)) return null;
 
         // デフォルトオプション
+        $now = new \DateTime();
         $default_cond = [
             'Infos.id' => $info_id,
-            'Infos.status' => 'publish'
+            'Infos.status' => 'publish',
+            'Infos.start_datetime <=' => $now->format('Y-m-d H:i')
         ];
 
         $default_contain = [
@@ -302,10 +304,8 @@ class CmsComponent extends Component
         ], $options);
 
         $cond = $options['conditions'];
-
         if ($options['isPreview'] && $this->Controller->isUserLogin()) {
-            unset($cond['Infos.status']);
-            unset($cond['Categories.status']);
+            $cond = ['Infos.id' => $info_id];
         }
 
         if (!empty($options['append_cond']))
@@ -324,12 +324,11 @@ class CmsComponent extends Component
         $content_count = 0;
         $contents = [
             'contents' => [],
-            'content_count' => 0
         ];
 
         if (is_null($entity->info_contents)) return ['contents' => [], 'content_count' => 0];
 
-        $contents['content_count'] = count($entity->info_contents);
+        $content_count = count($entity->info_contents);
 
         foreach ($entity->info_contents as $k => $v) {
 

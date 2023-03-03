@@ -5,8 +5,6 @@
         <col style="width: 135px">
         <col>
         <col style="width: 75px;">
-        <col style="width: 100px;">
-        <col style="width: 75px;">
         <col style="width: 150px">
     </colgroup>
 
@@ -16,8 +14,6 @@
             <th class="t_align_c">記事ID</th>
             <th class="t_align_c">掲載日時</th>
             <th><?= ($this->Common->isCategoryEnabled($page_config) ? 'カテゴリ / ' : '') ?>タイトル</th>
-            <th class="t_align_c">Top Slide</th>
-            <th class="t_align_c">News Type</th>
             <th class="t_align_c">確認</th>
             <th class="t_align_c">順序の変更</th>
 
@@ -38,7 +34,7 @@
 
         if ($status) {
             $now = new \DateTime();
-            if ($data->start_datetime && $data->start_datetime->format('Y-m-d H:i') > $now->format('Y-m-d H:i')) {
+            if ($data->start_datetime && $data->start_datetime->format('Y-m-d') > $now->format('Y-m-d')) {
                 // 掲載待ち
                 $status_class = 'unvisible';
                 $status_text = '掲載待ち';
@@ -67,16 +63,6 @@
                 <?php endif; ?>
                 <?= $this->Html->link(charlimit(h($data->title), 80), ['action' => 'edit', $data->id, '?' => $query], ['escape' => false, 'class' => 'btn btn-light w-100 text-left']) ?>
             </td>
-
-            <td class="t_align_c">
-                <?= $data['top_slide_display'] == true ? '○' : '' ?>
-            </td>
-
-            <td>
-                <?php $popular = ['All', 'Trending', 'Popular'];?>
-                <?= $popular[$data['popular']] ?>
-            </td>
-
             <td>
                 <div class="prev t_align_c"><a href="<?= $preview_url ?>" target="_blank">プレビュー</a></div>
             </td>

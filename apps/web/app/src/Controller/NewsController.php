@@ -42,7 +42,7 @@ class NewsController extends AppController
 
         // dd($opts);
         $infos = $this->Cms->findAll(NEWS, $opts);
-        $this->set(compact('infos'));
+        $this->set(compact('infos','category_id'));
     }
 
 

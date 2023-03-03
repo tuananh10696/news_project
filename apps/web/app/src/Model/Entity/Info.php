@@ -33,9 +33,9 @@ class Info extends AppEntity
     const BLOCK_TYPE_TEXT_IMG = 20;
 
     const BLOCK_TYPE_LIST = [
-        self::BLOCK_TYPE_TITLE_H2 => '大見出し',
-        self::BLOCK_TYPE_TITLE_H3 => '中見出し',
-        self::BLOCK_TYPE_TITLE_H4 => '小見出し',
+        self::BLOCK_TYPE_TITLE_H2 => 'H2',
+        self::BLOCK_TYPE_TITLE_H3 => 'H3',
+        self::BLOCK_TYPE_TITLE_H4 => 'H4',
         self::BLOCK_TYPE_CONTENT => '本文',
         self::BLOCK_TYPE_IMAGE => '画像',
         self::BLOCK_TYPE_FILE => 'ファイル添付',

@@ -63,7 +63,7 @@ class editFormHelper extends Helper
         foreach ($this->main as $item) {
             // if ($item->status != 'Y') continue;
             if ($item->item_key == 'status') $status = true;
-            if ($item->item_key == 'date') $datetime = true;
+            if ($item->item_key == 'start_datetime') $datetime = true;
         }
 
         if (!$status) {
@@ -79,7 +79,7 @@ class editFormHelper extends Helper
         if (!$datetime) {
             $datetime = clone $default;
             $datetime->item_type = 'date';
-            $datetime->item_key = 'date';
+            $datetime->item_key = 'start_datetime';
             $datetime->title = '掲載日';
             $datetime->is_required = 1;
             array_splice($this->main, 0, 0, [$datetime]);

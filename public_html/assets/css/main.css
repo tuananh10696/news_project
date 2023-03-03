@@ -60,6 +60,10 @@ h6 {
   margin-top: 90px;
 }
 
+
+.thum_img {
+  border-radius: 8px !important;
+}
 /*--------------------------------------------------------------
 # Sections & Section Header
 --------------------------------------------------------------*/
@@ -892,6 +896,25 @@ div.author {
 }
 
 .aside-block .custom-tab-nav .nav-item button.active {
+  background-color: var(--color-black) !important;
+  background-color: transparent !important;
+  color: var(--color-black);
+  border-bottom: 2px solid var(--color-black);
+}
+
+.nav-item .cate {
+  color: var(--color-black);
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 550;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin-right: 40px;
+  
+}
+
+.nav-item .cate button.active {
   background-color: var(--color-black) !important;
   background-color: transparent !important;
   color: var(--color-black);
