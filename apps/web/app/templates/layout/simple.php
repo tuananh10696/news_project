@@ -83,25 +83,25 @@
 						<ul>
 							<li><a href="/jobs?type=nguoi_tim_viec">Người Tìm Việc</a></li>
 							<li><a href="/jobs?type=viec_tim_nguoi">Việc Tìm Người</a></li>
-							</li> 
-						</ul>
 					</li>
-					<li><a href="/news">Videos</a></li>
-					<li><a href="/news">Đăng Bài</a></li>
-					<li><a href="about.html">Genki-Vn</a></li>
-					<li><a href="contact.html">Contact</a></li>
-					<li class="dropdown"><a href="/accounts/" class="mx-2"><span class="bi-person-circle"> <?= $this->Session->read('user_data') != '' ? $this->Session->read('user_data')['name'] : ' Đăng Nhập' ?></span></a>
-						<ul>
-							<?php if ($this->Session->read('user_data') == '') : ?>
-								<li><a href="/accounts/">Đăng Nhập</a></li>
-								<li><a href="/accounts/register/">Tạo Tài Khoản</a></li>
-							<?php else : ?>
-								<li><a href="/accounts/user/">Trang Cá Nhân</a></li>
-								<li><a href="/accounts/user/">Đăng Bài</a></li>
-								<li><a href="/accounts/logout/">Đăng Xuất</a></li>
-							<?php endif; ?>
-						</ul>
-					</li>
+				</ul>
+				</li>
+				<li><a href="/news">Videos</a></li>
+				<li><a href="/news">Đăng Bài</a></li>
+				<li><a href="about.html">Genki-Vn</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				<li class="dropdown"><a href="/accounts/" class="mx-2"><span class="bi-person-circle"> <?= $this->Session->read('user_data') != '' ? $this->Session->read('user_data')['name'] : ' Đăng Nhập' ?></span></a>
+					<ul>
+						<?php if ($this->Session->read('user_data') == '') : ?>
+							<li><a href="/accounts/">Đăng Nhập</a></li>
+							<li><a href="/accounts/register/">Tạo Tài Khoản</a></li>
+						<?php else : ?>
+							<li><a href="/accounts/user/">Trang Cá Nhân</a></li>
+							<li><a href="/accounts/user/">Đăng Bài</a></li>
+							<li><a href="/accounts/logout/">Đăng Xuất</a></li>
+						<?php endif; ?>
+					</ul>
+				</li>
 				</ul>
 			</nav>
 			<!-- .navbar -->
@@ -268,6 +268,7 @@
 	<script src="/assets/vendor/php-email-form/validate.js"></script>
 
 	<!-- Template Main JS File -->
+	<script src="/user/common/js/jquery.js"></script>
 	<script src="/assets/js/main.js"></script>
 	<?= $this->fetch('script'); ?>
 

@@ -48,7 +48,7 @@ class JOBSController extends AppController
         if ($category_id) $opts['append_cond'] = ['category_id' => $category_id];
 
         $infos = $this->Cms->findAll(JOBS, $opts);
-        $this->set(compact('infos', 'category_id'));
+        $this->set(compact('infos', 'category_id', 'search_type_job'));
         $this->setHeadTitle('Tìm Việc Tại Genki-Vn');
 
     }

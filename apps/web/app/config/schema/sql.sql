@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: localhost:8889
--- 生成日時: 2023 年 3 月 03 日 10:39
+-- 生成日時: 2023 年 3 月 13 日 00:13
 -- サーバのバージョン： 5.7.34
 -- PHP のバージョン: 7.4.21
 
@@ -12,8 +12,34 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- データベース: `shioya_iju`
+-- データベース: `news_project`
 --
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `username` varchar(100) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `set_status` enum('publish','draft') DEFAULT 'publish',
+  `email` varchar(200) DEFAULT NULL,
+  `face_img` varchar(200) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- テーブルのデータのダンプ `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `created`, `modified`, `username`, `password`, `set_status`, `email`, `face_img`, `status`) VALUES
+(3, '2023-02-28 17:10:04', '2023-02-28 17:10:04', 'develop', 'buituananh', 'publish', 'caters@caters.co.jp', NULL, NULL),
+(8, '2023-03-01 18:36:10', '2023-03-01 18:36:10', 'BUI TUAN ANH', 'hoanganh', 'publish', 'bui.tuanAnh@caters.co.jp', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -53,11 +79,14 @@ CREATE TABLE `append_items` (
   `name` varchar(40) NOT NULL DEFAULT '',
   `slug` varchar(30) NOT NULL DEFAULT '',
   `value_type` decimal(10,0) NOT NULL DEFAULT '0',
+  `item_type` varchar(255) DEFAULT NULL,
   `max_length` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `is_required` decimal(10,0) UNSIGNED NOT NULL DEFAULT '0',
   `mst_list_slug` varchar(40) DEFAULT NULL,
   `value_default` varchar(100) DEFAULT NULL,
-  `attention` varchar(100) DEFAULT NULL
+  `attention` varchar(100) DEFAULT NULL,
+  `after_field` varchar(255) DEFAULT NULL,
+  `edit_pos` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -85,8 +114,15 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `created`, `modified`, `page_config_id`, `parent_category_id`, `position`, `status`, `name`, `identifier`, `image`, `cate_color`) VALUES
-(1, '2023-03-03 00:08:58', '2023-03-03 00:08:58', 1, 0, 1, 'publish', 'カテゴリカテゴリカテゴリ', NULL, NULL, NULL),
-(2, '2023-03-03 00:48:36', '2023-03-03 00:48:36', 2, 0, 1, 'publish', 'column', NULL, NULL, NULL);
+(1, '2023-02-16 17:22:04', '2023-03-02 14:47:45', 1, 0, 1, 'publish', 'Đời Sống', NULL, NULL, 'gray'),
+(2, '2023-02-16 17:22:10', '2023-03-02 14:47:55', 1, 0, 2, 'publish', 'Giải Trí', NULL, NULL, 'gray'),
+(3, '2023-02-22 14:44:02', '2023-03-02 15:24:50', 1, 0, 3, 'publish', 'Học Tập & Làm Việc', NULL, NULL, 'gray'),
+(4, '2023-03-02 14:58:06', '2023-03-02 15:24:53', 1, 0, 4, 'publish', 'Kinh Nghiệm', NULL, NULL, 'gray'),
+(8, '2023-03-03 11:47:15', '2023-03-03 02:47:15', 2, 0, 1, 'publish', 'Phần mềm - IT', NULL, NULL, 'gray'),
+(9, '2023-03-03 11:53:28', '2023-03-03 11:53:56', 2, 0, 2, 'publish', 'Văn Phòng', NULL, NULL, 'gray'),
+(10, '2023-03-03 11:54:08', '2023-03-03 02:54:08', 2, 0, 3, 'publish', 'Nông Nghiệp', NULL, NULL, 'gray'),
+(11, '2023-03-03 11:54:56', '2023-03-03 02:54:56', 2, 0, 4, 'publish', 'Xưởng', NULL, NULL, 'gray'),
+(12, '2023-03-03 11:55:21', '2023-03-03 02:55:21', 2, 0, 5, 'publish', 'Nhà Hàng - Khách Sạn', NULL, NULL, 'gray');
 
 -- --------------------------------------------------------
 
@@ -100,14 +136,11 @@ CREATE TABLE `infos` (
   `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `page_config_id` int(10) UNSIGNED NOT NULL,
   `position` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `status` varchar(10) NOT NULL DEFAULT 'publish',
-  `title` varchar(255) NOT NULL,
+  `status` enum('publish','draft') NOT NULL DEFAULT 'publish',
+  `title` varchar(255) DEFAULT NULL,
   `notes` text,
   `start_datetime` datetime DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `start_time` decimal(10,0) NOT NULL DEFAULT '0',
-  `end_date` date DEFAULT NULL,
-  `end_time` decimal(10,0) NOT NULL DEFAULT '0',
+  `date` date DEFAULT NULL,
   `image` varchar(100) DEFAULT NULL,
   `file` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
@@ -121,18 +154,31 @@ CREATE TABLE `infos` (
   `multi_position` bigint(20) DEFAULT NULL,
   `parent_info_id` int(10) UNSIGNED DEFAULT NULL,
   `value_text` varchar(255) DEFAULT NULL,
-  `popular` tinyint(1) DEFAULT NULL,
-  `top_slide_display` tinyint(1) DEFAULT NULL
+  `popular` varchar(20) DEFAULT '',
+  `top_slide_display` tinyint(1) DEFAULT NULL,
+  `view` int(20) DEFAULT '1',
+  `job_type` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- テーブルのデータのダンプ `infos`
 --
 
-INSERT INTO `infos` (`id`, `created`, `modified`, `page_config_id`, `position`, `status`, `title`, `notes`, `start_datetime`, `start_date`, `start_time`, `end_date`, `end_time`, `image`, `file`, `file_name`, `file_size`, `file_extension`, `meta_description`, `meta_keywords`, `regist_user_id`, `category_id`, `index_type`, `multi_position`, `parent_info_id`, `value_text`, `popular`, `top_slide_display`) VALUES
-(1, '2023-03-03 00:11:34', '2023-03-03 00:53:50', 1, 1, 'publish', 'タイトルタイトルタイトルタイトル', NULL, '2023-03-03 00:00:00', NULL, '0', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, '', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '2023-03-03 00:49:20', '2023-03-03 00:59:07', 2, 2, 'publish', 'タイトル', 'タイトルタイトルタイトルタイトルタイトル\r\n\r\nタイトルタイトルタイトルタイトルタイトル', '2023-03-03 00:00:00', NULL, '0', NULL, '0', 'img_2_1f6513b2-1654-489c-9f08-be6455c12b28.jpeg', NULL, NULL, NULL, NULL, NULL, '', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, '2023-03-03 00:59:07', '2023-03-03 01:02:48', 2, 1, 'publish', 'aaaasddf', 'aa', '2023-03-03 00:00:00', NULL, '0', NULL, '0', 'img_4_9e654aff-8347-4915-817d-5ab885ae7acb.jpeg', NULL, NULL, NULL, NULL, NULL, '', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `infos` (`id`, `created`, `modified`, `page_config_id`, `position`, `status`, `title`, `notes`, `start_datetime`, `date`, `image`, `file`, `file_name`, `file_size`, `file_extension`, `meta_description`, `meta_keywords`, `regist_user_id`, `category_id`, `index_type`, `multi_position`, `parent_info_id`, `value_text`, `popular`, `top_slide_display`, `view`, `job_type`) VALUES
+(1, '2023-02-22 14:47:55', '2023-03-02 07:38:29', 1, 11, 'publish', '10 \'kỳ quan thiên nhiên\' đẹp nhất Việt Nam', 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.', '2023-02-22 14:55:00', '2023-02-22', 'img_1_d2a39cf0-689d-4e7a-a69b-ede3dad675e2.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, 'vuichoi', '1', 1, 1, NULL),
+(2, '2023-02-22 15:20:21', '2023-03-02 07:38:29', 1, 5, 'publish', 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách', 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.', '2023-02-22 15:20:00', '2023-02-22', 'img_2_3417db5d-37ae-44d8-bcf3-4a6febf93a04.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, 'hoctap', '1', 1, 1, NULL),
+(3, '2023-02-22 15:20:23', '2023-03-02 07:38:29', 1, 12, 'publish', 'Tất tần tật về việc lấy bằng lái xe ở Nhật | Phần 1: Thủ tục đổi bằng, lấy bằng lái xe máy 50cc, 125', 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đ', '2023-02-22 15:20:00', '2023-02-22', 'img_3_6dcc573c-214d-40b2-b537-290522803cc4.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, 'congviec', '1', 0, 1, NULL),
+(4, '2023-02-22 18:34:22', '2023-03-02 07:38:29', 1, 4, 'publish', 'Ba Bể có những dãy núi  đá vôi dựng đứng', 'một khung cảnh thiên nhiên kỳ thú với hơn 550 loài động thực vật quý hiếm. Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng chắc chắn sẽ cho bạn nhiều trải nghiệm đáng nhớ, sau đó hãy ng', '2023-02-22 18:33:00', '2023-02-22', 'img_4_a41470ff-00e8-42bf-aebd-495f40a2ffcb.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, 'hoctap', '2', 1, 1, NULL),
+(5, '2023-03-02 10:55:46', '2023-03-02 07:38:29', 1, 10, 'publish', 'Nhật Bản: Đề xuất bỏ luật cấm tái hôn trong vòng 100 sau khi li dị đối với phụ nữ', 'abc', '2023-03-02 10:55:00', '2023-03-02', 'img_5_572da160-51c8-49e3-bb73-0c1f6ce641e1.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, '', '0', 0, 1, NULL),
+(6, '2023-03-02 10:56:10', '2023-03-02 07:38:29', 1, 9, 'publish', 'Nhật Bản: Đề xuất bỏ luật cấm tái hôn trong vòng 100 sau khi li dị đối với phụ nữNhật Bản: Đề xuất b', 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.', '2023-03-02 10:55:00', '2023-03-02', 'img_6_6cca3d31-d7ad-4201-b4e7-c21324f63cb5.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, '', '0', 1, 1, NULL),
+(7, '2023-03-02 10:56:41', '2023-03-02 07:38:29', 1, 8, 'publish', 'Nhật Bản: Đề xuất bỏ luật cấm tái hôn trong vòng 100 sau khi li dị đối với phụ nữ', 'một khung cảnh thiên nhiên kỳ thú với hơn 550 loài động thực vật quý hiếm. Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng chắc chắn sẽ cho bạn nhiều trải nghiệm đáng nhớ, sau đó hãy ng', '2023-03-02 10:56:00', '2023-03-02', 'img_7_b4dcaf85-507e-4998-9999-1e4cabe1df01.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 3, NULL, NULL, NULL, '', '0', 0, 1, NULL),
+(8, '2023-03-02 15:15:27', '2023-03-02 16:39:49', 1, 7, 'publish', 'thực tập sinh kỹ năng nước ngoài', 'thực tập sinh kỹ năng nước ngoàithực tập sinh kỹ năng nước ngoàithực tập sinh kỹ năng nước ngoài', '2023-03-02 15:15:00', '2023-03-02', 'img_8_10b3d0ca-3329-458f-b03c-16445b60057d.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 2, NULL, NULL, NULL, '', '2', 0, 1, NULL),
+(9, '2023-03-02 15:15:47', '2023-03-02 07:38:29', 1, 6, 'publish', 'Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng', '233', '2023-03-02 15:15:00', '2023-03-02', 'img_9_f57dfa77-51cc-45e2-a716-c1b04506a9cb.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, '', '2', 0, 1, NULL),
+(10, '2023-03-02 15:57:50', '2023-03-02 07:38:29', 1, 3, 'publish', 'Theo quy định hiện hành, các yêu cầu về quyền làm cha hợp pháp của người chồng cũ và người chồng hiệ', 'Theo quy định hiện hành, các yêu cầu về quyền làm cha hợp pháp của người chồng cũ và người chồng hiện tại sẽ chồng chéo lên nhau nếu người phụ nữ tái hôn ngay sau khi ly hôn và sinh con trong khoảng t', '2023-03-02 15:56:00', '2023-03-02', 'img_10_e2e12bd0-f2a3-490f-a7bd-1632fa690661.png', NULL, NULL, NULL, NULL, NULL, '', NULL, 3, NULL, NULL, NULL, '', '2', 0, 1, NULL),
+(11, '2023-03-02 15:58:26', '2023-03-03 12:28:16', 1, 1, 'publish', '1111định hiện hành về quan hệ cha con hợp pháp đã được xem xét chủ yếu để ngăn chặn ngày càng nhiều ', 'Quy định hiện hành về quan hệ cha con hợp pháp đã được xem xét chủ yếu để ngăn chặn ngày càng nhiều trẻ em', '2023-03-03 13:00:00', '2023-03-02', 'img_11_6dbe8a37-fc03-435a-a6ce-484d9adfbfba.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 3, NULL, NULL, NULL, '', '0', 0, 1, NULL),
+(12, '2023-03-02 16:38:29', '2023-03-02 07:38:51', 1, 2, 'publish', 'doi song test', 'doi song test', '2023-03-02 16:38:00', '2023-03-02', 'img_12_14c03895-1007-43aa-afe9-2405d49e4b45.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 1, NULL, NULL, NULL, '', '0', 0, 1, NULL),
+(13, '2023-03-03 12:00:45', '2023-03-10 18:25:47', 2, 2, 'publish', 'PHP develop', 'PHP developPHP developPHP developPHP developPHP developPHP develop\r\nPHP develop\r\nPHP developPHP develop', '2023-03-03 13:00:00', '2023-03-03', 'img_13_bbb4216e-4255-40a1-adff-a09d242f4ad6.jpg', NULL, NULL, NULL, NULL, NULL, '', NULL, 8, NULL, NULL, NULL, NULL, '', NULL, 6, 0),
+(14, '2023-03-10 18:25:14', '2023-03-10 18:25:17', 2, 1, 'publish', 'van phong', 'daddad', '2023-03-10 18:24:00', NULL, 'img_14_11963f31-a6f3-4ae2-b8b7-e4882d67344c.jpeg', NULL, NULL, NULL, NULL, NULL, '', NULL, 9, NULL, NULL, NULL, NULL, '', NULL, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -191,8 +237,8 @@ CREATE TABLE `info_contents` (
   `h2` varchar(100) DEFAULT NULL,
   `content` text,
   `image` varchar(100) DEFAULT NULL,
-  `image_2` varchar(100) DEFAULT NULL,
-  `image_3` varchar(100) DEFAULT NULL,
+  `image2` varchar(200) DEFAULT NULL,
+  `img_alt` varchar(255) DEFAULT NULL,
   `image_pos` varchar(10) DEFAULT NULL,
   `file` varchar(100) DEFAULT NULL,
   `file_size` int(10) DEFAULT NULL,
@@ -210,28 +256,32 @@ CREATE TABLE `info_contents` (
 -- テーブルのデータのダンプ `info_contents`
 --
 
-INSERT INTO `info_contents` (`id`, `created`, `modified`, `info_id`, `block_type`, `position`, `title`, `h2`, `content`, `image`, `image_2`, `image_3`, `image_pos`, `file`, `file_size`, `file_name`, `file_extension`, `section_sequence_id`, `option_value`, `option_value2`, `option_value3`, `before_text`, `after_text`) VALUES
-(1, '2023-03-03 00:11:34', '2023-03-03 00:11:34', 1, '7', 1, NULL, '※横幅700以上を推奨。1200x1200以内に縮小されます。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(2, '2023-03-03 00:11:34', '2023-03-03 00:11:34', 1, '1', 2, '＜H3＞見出しが入ります。＜H3＞見出しが入ります。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(3, '2023-03-03 00:11:34', '2023-03-03 00:11:34', 1, '2', 3, NULL, NULL, '<p><strong>本文</strong></p><p><u>本文</u></p><p><s>本文</s></p><p><i>本文</i></p><p><span style=\"color:hsl(0, 75%, 60%);\">本文</span></p><p><span style=\"color:hsl(180, 75%, 60%);\">本文</span></p><ul><li>本文</li><li>本文</li></ul><p>&nbsp;</p><ol><li>本文</li><li>本文</li></ol><p class=\"text-right\">本文</p><p class=\"text-center\">本文本文</p><p>&nbsp;</p><figure class=\"table\"><table><tbody><tr><td>本文本文</td><td>本文本文</td><td>本文本文</td><td>本文本文</td></tr><tr><td>本文本文</td><td>本文本文</td><td>本文本文</td><td>本文本文</td></tr></tbody></table></figure><p>&nbsp;</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '', '', NULL, NULL, NULL),
-(4, '2023-03-03 00:11:34', '2023-03-03 00:11:36', 1, '3', 4, NULL, NULL, '', 'img_4_a1f4ec29-8168-4183-8961-c90f86a495c1.jpeg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL),
-(5, '2023-03-03 00:11:36', '2023-03-03 00:11:36', 1, '4', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e_f_5_8446eee7-6f11-4107-806a-cff862c3bfb0.pdf', 98045, '勤怠届原紙 勤怠届原紙 勤怠届原紙 勤怠届原紙 勤怠届原紙 勤怠届原紙 勤怠届原紙 ', 'pdf', 0, NULL, NULL, NULL, NULL, NULL),
-(6, '2023-03-03 00:11:36', '2023-03-03 00:11:36', 1, '8', 6, 'リンクボタン', NULL, 'https://shioya-iju.caters.jp/user_admin/infos/edit/29?sch_page_id=1&sch_category_id=0&pos=0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '_self', NULL, NULL, NULL),
-(7, '2023-03-03 00:11:36', '2023-03-03 00:11:36', 1, '9', 7, '', NULL, '', NULL, NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(8, '2023-03-03 00:11:36', '2023-03-03 00:11:36', 1, '15', 8, '', NULL, 'memo', NULL, NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, '', '', NULL, NULL),
-(9, '2023-03-03 00:53:24', '2023-03-03 00:56:53', 2, '7', 1, NULL, '※横幅700以上を推奨。1200x1200以内に縮小されます。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(10, '2023-03-03 00:53:24', '2023-03-03 00:56:53', 2, '1', 2, '＜H3＞見出しが入ります。＜H3＞見出しが入ります。', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(11, '2023-03-03 00:53:24', '2023-03-03 00:56:53', 2, '2', 3, NULL, NULL, '<p><strong>本文</strong></p><p><u>本文</u></p><p><s>本文</s></p><p><i>本文</i></p><p><span style=\"color:hsl(0,75%,60%);\">本文</span></p><p><span style=\"color:hsl(180,75%,60%);\">本文</span></p><ul><li>本文</li><li>本文</li></ul><p>&nbsp;</p><ol><li>本文</li><li>本文</li></ol><p class=\"text-right\">本文</p><p class=\"text-center\">本文本文</p><p>&nbsp;</p><figure class=\"table\"><table><tbody><tr><td>本文本文</td><td>本文本文</td><td>本文本文</td><td>本文本文</td></tr><tr><td>本文本文</td><td>本文本文</td><td>本文本文</td><td>本文本文</td></tr></tbody></table></figure><p>&nbsp;</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p><p>本文本文</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '', '', NULL, NULL, NULL),
-(12, '2023-03-03 00:53:24', '2023-03-03 00:56:53', 2, '3', 4, NULL, NULL, '', 'img_12_16b09297-802e-4346-88b4-b214b4194724.jpeg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '_self', NULL, NULL, NULL, NULL),
-(13, '2023-03-03 00:53:25', '2023-03-03 00:56:53', 2, '4', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e_f_13_9d5d27e5-1cbc-438c-82fb-7eb901b3cc07.xlsx', 5425, 'file_example_XLSX_10', 'xlsx', 0, NULL, NULL, NULL, NULL, NULL),
-(14, '2023-03-03 00:53:25', '2023-03-03 00:56:53', 2, '8', 6, 'リンクボタン', NULL, 'https://www.clapp.edu.kh/home', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '_self', NULL, NULL, NULL),
-(15, '2023-03-03 00:53:25', '2023-03-03 00:56:53', 2, '9', 7, '', NULL, '', 'img_15_af955beb-2cbf-4ba6-9631-b3bc1864e021.jpeg', NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, '', '', NULL, NULL),
-(16, '2023-03-03 00:53:26', '2023-03-03 00:56:53', 2, '15', 8, '', NULL, 'memo', NULL, NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, '', '', NULL, NULL),
-(17, '2023-03-03 00:53:26', '2023-03-03 00:56:53', 2, '16', 9, '', NULL, '※jpeg , jpg , gif , png ファイルのみ\r\n※横幅700以上を推奨。1200x1200以内に縮小されます。\r\n※ファイルサイズ5MB以内', 'img_17_bf828ac5-d43e-4cfd-9984-1b94554ceff7.jpeg', NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, '', 'left', NULL, NULL),
-(18, '2023-03-03 00:53:27', '2023-03-03 00:56:53', 2, '16', 10, '', NULL, '※jpeg , jpg , gif , png ファイルのみ\r\n※横幅700以上を推奨。1200x1200以内に縮小されます。\r\n※ファイルサイズ5MB以内', 'img_18_98574fa9-a992-4e64-909f-40064e8cadec.jpeg', NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, '', 'right', NULL, NULL),
-(19, '2023-03-03 00:53:27', '2023-03-03 00:56:53', 2, '17', 11, 'Ba Be', NULL, '※jpeg , jpg , gif , png ファイルのみ\r\n※横幅700以上を推奨。1200x1200以内に縮小されます。\r\n※ファイルサイズ5MB以内', 'img_19_8f1a93b5-67eb-4208-9dc1-7049194952bd.jpeg', NULL, NULL, '', NULL, 0, '', NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(20, '2023-03-03 00:53:27', '2023-03-03 00:56:53', 2, '19', 12, NULL, NULL, 'https://www.youtube.com/watch?v=qcwFrYFVhoA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '1', 'youtube', NULL, NULL),
-(21, '2023-03-03 00:59:07', '2023-03-03 00:59:07', 4, '19', 1, NULL, NULL, 'https://www.youtube.com/watch?v=qcwFrYFVhoA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '1', 'youtube', NULL, NULL);
+INSERT INTO `info_contents` (`id`, `created`, `modified`, `info_id`, `block_type`, `position`, `title`, `h2`, `content`, `image`, `image2`, `img_alt`, `image_pos`, `file`, `file_size`, `file_name`, `file_extension`, `section_sequence_id`, `option_value`, `option_value2`, `option_value3`, `before_text`, `after_text`) VALUES
+(1, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '2', 2, NULL, NULL, '<p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.</p><p><strong>rải nghiệm thiên nhiên</strong></p><p><u>rải nghiệm thiên nhiên</u></p><p><s>rải nghiệm thiên nhiên</s></p><p><i>rải nghiệm thiên nhiên</i></p><p><span style=\"color:hsl(30,75%,60%);\">rải nghiệm thiên nhiên</span></p><p><span style=\"color:hsl(210,75%,60%);\">rải nghiệm thiên nhiên</span></p><p><a href=\"https://github.com/\">rải nghiệm thiên nhiên</a></p><ul><li>rải nghiệm thiên nhiên</li><li>rải nghiệm thiên nhiên</li></ul><p>&nbsp;</p><ol style=\"list-style-type:decimal;\"><li>rải nghiệm thiên nhiên</li><li>rải nghiệm thiên nhiên</li></ol>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(2, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '7', 3, NULL, 'Vườn quốc gia Ba Bể', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(3, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '2', 4, NULL, NULL, '<p><span style=\"color:rgb(17,17,17);\">Ba Bể có những dãy núi đá vôi dựng đứng, nhiều thung lũng lớn và rừng cây xanh rì bao bọc là điểm đến lý tưởng cho du khách mê phiêu lưu, khám phá. Các thác nước, hang động, hồ ở đây tạo nên một khung cảnh thiên nhiên kỳ thú với hơn 550 loài động thực vật quý hiếm. Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng chắc chắn sẽ cho bạn nhiều trải nghiệm đáng nhớ, sau đó hãy nghỉ ngơi, nạp năng lượng ở những căn homestay, nhà nghỉ trong các bản Tày địa phương.</span></p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(4, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '3', 5, NULL, NULL, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, odit?', 'img_4_2f763102-bf80-4793-808b-556b5a5f703e.jpg', NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', '', NULL, NULL, NULL),
+(5, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '7', 6, NULL, 'Thác Bản Giốc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(6, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '2', 7, NULL, NULL, '<p><span style=\"color:rgb(17,17,17);\">Bản Giốc là một trong những thác nước đẹp và nổi tiếng nhất Việt Nam và hình ảnh của thắng cảnh này xuất hiện ở vô số các nhà nghỉ, trọ cho du khách. Dòng nước từ Quây Sơn đổ xuống tạo nên thác Bản Giốc đánh dấu hai bờ biên giới Việt Nam và Trung Quốc với khung cảnh ấn tượng. Du khách có thể tham quan thác bằng bè tre, đi sát gần thác để cảm nhận những dòng nước đổ ầm ào tạo bọt tung trắng xóa.</span></p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(7, '2023-02-22 14:47:55', '2023-02-28 10:10:25', 1, '3', 8, NULL, NULL, 'Vườn quốc gia Phong Nha Kẻ Bàng', 'img_7_9becfd89-b9d2-426f-b535-827f1de24a0f.jpeg', NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', '', NULL, NULL, NULL),
+(9, '2023-02-22 14:47:56', '2023-02-28 10:10:25', 1, '18', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(10, '2023-02-22 15:46:29', '2023-03-02 15:19:13', 3, '3', 1, NULL, NULL, '', 'img_10_ec3ce434-3af8-4b02-8e9c-38563290bbc9.jpg', NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', '_self', NULL, NULL, NULL),
+(11, '2023-02-22 15:58:41', '2023-03-02 15:56:34', 2, '7', 1, NULL, 'Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(12, '2023-02-22 15:58:41', '2023-03-02 15:56:34', 2, '3', 2, NULL, NULL, '', 'img_12_452a1345-dd75-4274-8f2d-4f10f0505ad1.jpeg', NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', '', NULL, NULL, NULL),
+(13, '2023-02-22 15:58:42', '2023-03-02 15:56:34', 2, '2', 3, NULL, NULL, '<p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p><p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du kháchWebsite du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(14, '2023-02-22 15:58:42', '2023-03-02 15:56:34', 2, '3', 4, NULL, NULL, '', 'img_14_c428bb58-0994-45af-b31c-fef108f774b2.jpg', NULL, '', NULL, NULL, NULL, NULL, NULL, 0, '_self', '', NULL, NULL, NULL),
+(16, '2023-02-22 16:21:29', '2023-02-28 10:10:25', 1, '1', 11, 'Vườn quốc gia Phong Nha Kẻ Bàng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(17, '2023-02-22 16:21:29', '2023-02-28 10:10:25', 1, '7', 9, NULL, 'Vườn quốc gia Phong Nha Kẻ Bàng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(21, '2023-02-22 17:30:00', '2023-03-02 15:19:13', 3, '8', 2, 'test link button', NULL, 'https://www.youtube.com/channel/UCwnSfrWJqhkyxJR3Cp38MMg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '_blank', NULL, NULL, NULL),
+(22, '2023-02-22 17:30:00', '2023-03-02 15:19:13', 3, '9', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(23, '2023-02-22 17:30:00', '2023-03-02 15:19:13', 3, '2', 4, NULL, NULL, '<p>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách những trải nghiệm thiên nhiên thú vị nhất.</p><p><strong>rải nghiệm thiên nhiên</strong></p><p><u>rải nghiệm thiên nhiên</u></p><p><s>rải nghiệm thiên nhiên</s></p><p><i>rải nghiệm thiên nhiên</i></p><p><span style=\"color:hsl(30,75%,60%);\">rải nghiệm thiên nhiên</span></p><p><span style=\"color:hsl(210,75%,60%);\">rải nghiệm thiên nhiên</span></p><p><a href=\"https://github.com/\">rải nghiệm thiên nhiên</a></p><ul><li>rải nghiệm thiên nhiên</li><li>rải nghiệm thiên nhiên</li></ul><p>&nbsp;</p><ol style=\"list-style-type:decimal;\"><li>rải nghiệm thiên nhiên</li><li>rải nghiệm thiên nhiên</li></ol>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(24, '2023-02-22 17:30:00', '2023-03-02 15:19:13', 3, '4', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e_f_24_cfe5c4d9-86e3-4bee-b026-117a5e7d6446.doc', 100352, 'file-sample_100kB', 'doc', 0, NULL, NULL, NULL, NULL, NULL),
+(25, '2023-02-22 17:47:32', '2023-03-02 15:19:13', 3, '4', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e_f_25_3aff0c9f-9ed5-4004-b41f-dc28d227ec16.pdf', 3028, '<script>alert(111)<:script>', 'pdf', 0, NULL, NULL, NULL, NULL, NULL),
+(26, '2023-02-22 17:47:32', '2023-03-02 15:19:13', 3, '4', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e_f_26_29afb187-e1dc-4b07-a416-fc772a4e7257.xlsx', 5425, 'file_example_XLSX_10', 'xlsx', 0, NULL, NULL, NULL, NULL, NULL),
+(27, '2023-02-22 17:57:40', '2023-02-28 10:10:25', 1, '19', 12, NULL, NULL, 'https://www.youtube.com/watch?v=vC4dLeqnvAw', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '1', 'youtube', NULL, NULL),
+(29, '2023-02-22 18:34:22', '2023-03-02 09:59:10', 4, '20', 1, 'Ba Bể có gì ?', NULL, 'Ba Bể có những dãy núi\r\n đá vôi dựng đứng, nhiều thung lũng lớn và rừng cây xanh rì bao bọc là điểm đến lý tưởng cho du khách mê phiêu lưu, khám phá. Các thác nước, hang động, hồ ở \r\nđây tạo nên một khung cảnh thiên nhiên kỳ thú với hơn 550 loài động thực vật quý hiếm. Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng chắc chắn sẽ cho bạn nhiều trải nghiệm đáng nhớ, sau đó hãy nghỉ ngơi, nạp năng lượng ở những căn homestay, nhà nghỉ trong các bản Tày địa phương.', 'img_29_f176086d-755d-46b5-a586-5348ede49f88.jpg', 'img_29_94249d6e-1925-4258-af4e-b0e53dd60e90.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(30, '2023-02-22 18:55:26', '2023-03-02 09:59:10', 4, '20', 2, 'Ba Bể có gì ?', NULL, 'Ba Bể có những dãy núi\r\n đá vôi dựng đứng, nhiều thung lũng lớn và rừng cây xanh rì bao bọc là điểm đến lý tưởng cho du khách mê phiêu lưu, khám phá. Các thác nước, hang động, hồ ở \r\nđây tạo nên một khung cảnh thiên nhiên kỳ thú với hơn 550 loài động thực vật quý hiếm. Khám phá Ba Bể bằng thuyền hay trekking hoặc đạp xe xuyên rừng chắc chắn sẽ cho bạn nhiều trải nghiệm đáng nhớ, sau đó hãy nghỉ ngơi, nạp năng lượng ở những căn homestay, nhà nghỉ trong các bản Tày địa phương.Ba Bể có những dãy núi\r\n', 'img_30_9086f7ea-09d9-482d-b1e5-bc50e2f4f1c8.jpeg', 'img_30_13e52395-9618-40af-a25c-43cc774568ac.jpeg', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(31, '2023-02-28 10:09:44', '2023-02-28 10:10:25', 1, '20', 1, 'Ba Be', NULL, 'Bản Giốc là một trong những\r\n thác nước đẹp và nổi tiếng nhất Việt Nam và hình ảnh của thắng cảnh này xuất hiện ở vô số các nhà nghỉ, trọ cho du khách. Dòng nước từ Quây Sơn đổ xuống tạo nên thác Bản Giốc đánh dấu hai bờ biên giới Việt Nam và Trung Quốc với khung cảnh ấn tượng. Du khách có thể tham quan thác bằng bè tre, đi sát gần thác để cảm nhận những dòng nước đổ ầm ào tạo bọt tung trắng xóa.', 'img_31_df9dd5d7-60bf-4bc2-b5d9-738c129c3318.jpg', 'img_31_e0892b54-6854-42f4-b16c-f95fb416e083.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -318,6 +368,28 @@ CREATE TABLE `mst_lists` (
 -- --------------------------------------------------------
 
 --
+-- テーブルの構造 `multi_images`
+--
+
+CREATE TABLE `multi_images` (
+  `id` int(11) NOT NULL,
+  `info_content_id` int(11) NOT NULL,
+  `image` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- テーブルのデータのダンプ `multi_images`
+--
+
+INSERT INTO `multi_images` (`id`, `info_content_id`, `image`) VALUES
+(6, 9, 'img_6_22afc223-f087-4aa8-a9ef-9b262f496fcb.jpeg'),
+(7, 9, 'img_7_5434a62d-814b-4786-b20c-acf87671fa5a.jpg'),
+(8, 9, 'img_8_2bd08a9a-b489-4e11-9980-28a25fb4da19.jpg'),
+(11, 9, 'img_11_f3af2a25-ceff-417f-8447-37e063e6d048.jpeg');
+
+-- --------------------------------------------------------
+
+--
 -- テーブルの構造 `page_configs`
 --
 
@@ -356,8 +428,8 @@ CREATE TABLE `page_configs` (
 --
 
 INSERT INTO `page_configs` (`id`, `created`, `modified`, `site_config_id`, `position`, `page_title`, `slug`, `header`, `footer`, `is_public_date`, `is_public_time`, `page_template_id`, `description`, `keywords`, `is_category`, `is_category_sort`, `is_category_multiple`, `is_category_multilevel`, `modified_category_role`, `max_multilevel`, `disable_position_order`, `disable_preview`, `is_auto_menu`, `list_style`, `root_dir_type`, `link_color`, `parent_config_id`) VALUES
-(1, '2023-02-02 06:46:26', '2023-02-02 15:57:37', 1, 1, 'お知らせ', 'news', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 1, 0, '0', '0', '1', '1', '0', '#000000', 0),
-(2, '2023-02-03 05:42:59', '2023-02-03 05:42:59', 1, 2, 'コラム', 'column', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 0, 0, '0', '0', '1', '1', '0', '#000000', 0);
+(1, '2023-02-16 17:09:31', '2023-03-02 15:56:18', 1, 1, 'お知らせ', 'news', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 1, 0, '0', '0', '1', '1', '0', '#000000', 0),
+(2, '2023-03-03 11:12:45', '2023-03-03 18:57:41', 1, 2, 'JOBS', 'jobs', NULL, NULL, NULL, NULL, NULL, '', '', 'Y', 'N', '0', '0', 1, 0, '0', '0', '1', '1', '0', '#000000', 0);
 
 -- --------------------------------------------------------
 
@@ -397,44 +469,50 @@ CREATE TABLE `page_config_items` (
   `title` varchar(30) DEFAULT NULL,
   `sub_title` varchar(30) DEFAULT NULL,
   `editable_role` varchar(100) NOT NULL DEFAULT 'staff',
-  `viewable_role` varchar(100) NOT NULL DEFAULT 'staff'
+  `viewable_role` varchar(100) NOT NULL DEFAULT 'staff',
+  `item_type` varchar(255) DEFAULT NULL,
+  `is_required` tinyint(1) NOT NULL DEFAULT '0',
+  `max_length` int(255) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- テーブルのデータのダンプ `page_config_items`
 --
 
-INSERT INTO `page_config_items` (`id`, `created`, `modified`, `page_config_id`, `position`, `parts_type`, `item_key`, `status`, `memo`, `title`, `sub_title`, `editable_role`, `viewable_role`) VALUES
-(16, '2023-02-02 06:47:17', '2023-02-02 17:15:36', 1, 1, 'main', 'title', 'Y', '', '', '', 'staff', 'staff'),
-(17, '2023-02-02 08:19:03', '2023-02-02 08:19:03', 1, 2, 'main', 'category', 'Y', '', '', '', 'staff', 'staff'),
-(18, '2023-02-02 08:32:40', '2023-02-02 08:32:40', 1, 3, 'block', 'all', 'Y', '', '', '', 'staff', 'staff'),
-(19, '2023-02-02 08:32:53', '2023-02-02 08:32:53', 1, 4, 'block', 'image', 'Y', '', '', '', 'staff', 'staff'),
-(20, '2023-02-02 08:33:04', '2023-02-02 08:33:04', 1, 5, 'block', 'content', 'Y', '', '', '', 'staff', 'staff'),
-(21, '2023-02-02 08:34:07', '2023-02-02 08:34:07', 1, 6, 'block', 'line', 'Y', '', '', '', 'staff', 'staff'),
-(22, '2023-02-02 08:34:19', '2023-02-02 08:34:19', 1, 7, 'block', 'file', 'Y', '', '', '', 'staff', 'staff'),
-(23, '2023-02-02 08:34:41', '2023-02-02 08:34:44', 1, 8, 'block', 'button', 'Y', '', '', '', 'staff', 'staff'),
-(24, '2023-02-02 08:36:13', '2023-02-02 08:37:41', 1, 9, 'block', 'title', 'Y', '', '小見出し（H3）', '', 'staff', 'staff'),
-(25, '2023-02-02 08:36:36', '2023-02-02 08:37:47', 1, 10, 'block', 'h2', 'Y', '', '大見出し（H2）', '', 'staff', 'staff'),
-(26, '2023-02-03 00:34:19', '2023-02-03 00:34:20', 1, 11, 'block', 'memo', 'Y', '', 'メモ', '', 'staff', 'staff'),
-(27, '2023-02-03 05:46:14', '2023-02-03 05:46:14', 2, 12, 'main', 'title', 'Y', '', '', '', 'staff', 'staff'),
-(28, '2023-02-03 05:46:32', '2023-02-03 05:46:32', 2, 13, 'main', 'image', 'Y', '', '', '', 'staff', 'staff'),
-(29, '2023-02-03 05:46:40', '2023-02-03 05:47:06', 2, 14, 'main', 'notes', 'Y', '', '', '', 'staff', 'staff'),
-(30, '2023-02-03 05:47:40', '2023-02-03 05:47:40', 2, 15, 'main', 'category', 'Y', '', '', '', 'staff', 'staff'),
-(31, '2023-02-03 05:47:59', '2023-02-03 05:47:59', 2, 16, 'block', 'all', 'Y', '', '', '', 'staff', 'staff'),
-(32, '2023-02-03 05:49:26', '2023-02-03 05:49:38', 2, 17, 'block', 'h2', 'Y', '', '', '', 'staff', 'staff'),
-(33, '2023-02-03 05:49:33', '2023-02-03 05:57:01', 2, 18, 'block', 'title', 'Y', '', '', '', 'staff', 'staff'),
-(34, '2023-02-03 05:57:31', '2023-02-03 05:57:31', 2, 19, 'block', 'content', 'Y', '', '', '', 'staff', 'staff'),
-(35, '2023-02-03 05:57:40', '2023-02-03 05:57:40', 2, 20, 'block', 'memo', 'Y', '', '', '', 'staff', 'staff'),
-(36, '2023-02-03 05:58:41', '2023-02-03 05:58:41', 2, 21, 'block', 'with_image', 'Y', '', '', '', 'staff', 'staff'),
-(37, '2023-02-03 05:59:03', '2023-02-03 05:59:03', 2, 22, 'section', 'all', 'Y', '', '', '', 'staff', 'staff'),
-(38, '2023-02-03 05:59:23', '2023-02-03 05:59:37', 2, 23, 'section', 'section', 'Y', '', '', '', 'staff', 'staff'),
-(39, '2023-02-03 06:00:10', '2023-02-03 06:00:10', 2, 24, 'block', 'button', 'Y', '', '', '', 'staff', 'staff'),
-(40, '2023-02-03 06:00:28', '2023-02-03 06:00:28', 2, 25, 'block', 'line', 'Y', '', '', '', 'staff', 'staff'),
-(41, '2023-02-03 06:00:36', '2023-02-03 06:00:36', 2, 26, 'block', 'file', 'Y', '', '', '', 'staff', 'staff'),
-(42, '2023-02-03 06:01:39', '2023-02-03 06:03:09', 2, 27, 'block', 'kaiwa', 'Y', '', '会話', '', 'staff', 'staff'),
-(43, '2023-02-03 06:02:57', '2023-02-03 06:02:57', 2, 28, 'block', 'user_intro', 'Y', '', 'ユーザ紹介', '', 'staff', 'staff'),
-(44, '2023-02-03 07:51:39', '2023-02-03 07:51:39', 2, 29, 'block', 'image', 'Y', '', '', '', 'staff', 'staff'),
-(45, '2023-03-03 00:50:17', '2023-03-03 00:50:17', 2, 19, 'block', 'VIDEO', 'Y', '', '', '', 'staff', 'staff');
+INSERT INTO `page_config_items` (`id`, `created`, `modified`, `page_config_id`, `position`, `parts_type`, `item_key`, `status`, `memo`, `title`, `sub_title`, `editable_role`, `viewable_role`, `item_type`, `is_required`, `max_length`) VALUES
+(1, '2023-02-16 17:10:12', '2023-03-03 03:11:51', 1, 3, 'main', 'title', 'Y', NULL, 'タイトル', '', 'staff', 'staff', 'text', 1, 100),
+(2, '2023-02-16 17:10:32', '2023-03-03 03:11:51', 1, 4, 'main', 'category_id', 'Y', NULL, 'カテゴリー', '', 'staff', 'staff', 'select', 1, 0),
+(3, '2023-02-16 17:11:18', '2023-03-03 03:11:51', 1, 8, 'block', 'image', 'Y', NULL, '画像', '', 'staff', 'staff', '3', 0, 0),
+(4, '2023-02-16 17:12:02', '2023-03-03 03:11:51', 1, 7, 'block', 'content', 'Y', NULL, '概要', '', 'staff', 'staff', '2', 0, 3000),
+(5, '2023-02-16 17:13:06', '2023-03-03 03:11:51', 1, 11, 'block', 'title', 'Y', NULL, '区切り線', '', 'staff', 'staff', '9', 0, 0),
+(6, '2023-02-16 17:13:31', '2023-03-03 03:11:51', 1, 9, 'block', 'file', 'Y', NULL, 'ファイル添付', '', 'staff', 'staff', '4', 0, 0),
+(7, '2023-02-16 17:14:38', '2023-03-03 03:11:51', 1, 10, 'block', 'option_value2', 'Y', NULL, 'ボタン', '', 'staff', 'staff', '8', 0, 40),
+(8, '2023-02-16 17:15:37', '2023-03-03 03:11:51', 1, 6, 'block', 'title', 'Y', NULL, '小見出し', '', 'staff', 'staff', '1', 0, 100),
+(9, '2023-02-16 17:16:09', '2023-03-03 03:11:51', 1, 5, 'block', 'h2', 'Y', NULL, 'H3', '', 'staff', 'staff', '7', 0, 100),
+(10, '2023-02-16 17:16:44', '2023-03-03 03:11:51', 1, 12, 'block', 'content', 'Y', NULL, 'メモ', '', 'staff', 'staff', '15', 0, 500),
+(11, '2023-02-16 17:44:21', '2023-03-03 11:15:15', 2, 1, 'main', 'title', 'Y', NULL, 'タイトル', '', 'staff', 'staff', 'text', 1, 100),
+(12, '2023-02-16 17:44:57', '2023-03-03 11:15:33', 2, 2, 'main', 'category_id', 'Y', NULL, ' カテゴリ', '', 'staff', 'staff', 'select', 1, 0),
+(13, '2023-02-16 17:45:36', '2023-03-03 11:15:37', 2, 3, 'main', 'notes', 'Y', NULL, '概要', '', 'staff', 'staff', 'textarea', 0, 500),
+(14, '2023-02-16 17:45:53', '2023-03-03 11:15:39', 2, 4, 'main', 'image', 'Y', NULL, '画像', '', 'staff', 'staff', 'image', 1, 0),
+(15, '2023-02-16 17:46:28', '2023-03-03 11:16:05', 2, 5, 'block', 'h2', 'Y', NULL, '大見出し', '', 'staff', 'staff', '7', 0, 100),
+(16, '2023-02-16 17:46:55', '2023-03-03 11:16:09', 2, 6, 'block', 'title', 'Y', NULL, '中見出し', '', 'staff', 'staff', '1', 0, 100),
+(17, '2023-02-16 17:47:30', '2023-03-03 11:16:13', 2, 7, 'block', 'content', 'Y', NULL, '本文', '', 'staff', 'staff', '2', 0, 1000),
+(18, '2023-02-16 17:48:06', '2023-03-03 11:16:25', 2, 8, 'block', 'image', 'Y', NULL, '画像', '', 'staff', 'staff', '3', 0, 0),
+(19, '2023-02-16 17:48:31', '2023-03-03 11:16:30', 2, 9, 'block', 'file', 'Y', NULL, 'ファイル添付', '', 'staff', 'staff', '4', 0, 0),
+(20, '2023-02-16 17:48:51', '2023-03-03 11:16:35', 2, 10, 'block', 'title', 'Y', NULL, '区切り線', '', 'staff', 'staff', '9', 0, 0),
+(21, '2023-02-16 17:49:25', '2023-03-03 11:14:42', 2, 11, 'block', 'image', 'N', NULL, '画像回り込み用', '', 'staff', 'staff', '11', 0, 0),
+(22, '2023-02-16 17:49:54', '2023-03-03 11:16:38', 2, 12, 'block', 'option_value2', 'Y', NULL, 'ボタン', '', 'staff', 'staff', '8', 0, 40),
+(23, '2023-02-16 17:50:38', '2023-03-03 11:14:00', 2, 13, 'block', 'content', 'N', NULL, '会話', '', 'staff', 'staff', '16', 0, 500),
+(24, '2023-02-16 17:51:10', '2023-03-03 11:14:03', 2, 14, 'block', 'content', 'N', NULL, 'ユーザー紹介', '', 'staff', 'staff', '17', 0, 500),
+(25, '2023-02-16 17:51:29', '2023-03-03 11:14:08', 2, 15, 'block', 'content', 'N', NULL, 'メモ', '', 'staff', 'staff', '15', 0, 500),
+(26, '2023-02-16 17:51:38', '2023-03-03 11:13:30', 2, 16, 'section', NULL, 'N', NULL, '', '', 'staff', 'staff', '10', 0, 0),
+(28, '2023-02-20 15:54:44', '2023-03-03 03:11:51', 1, 13, 'block', 'image', 'Y', NULL, '複数画像', '', 'staff', 'staff', '18', 0, 0),
+(29, '2023-02-22 14:44:48', '2023-03-03 03:11:51', 1, 14, 'main', 'image', 'Y', NULL, '', '', 'staff', 'staff', 'image', 1, 0),
+(31, '2023-02-22 14:58:19', '2023-03-03 03:11:51', 1, 15, 'main', 'notes', 'Y', NULL, 'Content', '', 'staff', 'staff', 'text', 1, 200),
+(36, '2023-02-22 18:12:26', '2023-03-03 03:11:51', 1, 16, 'block', 'option_value', 'Y', NULL, '', '', 'staff', 'staff', '20', 0, 0),
+(37, '2023-02-24 11:51:59', '2023-03-03 03:11:51', 1, 2, 'main', 'popular', 'Y', NULL, 'News Type', '', 'staff', 'staff', 'radio', 0, 0),
+(38, '2023-02-24 16:50:35', '2023-03-03 03:11:51', 1, 17, 'main', 'value_text', 'Y', NULL, 'Tags', '', 'staff', 'staff', 'text', 0, 100),
+(40, '2023-02-24 18:47:10', '2023-03-03 03:11:51', 1, 1, 'main', 'top_slide_display', 'Y', NULL, 'Top Slide', '', 'staff', 'staff', 'checkbox', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -478,6 +556,22 @@ CREATE TABLE `section_sequences` (
   `info_content_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- テーブルのデータのダンプ `section_sequences`
+--
+
+INSERT INTO `section_sequences` (`id`, `created`, `modified`, `info_content_id`) VALUES
+(1, '2023-02-15 10:43:00', '2023-02-15 10:43:00', 0),
+(2, '2023-02-15 10:43:11', '2023-02-15 10:43:11', 0),
+(3, '2023-02-15 10:48:04', '2023-02-15 10:48:04', 0),
+(4, '2023-02-15 10:56:05', '2023-02-15 10:56:05', 0),
+(5, '2023-02-15 11:08:24', '2023-02-15 11:08:45', 16),
+(6, '2023-02-15 11:10:52', '2023-02-15 11:10:52', 0),
+(7, '2023-02-15 11:13:57', '2023-02-15 11:13:57', 0),
+(8, '2023-02-15 11:34:24', '2023-02-15 11:34:24', 0),
+(9, '2023-02-16 18:01:21', '2023-02-16 18:02:38', 25),
+(10, '2023-02-22 09:01:25', '2023-02-22 10:01:32', 38);
+
 -- --------------------------------------------------------
 
 --
@@ -500,7 +594,7 @@ CREATE TABLE `site_configs` (
 --
 
 INSERT INTO `site_configs` (`id`, `created`, `modified`, `position`, `status`, `site_name`, `slug`, `is_root`) VALUES
-(1, '2022-12-08 18:30:49', '2022-12-08 18:30:49', 1, 'publish', '【プロポ】塩谷町移住定住促進サイト', '', '1');
+(1, '2022-12-08 18:30:49', '2023-02-22 12:29:23', 1, 'publish', 'daily', '', '1');
 
 -- --------------------------------------------------------
 
@@ -516,23 +610,6 @@ CREATE TABLE `tags` (
   `status` varchar(10) NOT NULL DEFAULT 'publish',
   `position` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `page_config_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- テーブルの構造 `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `name` varchar(40) DEFAULT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `status` enum('publish','draft') NOT NULL DEFAULT 'publish',
-  `temp_password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -587,9 +664,42 @@ INSERT INTO `useradmin_sites` (`id`, `created`, `modified`, `useradmin_id`, `sit
 (1, '2022-12-08 18:30:57', '2022-12-08 18:30:57', 1, 1),
 (2, '2022-12-08 18:30:57', '2022-12-08 18:30:57', 2, 1);
 
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `profile_name` varchar(100) NOT NULL,
+  `dob` date NOT NULL,
+  `phone_number` bigint(20) NOT NULL,
+  `location` varchar(200) NOT NULL,
+  `user_picture` varchar(200) NOT NULL,
+  `profile_view` bigint(20) NOT NULL,
+  `facebook_id` bigint(11) NOT NULL,
+  `facebook_status` tinyint(4) NOT NULL,
+  `login_status` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `activation_link` varchar(200) NOT NULL,
+  `password_link` varchar(200) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- ダンプしたテーブルのインデックス
 --
+
+--
+-- テーブルのインデックス `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- テーブルのインデックス `admins`
@@ -667,6 +777,12 @@ ALTER TABLE `mst_lists`
   ADD KEY `sys_cd_2` (`sys_cd`,`slug`);
 
 --
+-- テーブルのインデックス `multi_images`
+--
+ALTER TABLE `multi_images`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- テーブルのインデックス `page_configs`
 --
 ALTER TABLE `page_configs`
@@ -716,12 +832,6 @@ ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`);
 
 --
--- テーブルのインデックス `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
---
 -- テーブルのインデックス `useradmins`
 --
 ALTER TABLE `useradmins`
@@ -734,8 +844,20 @@ ALTER TABLE `useradmin_sites`
   ADD PRIMARY KEY (`id`);
 
 --
+-- テーブルのインデックス `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
+
+--
+-- テーブルの AUTO_INCREMENT `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- テーブルの AUTO_INCREMENT `admins`
@@ -753,13 +875,13 @@ ALTER TABLE `append_items`
 -- テーブルの AUTO_INCREMENT `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- テーブルの AUTO_INCREMENT `infos`
 --
 ALTER TABLE `infos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- テーブルの AUTO_INCREMENT `info_append_items`
@@ -777,7 +899,7 @@ ALTER TABLE `info_categories`
 -- テーブルの AUTO_INCREMENT `info_contents`
 --
 ALTER TABLE `info_contents`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- テーブルの AUTO_INCREMENT `info_stock_tables`
@@ -810,6 +932,12 @@ ALTER TABLE `mst_lists`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- テーブルの AUTO_INCREMENT `multi_images`
+--
+ALTER TABLE `multi_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- テーブルの AUTO_INCREMENT `page_configs`
 --
 ALTER TABLE `page_configs`
@@ -825,7 +953,7 @@ ALTER TABLE `page_config_extensions`
 -- テーブルの AUTO_INCREMENT `page_config_items`
 --
 ALTER TABLE `page_config_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- テーブルの AUTO_INCREMENT `schedules`
@@ -837,7 +965,7 @@ ALTER TABLE `schedules`
 -- テーブルの AUTO_INCREMENT `section_sequences`
 --
 ALTER TABLE `section_sequences`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- テーブルの AUTO_INCREMENT `site_configs`
@@ -852,12 +980,6 @@ ALTER TABLE `tags`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- テーブルの AUTO_INCREMENT `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- テーブルの AUTO_INCREMENT `useradmins`
 --
 ALTER TABLE `useradmins`
@@ -868,4 +990,10 @@ ALTER TABLE `useradmins`
 --
 ALTER TABLE `useradmin_sites`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- テーブルの AUTO_INCREMENT `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;

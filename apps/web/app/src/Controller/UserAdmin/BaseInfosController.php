@@ -767,6 +767,8 @@ class BaseInfosController extends AppController
     {
 
         $list = [];
+        $list = ['prefecture_list' => $this->getPrefectureList()];
+
         $list['_main'] = $this->PageConfigItems
             ->find('all')
             ->where([

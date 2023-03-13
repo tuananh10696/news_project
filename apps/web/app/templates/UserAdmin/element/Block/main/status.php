@@ -39,4 +39,13 @@
                 ]); ?>
         </div>
     </div>
+    <div class="form-group row">
+
+        <label for="" class="col-12 col-md-3 col-form-label control_title">
+            &nbsp;Address <span class="attent">※必須</span> </label>
+
+        <div class="col-12 col-md-9 control_value">
+            <?= $this->Form->input("job_address", ['type' => 'select', 'options' => $prefecture_list]); ?>
+        </div>
+    </div>
 <?php endif; ?>

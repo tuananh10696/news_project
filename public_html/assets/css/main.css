@@ -67,7 +67,7 @@ h6 {
 
 .store-sort {
   display: inline-block;
-  padding-bottom: 14px;
+  padding-bottom: 30px;
 }
 
 .store-sort label {
@@ -83,7 +83,10 @@ h6 {
   background: #FFF;
   border: 1px solid #ECE8DD;
   height: 40px;
+  width: 102px;
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
+
 /*--------------------------------------------------------------
 # Sections & Section Header
 --------------------------------------------------------------*/
@@ -631,7 +634,7 @@ div.author {
   font-family: var(--font-secondary);
   color: rgba(var(--color-black-rgb), 0.4);
   margin-bottom: 5px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .post-entry-2 .author {
@@ -932,7 +935,7 @@ div.author {
   padding-left: 0;
   padding-right: 0;
   margin-right: 40px;
-  
+
 }
 
 .nav-item .cate button.active {

@@ -133,6 +133,5 @@
 </main><!-- End #main -->
 
 <?php $this->start('script') ?>
-<script src="/user/common/js/jquery.js"></script>
 <script src="/user/common/js/render-news.js"></script>
 <?php $this->end('script') ?>

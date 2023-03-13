@@ -40,7 +40,6 @@
 					<div class="social-login">
 						<span class="social-label">Or login with</span>
 						<ul class="socials">
-							<a onclick="_login();" class="btn btn-inverse large">Sign into your FaceBook<a>
 
 									<li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
 									<li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>

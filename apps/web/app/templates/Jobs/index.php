@@ -1,6 +1,7 @@
 <?php
 
 use Cake\Utility\Hash;
+
 ?>
 
 <main id="main">
@@ -9,14 +10,22 @@ use Cake\Utility\Hash;
 		<div class="container">
 			<div class="row">
 				<div class="col-md-9">
+
 					<div class="store-sort">
-						<?php $category = Hash::combine($category, '{n}.id', '{n}.name'); ?>
+						<?php $category = Hash::combine($category, '{n}.id', '{n}.name');
+						$peple_job_type = ['Tìm người', 'Tìm việc']
+						?>
+						<?= $this->Form->create(null, ['type' => 'GET', 'name' => 'search_job_form']) ?>
 						<label>
-							<?= $this->Form->input('prefectures', ['empty' => 'Chọn Công Việc', 'type' => 'select', 'options' => $category, 'class' => 'input-select']) ?>
+							<?= $this->Form->input('peple_job_type', ['value' => $search_type_job, 'type' => 'select', 'options' => $peple_job_type, 'class' => 'input-select']) ?>
 						</label>
 						<label>
-							<?= $this->Form->input('prefectures', ['empty' => 'Chọn địa điểm', 'type' => 'select', 'options' => $prefecture_list, 'class' => 'input-select']) ?>
+							<?= $this->Form->input('job_type', ['empty' => 'Công việc', 'type' => 'select', 'options' => $category, 'class' => 'input-select']) ?>
 						</label>
+						<label>
+							<?= $this->Form->input('prefectures', ['empty' => 'Địa điểm', 'type' => 'select', 'options' => $prefecture_list, 'class' => 'input-select']) ?>
+						</label>
+						<?php $this->Form->end() ?>
 					</div>
 
 					<?php foreach ($infos as $news_index_data) : ?>
@@ -109,3 +118,13 @@ use Cake\Utility\Hash;
 
 </main>
 <!-- End #main -->
+
+<?php $this->start('script') ?>
+<script>
+	$(document).ready(function() {
+		$('select').on('change', function() {
+			document.forms['search_job_form'].submit();
+		});
+	});
+</script>
+<?php $this->end('script') ?>
