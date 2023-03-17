@@ -4,12 +4,12 @@
  * ページネーションのレイアウトを変更したい場合はここを編集
  */
 return [
-    'nextActive' => '<a class="next" href="{{url}}"></a>',
+    'nextActive' => '<a class="next" href="{{url}}">{{text}}</a>',
     'nextDisabled' => '<a href="#"></a>',
-    'prevActive' => '<a class="prev" href="{{url}}"></a>',
+    'prevActive' => '<a class="prev" href="{{url}}">{{text}}</a>',
     'prevDisabled' => '<a href="#"></a>',
     'current' => '<a class="active">{{text}}</a>',
-    'ellipsis' => '<a>...</a>'
+
 ];
 // <div class="text-start py-4">
 //   <div class="custom-pagination">

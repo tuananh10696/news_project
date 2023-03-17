@@ -56,7 +56,7 @@
 			<a href="/" class="logo d-flex align-items-center">
 				<!-- Uncomment the line below if you also wish to use an image logo -->
 				<!-- <img src="assets/img/logo.png" alt=""> -->
-				<h1>Genki-Vn</h1>
+				<h1>Daily</h1>
 			</a>
 
 			<nav id="navbar" class="navbar">
@@ -68,21 +68,23 @@
 							<?php foreach ($category as $category_data) : ?>
 								<li><a href="/news?category_id=<?= $category_data->id ?>"><?= h($category_data->name) ?></a></li>
 							<?php endforeach; ?>
-							<!-- <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-								<ul>
-									<li><a href="#">Deep Drop Down 1</a></li>
-									<li><a href="#">Deep Drop Down 2</a></li>
-									<li><a href="#">Deep Drop Down 3</a></li>
-									<li><a href="#">Deep Drop Down 4</a></li>
-									<li><a href="#">Deep Drop Down 5</a></li>
-								</ul>
-							</li> -->
+
 						</ul>
 					</li>
 					<li class="dropdown"><a href="/jobs/"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li><a href="/jobs?type=nguoi_tim_viec">Người Tìm Việc</a></li>
-							<li><a href="/jobs?type=viec_tim_nguoi">Việc Tìm Người</a></li>
+							<li class="dropdown"><a href="/jobs?type=viec_tim_nguoi"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+								<ul>
+									<li><a href="/jobs?type=viec_tim_nguoi">Việc Tìm Người</a></li>
+									<li><a href="#">Đăng Bài Tìm Việc</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="/jobs?type=nguoi_tim_viec"><span>Tìm Người</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+								<ul>
+									<li><a href="/jobs?type=nguoi_tim_viec">Người Tìm Việc</a></li>
+									<li><a href="#">Đăng Bài Tuyển Dụng</a></li>
+								</ul>
+							</li>
 					</li>
 				</ul>
 				</li>

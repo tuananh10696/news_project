@@ -43,13 +43,15 @@
 					<!-- Paging -->
 					<div class="text-start py-4">
 						<div class="custom-pagination">
-							<?php if ($this->Paginator->hasPrev() || $this->Paginator->hasNext()) : ?>
-								<?php if ($this->Paginator->hasPrev()) : ?><?= $this->Paginator->prev('') ?><?php endif; ?>
-								<?= $this->Paginator->numbers(); ?>
-								<?php if ($this->Paginator->hasNext()) : ?><?= $this->Paginator->next('') ?><?php endif; ?>
-							<?php endif; ?>
+							<a href="#" class="prev">←</a>
+							<a href="#" class="active">1</a>
+							<a href="#">2</a>
+							<a href="#">3</a>
+							<a href="#">4</a>
+							<a href="#" class="next">→</a>
 						</div>
-					</div><!-- End Paging -->
+					</div>
+					<!-- End Paging -->
 
 				</div>
 
