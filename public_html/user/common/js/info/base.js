@@ -19,7 +19,7 @@ function setWysiwyg(elm) {
 					'link', '|', 'fontColor', 'fontBackgroundColor', '|',
 
 					'bulletedList', 'alignment', '|',
-					'MediaEmbed', '|',
+					'MediaEmbed', '|','insertFile',
 					'undo', 'redo',
 				]
 			},

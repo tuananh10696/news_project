@@ -89,7 +89,7 @@
 				</ul>
 				</li>
 				<li><a href="/news">Videos</a></li>
-				<li><a href="/news">Đăng Bài</a></li>
+				<li><a href="/post/">Đăng Bài</a></li>
 				<li><a href="about.html">Genki-Vn</a></li>
 				<li><a href="contact.html">Contact</a></li>
 				<li class="dropdown"><a href="/accounts/" class="mx-2"><span class="bi-person-circle"> <?= $this->Session->read('user_data') != '' ? $this->Session->read('user_data')['name'] : ' Đăng Nhập' ?></span></a>
