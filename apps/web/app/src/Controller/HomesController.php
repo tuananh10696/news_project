@@ -58,7 +58,6 @@ class HomesController extends AppController
         ];
         $opt_popular = [
             'limit' => 8,
-            'append_cond' => ['Infos.popular' => 2]
         ];
 
         $top_slide = [
