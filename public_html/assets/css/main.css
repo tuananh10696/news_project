@@ -1414,6 +1414,7 @@ div.author {
 /* add css */
 
 .my-page {
+  /* max-height: 800px; */
   position: relative;
   background-image: url(/assets/img/add.jpg);
   background-size: cover;

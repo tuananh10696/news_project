@@ -1,11 +1,11 @@
 <main id="main">
 	<section class="my-page">
 		<div class="container" data-aos="fade-up">
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-lg-12 text-center mb-5">
-					<!-- <h2 class="display-4">Bui Tuan Anh</h2> -->
+					<h2 class="display-4">Bui Tuan Anh</h2>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
 
@@ -45,33 +45,29 @@
 					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 				<div class="col-lg-4 text-center mb-5">
-					<img src="/assets/img/person-2.jpg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
-					<p>me, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
-
+					<img src="/assets/img/ad.jpg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
+					<h4>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</h4>
+					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 				<div class="col-lg-4 text-center mb-5">
-					<img src="/assets/img/person-3.jpg" alt="" class="img-fluid mb-4" style="width:96%">
-					<h4>Jane Cooper</h4>
-					<span class="d-block mb-3 text-uppercase">Editor Staff</span>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+					<img src="/assets/img/anh.jpg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
+					<h4>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</h4>
+					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 				<div class="col-lg-4 text-center mb-5">
-					<img src="/assets/img/person-4.jpg" alt="" class="img-fluid mb-4" style="width:96%">
-					<h4>Cameron Williamson</h4>
-					<span class="d-block mb-3 text-uppercase">Editor Staff</span>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+					<img src="/assets/img/ta.jpg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
+					<h4>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</h4>
+					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 				<div class="col-lg-4 text-center mb-5">
-					<img src="/assets/img/person-5.jpg" alt="" class="img-fluid mb-4" style="width:96%">
-					<h4>Cameron Williamson</h4>
-					<span class="d-block mb-3 text-uppercase">Editor Staff</span>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+					<img src="/assets/img/oo.jpeg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
+					<h4>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</h4>
+					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 				<div class="col-lg-4 text-center mb-5">
-					<img src="/assets/img/person-6.jpg" alt="" class="img-fluid mb-4" style="width:96%">
-					<h4>Cameron Williamson</h4>
-					<span class="d-block mb-3 text-uppercase">Editor Staff</span>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, perspiciatis repellat maxime, adipisci non ipsam at itaque rerum vitae, necessitatibus nulla animi expedita cumque provident inventore? Voluptatum in tempora earum deleniti, culpa odit veniam, ea reiciendis sunt ullam temporibus aut!</p>
+					<img src="/assets/img/oo.jpeg" alt="" class="img-fluid mb-4" style="width:96%;max-height: 203px">
+					<h4>Website du lịch nổi tiếng Lonely Planet mới chọn 10 nơi đẹp nhất từ bắc vào nam đem tới cho du khách</h4>
+					<!-- <span class="d-block mb-3 text-uppercase">Founder &amp; CEO</span> -->
 				</div>
 			</div>
 		</div>
