@@ -16,7 +16,7 @@ $value = $is_main ? $entity->{$content->item_key} : @$entity->info_append_items[
             <?= $this->element('/Block/append/hidden_field', ['num' => $num]) ?>
         <?php endif ?>
 
-        <div class="input-group">
+        <div class="input-group" style="<?= !empty($this->request->getQuery('author')) && $this->request->getQuery('author') == 'user' ? 'pointer-events: none;' : '' ?>">
             <div class="input-group-prepend d-block">
                 <?= $this->Form->input($item_key, ['type' => 'text', 'value' => ($value ?? new DateTime('now'))->format('Y/m/d H:i'), 'class' => 'datetimepicker form-control', 'readonly' => 'readonly', 'style' => 'width:150px;']) ?>
             </div>

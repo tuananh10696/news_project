@@ -50,6 +50,7 @@ return static function (RouteBuilder $routes) {
 
     $routes->prefix('userAdmin', ['path' => '/user_admin'], function (RouteBuilder $builder) {
         $builder->connect('/', ['controller' => 'Home', 'action' => 'index', 'prefix' => 'userAdmin'], ['_name' => 'userTop']);
+        // $builder->connect('/tuyen_dung', ['controller' => 'Infos', 'action' => 'edit/0?sch_page_id=2&sch_category_id=0&pos=0', 'prefix' => 'userAdmin']);
         $builder->connect('/logout', ['controller' => 'Home', 'action' => 'logout', 'prefix' => 'userAdmin'], ['_name' => 'logout']);
         $builder->connect('/menu-reload', ['controller' => 'Home', 'action' => 'menu-reload', 'prefix' => 'userAdmin'], ['_name' => 'userMenuReload']);
 

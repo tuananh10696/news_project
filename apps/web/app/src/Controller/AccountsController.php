@@ -129,7 +129,8 @@ class AccountsController extends AppController
     }
     function logout(){
         $this->Session->delete('User');
-        $this->redirect('/register.html');
+        $this->Session->destroy();
+        $this->redirect('/accounts');
     }
 
 
@@ -154,7 +155,7 @@ class AccountsController extends AppController
                         $this->Session->write([
                             'user_data' => [
                                 'name' => $login['username'],
-                                'user_role' => $login['role'],
+                                'account_type' => $login['account_type'],
                                 // 'face_image' => $face_image
                             ],
                         ]);

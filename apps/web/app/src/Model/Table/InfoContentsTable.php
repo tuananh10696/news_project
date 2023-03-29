@@ -67,7 +67,7 @@ class InfoContentsTable extends AppTable
         // 'image' => true, //　編集画面に推奨サイズを常時する場合の指定
         // 'image' => ['width' => 700, 'height' => 300] // attaachesに書かれているサイズ以外の場合の指定
         // 'image' => false
-        'image' => '横幅700以上を推奨。1200x1200以内に縮小されます。'
+        'image' => ''
     ];
 
 

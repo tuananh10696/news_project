@@ -39,7 +39,7 @@ $value = $is_main ? @$entity->attaches[$content->item_key][0] : @$entity->info_a
         </div>
 
         <div class="attention">※jpeg , jpg , gif , png ファイルのみ</div>
-        <div class="attention"><?= $this->Form->getRecommendSize('Infos', 'image', ['before' => '※', 'after' => '']); ?></div>
+
         <div class="attention">※ファイルサイズ5MB以内</div>
 
         <?php if ($is_main && $content->is_required) : ?>

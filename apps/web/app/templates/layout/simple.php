@@ -38,6 +38,26 @@
 	<!-- Template Main CSS Files -->
 	<link href="/assets/css/variables.css" rel="stylesheet">
 	<link href="/assets/css/main.css" rel="stylesheet">
+	<style>
+		.tooltip-wrap {
+			position: relative;
+		}
+
+		.tooltip-wrap .tooltip-content {
+			display: none;
+			position: absolute;
+			bottom: 5%;
+			/* left: 5%;
+			right: 5%; */
+			background-color: #fff;
+			padding: .5em;
+			min-width: 10rem;
+		}
+
+		.tooltip-wrap:hover .tooltip-content {
+			display: block;
+		}
+	</style>
 	<?= $this->fetch('css'); ?>
 
 	<!-- =======================================================
@@ -61,7 +81,6 @@
 
 			<nav id="navbar" class="navbar">
 				<ul>
-
 					<li class="dropdown"><a href="/news"><span>Tin Tức</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
 							<li><a href="/news">All</a></li>
@@ -73,17 +92,20 @@
 					</li>
 					<li class="dropdown"><a href="/jobs/"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li class="dropdown"><a href="/jobs?type=viec_tim_nguoi"><span>Tìm Việc</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-								<ul>
-									<li><a href="/jobs?type=viec_tim_nguoi">Việc Tìm Người</a></li>
-									<li><a href="#">Đăng Bài Tìm Việc</a></li>
-								</ul>
+							<li><a href="/jobs?type=viec_tim_nguoi">Tìm Việc</a></li>
+							<li><a href="/jobs?type=nguoi_tim_viec">Tìm Người</a></li>
+							<li class="tooltip-wrap"><a target="_blank" href="/user_admin/infos/edit/0?sch_page_id=2&sch_category_id=0&pos=0&author=user&type_work=tim_viec">Đăng Bài Tìm Việc</a>
+								<?php if ($this->Session->read('user_data') == '') : ?>
+									<span class="tooltip-content">Đăng nhập để đăng bài</span>
+								<?php endif; ?>
 							</li>
-							<li class="dropdown"><a href="/jobs?type=nguoi_tim_viec"><span>Tìm Người</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-								<ul>
-									<li><a href="/jobs?type=nguoi_tim_viec">Người Tìm Việc</a></li>
-									<li><a href="#">Đăng Bài Tuyển Dụng</a></li>
-								</ul>
+							<li class="tooltip-wrap"><a target="_blank" href="/user_admin/infos/edit/0?sch_page_id=2&sch_category_id=0&pos=0&author=user&type_work=tuyen_dung">Đăng Bài Tuyển Dụng</a>
+								<?php if ($this->Session->read('user_data') == '') : ?>
+									<span class="tooltip-content">Đăng nhập để đăng bài</span>
+								<?php elseif ($this->Session->read('user_data') == '' && $this->Session->read('user_data')['account_type'] == 1) : ?>
+									<span class="tooltip-content">Chỉ nhà tuyển dụng</span>
+								<?php else : ?>
+								<?php endif; ?>
 							</li>
 					</li>
 				</ul>

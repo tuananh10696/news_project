@@ -12,13 +12,12 @@ function setWysiwyg(elm) {
 			toolbar: {
 				items: [
 					'heading',
-					'numberedList',
-					'imageUpload',
+					// 'imageUpload',
 					'|',
-					'bold', 'underline', 'italic', 'strikethrough', '|',
+					'bold', 'underline', 'italic', 'strikethrough', 'blockquote','|',
 					'link', '|', 'fontColor', 'fontBackgroundColor', '|',
 
-					'bulletedList', 'alignment', '|',
+					'numberedList', 'bulletedList', 'alignment', '|',
 					'MediaEmbed', '|','insertFile',
 					'undo', 'redo',
 				]
