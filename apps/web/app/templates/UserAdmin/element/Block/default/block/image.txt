@@ -19,7 +19,7 @@
 			<?php if (!empty($content['attaches']['image']['0'])) : ?>
 				<div class="thumbImg btn w-100 thumbnail <?= $rownum ?>">
 					<label type="button" class="btn-light edit__image-button " for="__image<?= $rownum ?>">
-						<img src="<?= $this->Url->build($content['attaches']['image']['0']) ?>" style="max-width:500px;border:1px solid #e9e9e9">
+						<img src="<?= $this->Url->build($content['attaches']['image']['0']) ?>" style="margin-left: -12px;max-width:300px;border:1px solid #e9e9e9">
 					</label>
 					<?= $this->Form->input("info_contents.{$rownum}._old_image", ['type' => 'hidden', 'value' => h($content['image']), 'class ' => 'old_img_input']); ?>
 				</div>

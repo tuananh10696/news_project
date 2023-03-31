@@ -41,7 +41,7 @@
             }
         }
 
-        $preview_url = "/news/{$data->id}?preview=on";
+        $preview_url = "/jobs/{$data->id}?preview=on";
         ?>
         <a name="m_<?= $id ?>"></a>
         <tr class="<?= $status_class; ?>" id="content-<?= $data->id ?>">

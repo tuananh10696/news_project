@@ -501,7 +501,7 @@ $( function ()
 
 		fileReader.onload = ( function ()
 		{
-			let imgTag = `<img src='${ fileReader.result }' style='max-width:500px;border:1px solid #e9e9e9'>`
+			let imgTag = `<img src='${ fileReader.result }' style='margin-left: -12px;max-width:300px;border:1px solid #e9e9e9'>`
 
 			$( elm )
 				.siblings( ".preview_img" )

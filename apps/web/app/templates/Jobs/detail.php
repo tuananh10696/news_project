@@ -3,11 +3,36 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-9 post-content" data-aos="fade-up">
+					<section class="my-page">
+						<div class="container" data-aos="fade-up">
+							<div class="row">
+							<?= dd($info)?>
+								<div class="d-md-flex post-entry-2 half">
+									<a href="#" class="me-4 thumbnail">
+										<img src="/assets/img/ta.jpg" alt="" class="img-fluid">
+									</a>
+									<div class="ps-md-5 mt-4 mt-md-0 my-page-text">
+										<!-- <h2 class="mb-4 display-4">Company History</h2> -->
+										<h4>Bui Tuan Anh</h4>
+										<p><i class="bi bi-balloon-heart"></i> 1990/02/16</p>
+										<p><i class="bi bi-house-heart"></i> Utsunomiya - Tochigi</p>
+										<p><i class="bi bi-heart"></i> At magni dolore ullam odio sapiente ips</p>
+										<p><i class="bi bi-facebook"></i> <a href="#" class="more">View All Blog Posts</a></p>
+										<p><i class="bi bi-tiktok"></i> <a href="#" class="more">View All Blog Posts</a></p>
+										<p><i class="bi bi-person-hearts"></i> Atodio sapiente ipsAt magni dolore ullam odio sapiente ipsAt magni dolore ullam odio sapiente ipsAt magni dolore ullam odio sapiente ips</p>
+									</div>
+								</div>
+							</div>
 
+						</div>
+					</section>
 					<!-- ======= Single Post Content ======= -->
 					<div class="single-post">
 						<div class="post-meta"><span class="date"><?= $info->category->name ?></span> <span class="mx-1">•</span> <span><?= $info->start_datetime->format('Y.m.d') ?></span></div>
 						<h1 class="mb-5"><?= $info->title ?></h1>
+
+						<?= $info['notes'] ?>
+
 						<?php foreach ($contents as $content) : ?>
 							<?= $this->element('info/content_' . $content['block_type'], ['c' => $content]); ?>
 						<?php endforeach; ?>

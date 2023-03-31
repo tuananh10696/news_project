@@ -535,7 +535,7 @@ div.author {
   text-transform: uppercase;
   font-weight: 600;
   font-family: var(--font-secondary);
-  color: rgba(var(--color-black-rgb), 0.4);
+  color: #282d2bad;
   margin-bottom: 6px;
 }
 

@@ -1,8 +1,37 @@
 <?php
 
 use Cake\Utility\Hash;
-
 ?>
+<?php $this->start('css') ?>
+<style>
+	.parrent-job-options {
+		border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+	}
+
+	.job_h3 {
+		font-size: 20px;
+		color: rgba(var(--color-black-rgb), 0.9)
+	}
+
+	.job-options {
+		margin-top: 10px;
+		color: #282d2bad;
+		margin-bottom: -10px;
+	}
+
+	.child-job-options {
+		margin-left: 20px;
+	}
+
+	.img-job-options {
+		margin-bottom: 10px;
+	}
+
+	.job-options-heart {
+		margin-left: 50px;
+	}
+</style>
+<?php $this->end('css') ?>
 
 <main id="main">
 	<!-- ======= Search Results ======= -->
@@ -29,16 +58,22 @@ use Cake\Utility\Hash;
 					</div>
 
 					<?php foreach ($infos as $news_index_data) : ?>
-						<div class="d-md-flex post-entry-2 small-img">
+						<div class="d-md-flex post-entry-2 small-img parrent-job-options">
 							<a href="/jobs/<?= $news_index_data->id ?>" class="me-4 thumbnail">
-								<img src="<?= $news_index_data->attaches['image'][0] ?>" alt="" class="img-fluid thum_img">
+								<img src="<?= $news_index_data->attaches['image'][0] ?>" alt="" class="img-fluid thum_img img-job-options">
 							</a>
 							<div>
 								<div class="post-meta"><span class="date"><?= $news_index_data->category->name ?></span> <span class="mx-1">&bullet;</span> <span><?= $news_index_data->start_datetime->format('Y.m.d') ?></span></div>
-								<h3><a href="/jobs/<?= $news_index_data->id ?>"><?= h($news_index_data->title) ?></a></h3>
-								<p><?= h($news_index_data->notes) ?></p>
+								<h3 class="job_h3"><a href="/jobs/<?= $news_index_data->id ?>"><?= h($news_index_data->title) ?></a></h3>
+								<div class="d-flex job-options">
+									<p><i class="bi bi-briefcase-fill"></i> 正社員</p>
+									<p class="child-job-options"><i class="bi bi-geo-alt-fill"></i> Tochigi</p>
+									<p class="child-job-options"><i class="bi bi-currency-yen"></i> 220,000</p>
+									<p class="job-options-heart"><i class="bi bi-heart"></i></p>
+
+								</div>
 								<div class="d-flex align-items-center author">
-									<div class="photo"><img src="assets/img/anh.jpeg" alt="" class="img-fluid thum_img"></div>
+									<!-- <div class="photo"><img src="assets/img/anh.jpeg" alt="" class="img-fluid thum_img"></div> -->
 									<div class="name">
 										<h3 class="m-0 p-0">Wade Warren</h3>
 									</div>

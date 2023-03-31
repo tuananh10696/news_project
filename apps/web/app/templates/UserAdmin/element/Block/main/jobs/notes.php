@@ -14,14 +14,15 @@ $item_key = $is_main ? $content->item_key : __('info_append_items.{0}.{1}', $num
         <?= $content->is_required ? __('<span class="attent">※必須</span>') : '' ?>
     </label>
 
-    <div class="col-12 col-md-9 control_value table__row">
+    <div class="col-12 col-md-9 control_value">
 
         <?php if (!$is_main) : ?>
             <?= $this->element('/Block/append/hidden_field', ['num' => $num]) ?>
         <?php endif ?>
 
-        <?= $this->Form->input($item_key, ['type' => 'textarea', 'maxlength' => $content->max_length, 'class' => 'editor', 'required' => false]); ?>
-        
+        <?= $this->Form->input($item_key, [
+            'type' => 'textarea', 'maxlength' => $content->max_length, 'class' => 'form-control', 'required' => false,]); ?>
+
         <div class="attention"><?= __('※{0}文字以内で入力してください', $content->max_length) ?></div>
     </div>
 </div>

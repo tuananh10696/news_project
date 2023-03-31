@@ -1,5 +1,17 @@
 @charset "UTF-8";
 
+/* add style */
+.table-title-icon {}
+
+.table-op {
+  display: flex !important;
+}
+
+.ad-blog-text {
+  font-size: 1.0rem;
+  padding: 4px;
+}
+
 .hidden {
   display: none !important;
 }
@@ -247,7 +259,7 @@ ul.ctrlis .ctend a:active {
 
 #edit_block .editor__table .table__row .table__column {
   padding: 10px 10px;
-  flex-basis: calc(100% - 120px);
+  width: 100% !important;
 }
 
 #edit_block .editor__table .table__row .table__column.list_table_sub {
